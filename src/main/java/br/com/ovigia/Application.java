@@ -16,10 +16,10 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 import com.mongodb.reactivestreams.client.MongoClients;
 import com.mongodb.reactivestreams.client.MongoDatabase;
 
+import br.com.ovigia.repository.VigiaRepository;
 import br.com.ovigia.route.ClienteRoutesBuilder;
 import br.com.ovigia.route.VigiaRoutesBuilder;
 import br.com.ovigia.service.ClienteService;
-import br.com.ovigia.service.VigiaRepository;
 import br.com.ovigia.service.VigiaService;
 
 @SpringBootConfiguration

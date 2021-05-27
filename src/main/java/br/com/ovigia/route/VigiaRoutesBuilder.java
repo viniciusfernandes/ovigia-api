@@ -23,11 +23,9 @@ public class VigiaRoutesBuilder {
 	}
 
 	public RouterFunction<ServerResponse> build() {
-		return route(GET("/ovigia/vigias"), req -> toBody(vigiaService.obter()))
+		return route(GET("/ovigia/vigias"), req -> toBody(vigiaService.buscar()))
 				.and(route(GET("/ovigia/vigias/{idVigia}"), req -> {
-					Integer id = Integer.parseInt(req.pathVariable("idVigia"));
-
-					return toBody(vigiaService.obterById(id));
+					return toBody(vigiaService.buscarPorId(req.pathVariable("idVigia")));
 				}));
 	}
 

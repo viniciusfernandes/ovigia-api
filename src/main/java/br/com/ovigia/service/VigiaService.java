@@ -3,6 +3,7 @@ package br.com.ovigia.service;
 import java.util.Arrays;
 
 import br.com.ovigia.model.Vigia;
+import br.com.ovigia.repository.VigiaRepository;
 import reactor.core.publisher.Mono;
 
 public class VigiaService {
@@ -13,15 +14,15 @@ public class VigiaService {
 		this.repository = repository;
 	}
 
-	public Mono<Integer> salvar(Vigia vigia) {
+	public Mono<String> salvar(Vigia vigia) {
 		return repository.salvar(vigia);
 	}
 
-	public Mono<Response> obter() {
+	public Mono<Response> buscar() {
 		return Mono.just(new Response(ResponseStatus.BAD_REQUEST, Arrays.asList("CCCCCCCCC")));
 	}
 
-	public Mono<Response> obterById(Integer idVigia) {
-		return Mono.just(new Response(ResponseStatus.OK, new Vigia(idVigia, "Vinicius")));
+	public Mono<Response> buscarPorId(String idVigia) {
+		return repository.buscarPorId(idVigia).map(vigia -> new Response(vigia));
 	}
 }
