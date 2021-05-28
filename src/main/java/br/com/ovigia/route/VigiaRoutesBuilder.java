@@ -33,14 +33,14 @@ public class VigiaRoutesBuilder {
 		return mResponse.flatMap(response -> {
 
 			if (response.isOk()) {
-				return ok().bodyValue(response.getValue());
+				return ok().syncBody(response.getValue());
 			} else if (response.isNoResult()) {
 				return noContent().build();
 			} else if (response.isBadRequest()) {
-				return badRequest().bodyValue(response.getMensagens());
+				return badRequest().syncBody(response.getMensagens());
 			}
 
-			return status(HttpStatus.INTERNAL_SERVER_ERROR).bodyValue(response.getMensagens());
+			return status(HttpStatus.INTERNAL_SERVER_ERROR).syncBody(response.getMensagens());
 		});
 
 	}

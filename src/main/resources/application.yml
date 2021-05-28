@@ -1,3 +1,8 @@
 logging.level.web: INFO
  
 spring.data.mongodb.uri: mongodb://vinicius:teste@localhost:27017/ovigia
+
+
+context:
+  initializer:
+    classes: br.com.ovigia.ApplicationInitializer
