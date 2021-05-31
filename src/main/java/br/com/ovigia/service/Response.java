@@ -3,9 +3,9 @@ package br.com.ovigia.service;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Response {
+public class Response<V> {
 	private final ResponseStatus status;
-	private final Object value;
+	private final V value;
 	private List<String> mensagens;
 
 	public Response() {
@@ -14,13 +14,13 @@ public class Response {
 		mensagens = null;
 	}
 
-	public Response(ResponseStatus status, Object value, List<String> mensagens) {
+	public Response(ResponseStatus status, V value, List<String> mensagens) {
 		this.status = status;
 		this.value = value;
 		this.mensagens = mensagens;
 	}
 
-	public Response(ResponseStatus status, Object value) {
+	public Response(ResponseStatus status, V value) {
 		this.status = status;
 		this.value = value;
 		this.mensagens = null;
@@ -32,7 +32,7 @@ public class Response {
 		this.mensagens = mensagens;
 	}
 
-	public Response(Object value) {
+	public Response(V value) {
 		this.status = ResponseStatus.OK;
 		this.value = value;
 		this.mensagens = null;

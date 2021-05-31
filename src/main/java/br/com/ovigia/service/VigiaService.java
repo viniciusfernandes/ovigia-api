@@ -14,8 +14,8 @@ public class VigiaService {
 		this.repository = repository;
 	}
 
-	public Mono<String> salvar(Vigia vigia) {
-		return repository.salvar(vigia);
+	public Mono<Response> salvar(Vigia vigia) {
+		return repository.salvar(vigia).map(idVigia -> new Response(idVigia));
 	}
 
 	public Mono<Response> buscar() {

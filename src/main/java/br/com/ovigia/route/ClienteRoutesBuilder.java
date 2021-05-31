@@ -1,6 +1,6 @@
 package br.com.ovigia.route;
 
-import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
+import static org.springframework.web.reactive.function.server.RequestPredicates.*;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 import static org.springframework.web.reactive.function.server.ServerResponse.badRequest;
 import static org.springframework.web.reactive.function.server.ServerResponse.noContent;
@@ -23,7 +23,7 @@ public class ClienteRoutesBuilder {
 	}
 
 	public RouterFunction<ServerResponse> build() {
-		return route(GET("/ovigia/clientes"), req -> toBody(Mono.just(new Response())));
+		return route(POST("/ovigia/clientes"), req -> toBody(Mono.just(new Response())));
 	}
 
 	private Mono<ServerResponse> toBody(Mono<Response> mResponse) {

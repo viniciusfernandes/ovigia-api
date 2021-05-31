@@ -19,14 +19,19 @@ public class VigiaRepository {
 
 	public Mono<String> salvar(Vigia vigia) {
 		var id = UUID.randomUUID().toString();
-		var docvigia = new Document("_id", id).append("nome", vigia.getNome());
+		var docvigia = new Document("_id", id).append("nome", vigia.getNome()).append("email", vigia.getEmail())
+				.append("telefone", vigia.getTelefone());
+
 		return Mono.from(collection.insertOne(docvigia)).map(doc -> id);
 	}
 
 	public Mono<Vigia> buscarPorId(String idVigia) {
 		var mvigia = collection.find(new Document("_id", idVigia));
 		return Mono.from(mvigia).map(doc -> {
-			return new Vigia(doc.getString("_id"), doc.getString("nome"));
+			var vigia = new Vigia(doc.getString("_id"), doc.getString("nome"));
+			vigia.setEmail(doc.getString("email"));
+			vigia.setTelefone(doc.getString("telefone"));
+			return vigia;
 		});
 	}
 

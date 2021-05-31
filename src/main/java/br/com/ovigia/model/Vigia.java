@@ -9,6 +9,9 @@ public class Vigia {
 	private String email;
 	private List<Cliente> clientes;
 
+	public Vigia() {
+	}
+
 	public Vigia(String id, String nome) {
 		this.id = id;
 		this.nome = nome;
