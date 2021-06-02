@@ -1,4 +1,4 @@
-package br.com.ovigia.service;
+package br.com.ovigia.businessrule;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,8 +73,12 @@ public class Response<V> {
 		return status;
 	}
 
-	public Object getValue() {
+	public V getValue() {
 		return value;
+	}
+
+	public <T> Response<T> clone(T t) {
+		return new Response<>(status, t, mensagens);
 	}
 }
 

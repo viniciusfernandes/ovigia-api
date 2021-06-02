@@ -17,7 +17,7 @@ public class VigiaRepository {
 		collection = database.getCollection("vigia");
 	}
 
-	public Mono<String> salvar(Vigia vigia) {
+	public Mono<String> criar(Vigia vigia) {
 		var id = UUID.randomUUID().toString();
 		var docvigia = new Document("_id", id).append("nome", vigia.getNome()).append("email", vigia.getEmail())
 				.append("telefone", vigia.getTelefone());

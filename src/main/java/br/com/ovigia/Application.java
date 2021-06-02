@@ -17,11 +17,11 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import com.mongodb.reactivestreams.client.MongoClients;
 import com.mongodb.reactivestreams.client.MongoDatabase;
 
+import br.com.ovigia.businessrule.ClienteService;
+import br.com.ovigia.businessrule.CriarVigiaRule;
 import br.com.ovigia.repository.VigiaRepository;
 import br.com.ovigia.route.ClienteRoutesBuilder;
 import br.com.ovigia.route.VigiaRoutesBuilder;
-import br.com.ovigia.service.ClienteService;
-import br.com.ovigia.service.VigiaService;
 
 @SpringBootConfiguration
 @Configuration
@@ -54,13 +54,13 @@ public class Application {
 	}
 
 	@Bean
-	public VigiaRepository VigiaRepository() {
+	public VigiaRepository vigiaRepository() {
 		return new VigiaRepository(mongodb());
 	}
 
 	@Bean
-	public VigiaService vigiaService() {
-		return new VigiaService(VigiaRepository());
+	public CriarVigiaRule vigiaService() {
+		return new CriarVigiaRule(vigiaRepository());
 	}
 
 	@Bean
@@ -70,7 +70,7 @@ public class Application {
 
 	@Bean
 	public RouterFunction<ServerResponse> rotas() {
-		return new VigiaRoutesBuilder(vigiaService()).build().and(new ClienteRoutesBuilder(clienteService()).build());
+		return new VigiaRoutesBuilder(vigiaRepository()).build().and(new ClienteRoutesBuilder(clienteService()).build());
 	}
 
 }

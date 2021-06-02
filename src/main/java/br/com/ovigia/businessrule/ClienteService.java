@@ -1,4 +1,4 @@
-package br.com.ovigia.service;
+package br.com.ovigia.businessrule;
 
 import br.com.ovigia.model.Cliente;
 import reactor.core.publisher.Mono;

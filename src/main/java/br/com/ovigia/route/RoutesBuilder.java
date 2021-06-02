@@ -5,6 +5,8 @@ import static org.springframework.web.reactive.function.server.ServerResponse.no
 import static org.springframework.web.reactive.function.server.ServerResponse.ok;
 import static org.springframework.web.reactive.function.server.ServerResponse.status;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
 
 import org.springframework.http.HttpStatus;
@@ -12,12 +14,30 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
-import br.com.ovigia.service.Response;
+import br.com.ovigia.businessrule.BusinessRule;
+import br.com.ovigia.businessrule.Response;
+import br.com.ovigia.model.Vigia;
 import reactor.core.publisher.Mono;
 
 public abstract class RoutesBuilder {
+	private List<RouterFunction<ServerResponse>> routerFunctions = new ArrayList<>();
 
-	public abstract RouterFunction<ServerResponse> build();
+	RoutesBuilder add(RouterFunction<ServerResponse> route) {
+		routerFunctions.add(route);
+		return this;
+	}
+
+	public RouterFunction<ServerResponse> build() {
+		RouterFunction<ServerResponse> routes = null;
+		for (var route : routerFunctions) {
+			if (routes == null) {
+				routes = route;
+				continue;
+			}
+			routes = routes.and(route);
+		}
+		return routes;
+	}
 
 	<V> Mono<ServerResponse> toBody(Mono<Response<V>> mResponse) {
 		return mResponse.flatMap(response -> {
@@ -34,11 +54,8 @@ public abstract class RoutesBuilder {
 		});
 	}
 
-	<T, V> Mono<ServerResponse> handleRequest(ServerRequest serverRequest, Function<ServerRequest, T> mapToModel,
-			Function<T, Mono<Response<V>>> regraNegocio) {
-		var model = mapToModel.apply(serverRequest);
-		var response = regraNegocio.apply(model);
-		return toBody(response);
+	<T, V> Mono<Response<V>> handleRequest(ServerRequest serverRequest, Class<T> clazz, BusinessRule<T, V> rule) {
+		return serverRequest.bodyToMono(clazz).flatMap(model -> rule.apply(model));
 	}
 
 }

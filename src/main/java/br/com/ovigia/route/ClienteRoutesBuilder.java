@@ -11,8 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
-import br.com.ovigia.service.ClienteService;
-import br.com.ovigia.service.Response;
+import br.com.ovigia.businessrule.ClienteService;
+import br.com.ovigia.businessrule.Response;
 import reactor.core.publisher.Mono;
 
 public class ClienteRoutesBuilder {
