@@ -2,6 +2,8 @@ package br.com.ovigia.error;
 
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.web.ResourceProperties;
 import org.springframework.boot.autoconfigure.web.reactive.error.AbstractErrorWebExceptionHandler;
 import org.springframework.boot.web.reactive.error.ErrorAttributes;
@@ -23,6 +25,7 @@ import reactor.core.publisher.Mono;
 @Component
 @Order(-2)
 public class GlobalErrorWebExceptionHandler extends AbstractErrorWebExceptionHandler {
+	private final boolean includeStackTrace = false;
 
 	public GlobalErrorWebExceptionHandler(GlobalErrorAttributes g, ApplicationContext applicationContext,
 			ServerCodecConfigurer serverCodecConfigurer) {
@@ -38,10 +41,12 @@ public class GlobalErrorWebExceptionHandler extends AbstractErrorWebExceptionHan
 
 	private Mono<ServerResponse> renderErrorResponse(final ServerRequest request) {
 
-		final Map<String, Object> errorPropertiesMap = getErrorAttributes(request, true);
+		final Map<String, Object> errorPropertiesMap = getErrorAttributes(request, includeStackTrace);
 
-		return ServerResponse.status(HttpStatus.BAD_REQUEST).contentType(MediaType.APPLICATION_JSON_UTF8)
-				.body(BodyInserters.fromObject(errorPropertiesMap));
+		Object error = errorPropertiesMap.get("error");
+
+		return ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.APPLICATION_JSON_UTF8)
+				.body(BodyInserters.fromObject(error));
 	}
 
 }

@@ -12,7 +12,7 @@ public class VigiaRoutesBuilder extends RoutesBuilder {
 
 	public VigiaRoutesBuilder(VigiaRepository vigiaRepository) {
 		add(route(POST("/ovigia/vigias"), req -> {
-			return toBody(handleRequest(req, Vigia.class, new CriarVigiaRule(null)));
+			return toBody(handleRequest(req, Vigia.class, new CriarVigiaRule(vigiaRepository)));
 		}));
 
 		add(route(GET("/ovigia/vigias/{idVigia}"), req -> {
