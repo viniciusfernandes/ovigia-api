@@ -17,8 +17,9 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import com.mongodb.reactivestreams.client.MongoClients;
 import com.mongodb.reactivestreams.client.MongoDatabase;
 
-import br.com.ovigia.businessrule.ClienteService;
+import br.com.ovigia.businessrule.CriarClienteRule;
 import br.com.ovigia.businessrule.CriarVigiaRule;
+import br.com.ovigia.repository.ClienteRepository;
 import br.com.ovigia.repository.VigiaRepository;
 import br.com.ovigia.route.ClienteRoutesBuilder;
 import br.com.ovigia.route.VigiaRoutesBuilder;
@@ -59,18 +60,19 @@ public class Application {
 	}
 
 	@Bean
+	public ClienteRepository clienteRepository() {
+		return new ClienteRepository(mongodb());
+	}
+
+	@Bean
 	public CriarVigiaRule vigiaService() {
 		return new CriarVigiaRule(vigiaRepository());
 	}
 
 	@Bean
-	public ClienteService clienteService() {
-		return new ClienteService();
-	}
-
-	@Bean
 	public RouterFunction<ServerResponse> rotas() {
-		return new VigiaRoutesBuilder(vigiaRepository()).build().and(new ClienteRoutesBuilder(clienteService()).build());
+		return new VigiaRoutesBuilder(vigiaRepository()).build()
+				.and(new ClienteRoutesBuilder(clienteRepository()).build());
 	}
 
 }

@@ -2,11 +2,15 @@ package br.com.ovigia.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Vigia {
 	private String id;
 	private String nome;
 	private String telefone;
 	private String email;
+	
+	@JsonIgnore
 	private List<Cliente> clientes;
 
 	public Vigia() {

@@ -7,7 +7,6 @@ import static org.springframework.web.reactive.function.server.ServerResponse.st
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.server.RouterFunction;
@@ -16,7 +15,6 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 
 import br.com.ovigia.businessrule.BusinessRule;
 import br.com.ovigia.businessrule.Response;
-import br.com.ovigia.model.Vigia;
 import reactor.core.publisher.Mono;
 
 public abstract class RoutesBuilder {
@@ -54,8 +52,12 @@ public abstract class RoutesBuilder {
 		});
 	}
 
-	<T, V> Mono<Response<V>> handleRequest(ServerRequest serverRequest, Class<T> clazz, BusinessRule<T, V> rule) {
-		return serverRequest.bodyToMono(clazz).flatMap(model -> rule.apply(model));
+	<T, V> Mono<Response<V>> handleRequest(ServerRequest serverRequest, Class<T> requestClazz,
+			BusinessRule<T, V> rule) {
+		return serverRequest.bodyToMono(requestClazz).flatMap(model -> rule.apply(model));
 	}
 
+	<T, V> Mono<Response<V>> handleRequest(T t, BusinessRule<T, V> rule) {
+		return rule.apply(t);
+	}
 }
