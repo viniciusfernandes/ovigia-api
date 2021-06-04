@@ -1,51 +1,33 @@
 package br.com.ovigia.model;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Rota {
-	private String idVigia;
-	private Date data;
-	private Date hora;
-	private Double latitude;
-	private Double longitude;
+	private IdRota id;
+	private List<Localizacao> localizacoes;
 
-	public String getIdVigia() {
-		return idVigia;
+	public List<Localizacao> getLocalizacoes() {
+		return localizacoes;
 	}
 
-	public void setIdVigia(String idVigia) {
-		this.idVigia = idVigia;
+	public void setLocalizacoes(List<Localizacao> localizacoes) {
+		this.localizacoes = localizacoes;
 	}
 
-	public Date getData() {
-		return data;
+	public void add(Localizacao localizacao) {
+		if (localizacoes == null) {
+			localizacoes = new ArrayList<>();
+		}
+		localizacoes.add(localizacao);
 	}
 
-	public void setData(Date data) {
-		this.data = data;
+	public IdRota getId() {
+		return id;
 	}
 
-	public Date getHora() {
-		return hora;
+	public void setId(IdRota id) {
+		this.id = id;
 	}
 
-	public void setHora(Date hora) {
-		this.hora = hora;
-	}
-
-	public Double getLatitude() {
-		return latitude;
-	}
-
-	public void setLatitude(Double latitude) {
-		this.latitude = latitude;
-	}
-
-	public Double getLongitude() {
-		return longitude;
-	}
-
-	public void setLongitude(Double longitude) {
-		this.longitude = longitude;
-	}
 }

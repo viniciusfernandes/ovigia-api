@@ -27,10 +27,12 @@ public class GlobalErrorAttributes extends DefaultErrorAttributes {
 
 		GlobalError error = new GlobalError();
 		error.timestamp = df.format((Date) map.get("timestamp"));
-		error.mensagem = "Falha interna no servidor. Procure a equipe de desenvolvimento caso o problema persistir.";
 		error.url = (String) map.get("path");
-		error.status = HttpStatus.INTERNAL_SERVER_ERROR.value();
-		error.tipo = ex.getClass().getSimpleName();
+		error.status = (int) map.get("status");
+		if (error.status == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
+			error.mensagem = "Falha interna no servidor. Procure a equipe de desenvolvimento caso o problema persistir.";
+			error.tipo = ex.getClass().getSimpleName();
+		}
 
 		map.put("error", error);
 
