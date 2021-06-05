@@ -36,7 +36,7 @@ public class RotaRoutesBuilder extends RoutesBuilder {
 			try {
 				data = format.parse(req.pathVariable("data"));
 			} catch (ParseException e) {
-				var responseError = Response.error(req.pathVariable("data"),
+				var responseError = Response.unprocessable(req.pathVariable("data"),
 						"A data de pesquisa nao esta formatada corretamente");
 				return toBody(Mono.just(responseError));
 			}

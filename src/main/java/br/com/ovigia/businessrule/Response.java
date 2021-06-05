@@ -3,6 +3,8 @@ package br.com.ovigia.businessrule;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Response<V> {
 	private final ResponseStatus status;
 	private final V value;
@@ -51,20 +53,29 @@ public class Response<V> {
 		mensagens.add(mensagem);
 	}
 
+	@JsonIgnore
 	public boolean isBadRequest() {
 		return ResponseStatus.BAD_REQUEST == status;
 	}
 
+	@JsonIgnore
 	public boolean isOk() {
 		return ResponseStatus.OK == status;
 	}
 
+	@JsonIgnore
 	public boolean isNoResult() {
 		return ResponseStatus.NO_RESULT == status;
 	}
 
+	@JsonIgnore
 	public boolean isServerError() {
-		return ResponseStatus.SERVER_ERROR == status;
+		return ResponseStatus.INTERNAL_SERVER_ERROR == status;
+	}
+
+	@JsonIgnore
+	public boolean isUnprocessable() {
+		return ResponseStatus.UNPROCESSABLE_ENTITY == status;
 	}
 
 	public List<String> getMensagens() {
@@ -96,10 +107,14 @@ public class Response<V> {
 	}
 
 	public static <T> Response<T> error(T value, String mensagem) {
-		return new Response<>(ResponseStatus.SERVER_ERROR, value, mensagem);
+		return new Response<>(ResponseStatus.INTERNAL_SERVER_ERROR, value, mensagem);
+	}
+
+	public static <T> Response<T> unprocessable(T value, String mensagem) {
+		return new Response<>(ResponseStatus.UNPROCESSABLE_ENTITY, value, mensagem);
 	}
 }
 
 enum ResponseStatus {
-	OK, NO_RESULT, BAD_REQUEST, SERVER_ERROR
+	OK, NO_RESULT, BAD_REQUEST, INTERNAL_SERVER_ERROR, UNPROCESSABLE_ENTITY
 }

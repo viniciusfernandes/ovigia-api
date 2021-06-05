@@ -3,15 +3,15 @@ package br.com.ovigia.route;
 import static org.springframework.web.reactive.function.server.ServerResponse.badRequest;
 import static org.springframework.web.reactive.function.server.ServerResponse.noContent;
 import static org.springframework.web.reactive.function.server.ServerResponse.ok;
-import static org.springframework.web.reactive.function.server.ServerResponse.status;
+import static org.springframework.web.reactive.function.server.ServerResponse.unprocessableEntity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
+import org.springframework.web.reactive.function.server.ServerResponse.BodyBuilder;
 
 import br.com.ovigia.businessrule.BusinessRule;
 import br.com.ovigia.businessrule.Response;
@@ -40,15 +40,20 @@ public abstract class RoutesBuilder {
 	<V> Mono<ServerResponse> toBody(Mono<Response<V>> mResponse) {
 		return mResponse.flatMap(response -> {
 
-			if (response.isOk()) {
-				return ok().syncBody(response.getValue());
-			} else if (response.isNoResult()) {
+			if (response.isNoResult()) {
 				return noContent().build();
-			} else if (response.isBadRequest()) {
-				return badRequest().syncBody(response.getMensagens());
 			}
 
-			return status(HttpStatus.INTERNAL_SERVER_ERROR).syncBody(response.getMensagens());
+			BodyBuilder bodyBuilder = null;
+			if (response.isOk()) {
+				bodyBuilder = ok();
+			} else if (response.isBadRequest()) {
+				bodyBuilder = badRequest();
+			} else if (response.isUnprocessable()) {
+				bodyBuilder = unprocessableEntity();
+			}
+
+			return bodyBuilder.bodyValue(response);
 		});
 	}
 
