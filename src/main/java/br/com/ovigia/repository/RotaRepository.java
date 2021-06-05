@@ -1,9 +1,11 @@
 package br.com.ovigia.repository;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.bson.Document;
+import org.springframework.data.mongodb.core.MongoTemplate;
 
 import com.mongodb.reactivestreams.client.MongoCollection;
 import com.mongodb.reactivestreams.client.MongoDatabase;
@@ -20,8 +22,9 @@ public class RotaRepository {
 		collection = database.getCollection("rota");
 	}
 
-	public Mono<Void> criar(String idVigia, Date data, Localizacao localizacao) {
-		var idRota = gerarIdRota(idVigia, data);
+	public Mono<Void> criarLocalizacao(String idVigia, Date data, Localizacao localizacao) {
+
+		var idRota = new Document("_id", gerarIdRota(idVigia, data));
 		var doclocalizacao = new Document();
 		doclocalizacao.append("hora", localizacao.getHora());
 		doclocalizacao.append("latitude", localizacao.getLatitude());
@@ -29,7 +32,15 @@ public class RotaRepository {
 
 		var pushLocalizacao = new Document("$push", new Document("localizacoes", doclocalizacao));
 
-		return Mono.from(collection.updateOne(idRota, pushLocalizacao)).flatMap(res -> Mono.empty());
+		return Mono.from(collection.updateMany(idRota, pushLocalizacao)).flatMap(res -> Mono.empty());
+	}
+
+	public Mono<Void> criar(Rota rota) {
+		var idRota = gerarIdRota(rota.obterIdVigia(), rota.obterData());
+		var docRota = new Document("_id", idRota);
+		docRota.append("localizacoes", new ArrayList<>());
+
+		return Mono.from(collection.insertOne(docRota)).flatMap(res -> Mono.empty());
 	}
 
 	public Mono<Rota> buscarPorIdVigia(String idVigia, Date data) {
@@ -54,6 +65,6 @@ public class RotaRepository {
 	}
 
 	private Document gerarIdRota(String idVigia, Date data) {
-		return new Document("_id", new Document().append("idVigia", idVigia).append("data", data));
+		return new Document().append("idVigia", idVigia).append("data", data);
 	}
 }

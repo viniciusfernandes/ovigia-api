@@ -20,8 +20,10 @@ import com.mongodb.reactivestreams.client.MongoDatabase;
 import br.com.ovigia.businessrule.CriarClienteRule;
 import br.com.ovigia.businessrule.CriarVigiaRule;
 import br.com.ovigia.repository.ClienteRepository;
+import br.com.ovigia.repository.RotaRepository;
 import br.com.ovigia.repository.VigiaRepository;
 import br.com.ovigia.route.ClienteRoutesBuilder;
+import br.com.ovigia.route.RotaRoutesBuilder;
 import br.com.ovigia.route.VigiaRoutesBuilder;
 
 @SpringBootConfiguration
@@ -65,6 +67,11 @@ public class Application {
 	}
 
 	@Bean
+	public RotaRepository rotaRepository() {
+		return new RotaRepository(mongodb());
+	}
+
+	@Bean
 	public CriarVigiaRule vigiaService() {
 		return new CriarVigiaRule(vigiaRepository());
 	}
@@ -72,7 +79,8 @@ public class Application {
 	@Bean
 	public RouterFunction<ServerResponse> rotas() {
 		return new VigiaRoutesBuilder(vigiaRepository()).build()
-				.and(new ClienteRoutesBuilder(clienteRepository()).build());
+				.and(new ClienteRoutesBuilder(clienteRepository()).build())
+				.and(new RotaRoutesBuilder(rotaRepository()).build());
 	}
 
 }

@@ -6,6 +6,15 @@ public class IdRota {
 	private String idVigia;
 	private Date data;
 
+	public IdRota() {
+	}
+
+	public IdRota(String idVigia, Date data) {
+		super();
+		this.idVigia = idVigia;
+		this.data = data;
+	}
+
 	public String getIdVigia() {
 		return idVigia;
 	}

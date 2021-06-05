@@ -9,7 +9,7 @@ public class Response<V> {
 	private List<String> mensagens;
 
 	public Response() {
-		status = ResponseStatus.OK;
+		status = ResponseStatus.NO_RESULT;
 		value = null;
 		mensagens = null;
 	}

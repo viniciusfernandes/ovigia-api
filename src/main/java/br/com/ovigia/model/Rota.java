@@ -1,6 +1,7 @@
 package br.com.ovigia.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Rota {
@@ -28,6 +29,20 @@ public class Rota {
 
 	public void setId(IdRota id) {
 		this.id = id;
+	}
+
+	public String obterIdVigia() {
+		if (id == null) {
+			return null;
+		}
+		return id.getIdVigia();
+	}
+
+	public Date obterData() {
+		if (id == null) {
+			return null;
+		}
+		return id.getData();
 	}
 
 }

@@ -7,19 +7,22 @@ import br.com.ovigia.model.Localizacao;
 import br.com.ovigia.repository.RotaRepository;
 import reactor.core.publisher.Mono;
 
-public class CriarRotaRule implements BusinessRule<Localizacao, Void> {
+public class CriarLocalizacaoRule implements BusinessRule<Localizacao, Void> {
 
 	private RotaRepository repository;
 
-	public CriarRotaRule(RotaRepository repository) {
+	public CriarLocalizacaoRule(RotaRepository repository) {
 		this.repository = repository;
 	}
 
 	@Override
-	public Mono<Response<Void>> apply(Localizacao rota) {
+	public Mono<Response<Void>> apply(Localizacao localizacao) {
 		var dataAtual = new Date();
-		rota.setHora(dataAtual);
-		return repository.criar(rota.getIdVigia(), gerarData(dataAtual), rota).map(id -> new Response<>(id));
+		localizacao.setHora(dataAtual);
+		
+		localizacao.setIdVigia("1234");
+		
+		return repository.criarLocalizacao(localizacao.getIdVigia(), gerarData(dataAtual), localizacao).map(id -> new Response<>(id));
 	}
 
 	private Date gerarData(Date data) {
