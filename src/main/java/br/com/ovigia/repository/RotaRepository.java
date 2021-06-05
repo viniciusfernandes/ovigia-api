@@ -24,7 +24,7 @@ public class RotaRepository {
 
 	public Mono<Void> criarLocalizacao(String idVigia, Date data, Localizacao localizacao) {
 
-		var idRota = new Document("_id", gerarIdRota(idVigia, data));
+		var idRota = gerarIdRota(idVigia, data);
 		var doclocalizacao = new Document();
 		doclocalizacao.append("hora", localizacao.getHora());
 		doclocalizacao.append("latitude", localizacao.getLatitude());
@@ -36,19 +36,21 @@ public class RotaRepository {
 	}
 
 	public Mono<Void> criar(Rota rota) {
-		var idRota = gerarIdRota(rota.obterIdVigia(), rota.obterData());
-		var docRota = new Document("_id", idRota);
+		var docRota = gerarIdRota(rota.obterIdVigia(), rota.obterData());
 		docRota.append("localizacoes", new ArrayList<>());
 
 		return Mono.from(collection.insertOne(docRota)).flatMap(res -> Mono.empty());
 	}
 
-	public Mono<Rota> buscarPorIdVigia(String idVigia, Date data) {
-		return Mono.from(collection.find(new Document("_id", gerarIdRota(idVigia, data)))).map(docRota -> {
-			var rota = new Rota();
+	public Mono<Rota> obterRotaPorId(IdRota id) {
+		return Mono.from(collection.find(gerarIdRota(id.getIdVigia(), id.getData()))).map(docRota -> {
+			var docId = docRota.get("_id", Document.class);
+
 			var idRota = new IdRota();
-			idRota.setIdVigia(docRota.getString("idVigia"));
-			idRota.setData(docRota.getDate("data"));
+			idRota.setIdVigia(docId.getString("idVigia"));
+			idRota.setData(docId.getDate("data"));
+
+			var rota = new Rota(idRota);
 
 			@SuppressWarnings("unchecked")
 			var localizacoes = (List<Document>) docRota.get("localizacoes");
@@ -65,6 +67,7 @@ public class RotaRepository {
 	}
 
 	private Document gerarIdRota(String idVigia, Date data) {
-		return new Document().append("idVigia", idVigia).append("data", data);
+		var value = new Document().append("idVigia", idVigia).append("data", data);
+		return new Document("_id", value);
 	}
 }

@@ -14,7 +14,7 @@ public class CriarVigiaRule implements BusinessRule<Vigia, String> {
 
 	@Override
 	public Mono<Response<String>> apply(Vigia vigia) {
-		return repository.criar(vigia).map(id -> new Response<>(id));
+		return repository.criar(vigia).map(id -> Response.ok(id));
 	}
 
 }

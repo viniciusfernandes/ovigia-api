@@ -2,30 +2,18 @@ package br.com.ovigia.model;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Localizacao {
-
-	private transient Date data;
-	private transient String idVigia;
-
-	public Date getData() {
-		return data;
-	}
-
-	public void setData(Date data) {
-		this.data = data;
-	}
-
-	public String getIdVigia() {
-		return idVigia;
-	}
-
-	public void setIdVigia(String idVigia) {
-		this.idVigia = idVigia;
-	}
 
 	private Date hora;
 	private Double latitude;
 	private Double longitude;
+
+	@JsonIgnore
+	private transient Date data;
+	@JsonIgnore
+	private transient String idVigia;
 
 	public Localizacao() {
 	}
@@ -58,5 +46,21 @@ public class Localizacao {
 
 	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
+	}
+
+	public Date getData() {
+		return data;
+	}
+
+	public void setData(Date data) {
+		this.data = data;
+	}
+
+	public String getIdVigia() {
+		return idVigia;
+	}
+
+	public void setIdVigia(String idVigia) {
+		this.idVigia = idVigia;
 	}
 }

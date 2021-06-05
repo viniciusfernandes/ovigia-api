@@ -1,7 +1,8 @@
 package br.com.ovigia.businessrule;
 
+import static br.com.ovigia.businessrule.util.DataUtil.gerarData;
+
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 import br.com.ovigia.model.IdRota;
@@ -27,17 +28,7 @@ public class CriarRotaRule implements BusinessRule<String, Void> {
 
 		rota.setLocalizacoes(new ArrayList<>());
 
-		return repository.criar(rota).thenReturn(new Response<>());
-	}
-
-	private Date gerarData(Date data) {
-		var cal = Calendar.getInstance();
-		cal.setTime(data);
-		cal.set(Calendar.HOUR, 0);
-		cal.set(Calendar.MINUTE, 0);
-		cal.set(Calendar.SECOND, 0);
-		cal.set(Calendar.MILLISECOND, 0);
-		return cal.getTime();
+		return repository.criar(rota).thenReturn(Response.nonResult());
 	}
 
 }

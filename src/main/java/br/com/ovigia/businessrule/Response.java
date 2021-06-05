@@ -8,31 +8,37 @@ public class Response<V> {
 	private final V value;
 	private List<String> mensagens;
 
-	public Response() {
+	private Response() {
 		status = ResponseStatus.NO_RESULT;
 		value = null;
 		mensagens = null;
 	}
 
-	public Response(ResponseStatus status, V value, List<String> mensagens) {
+	private Response(ResponseStatus status, V value, String mensagem) {
+		this.status = status;
+		this.value = value;
+		addMensagem(mensagem);
+	}
+
+	private Response(ResponseStatus status, V value, List<String> mensagens) {
 		this.status = status;
 		this.value = value;
 		this.mensagens = mensagens;
 	}
 
-	public Response(ResponseStatus status, V value) {
+	private Response(ResponseStatus status, V value) {
 		this.status = status;
 		this.value = value;
 		this.mensagens = null;
 	}
 
-	public Response(ResponseStatus status, List<String> mensagens) {
+	private Response(ResponseStatus status, List<String> mensagens) {
 		this.status = status;
 		this.value = null;
 		this.mensagens = mensagens;
 	}
 
-	public Response(V value) {
+	private Response(V value) {
 		this.status = ResponseStatus.OK;
 		this.value = value;
 		this.mensagens = null;
@@ -79,6 +85,18 @@ public class Response<V> {
 
 	public <T> Response<T> clone(T t) {
 		return new Response<>(status, t, mensagens);
+	}
+
+	public static <T> Response<T> ok(T value) {
+		return new Response<>(value);
+	}
+
+	public static <T> Response<T> nonResult() {
+		return new Response<>();
+	}
+
+	public static <T> Response<T> error(T value, String mensagem) {
+		return new Response<>(ResponseStatus.SERVER_ERROR, value, mensagem);
 	}
 }
 

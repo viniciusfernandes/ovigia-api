@@ -8,6 +8,13 @@ public class Rota {
 	private IdRota id;
 	private List<Localizacao> localizacoes;
 
+	public Rota() {
+	}
+
+	public Rota(IdRota id) {
+		this.id = id;
+	}
+
 	public List<Localizacao> getLocalizacoes() {
 		return localizacoes;
 	}
