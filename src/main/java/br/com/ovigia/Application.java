@@ -17,8 +17,8 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import com.mongodb.reactivestreams.client.MongoClients;
 import com.mongodb.reactivestreams.client.MongoDatabase;
 
-import br.com.ovigia.businessrule.CriarClienteRule;
-import br.com.ovigia.businessrule.CriarVigiaRule;
+import br.com.ovigia.businessrule.cliente.CriarClienteRule;
+import br.com.ovigia.businessrule.vigia.CriarVigiaRule;
 import br.com.ovigia.repository.ClienteRepository;
 import br.com.ovigia.repository.RotaRepository;
 import br.com.ovigia.repository.VigiaRepository;

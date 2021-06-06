@@ -8,6 +8,7 @@ import com.mongodb.reactivestreams.client.MongoCollection;
 import com.mongodb.reactivestreams.client.MongoDatabase;
 
 import br.com.ovigia.model.Cliente;
+import br.com.ovigia.repository.parser.ClienteParser;
 import reactor.core.publisher.Mono;
 
 public class ClienteRepository {
@@ -19,21 +20,14 @@ public class ClienteRepository {
 
 	public Mono<String> criar(Cliente cliente) {
 		var id = UUID.randomUUID().toString();
-		var docvigia = new Document("_id", id).append("nome", cliente.getNome()).append("email", cliente.getEmail())
-				.append("telefone", cliente.getTelefone());
+		cliente.setId(id);
 
-		return Mono.from(collection.insertOne(docvigia)).map(doc -> id);
+		var docCliente = ClienteParser.toDoc(cliente);
+		return Mono.from(collection.insertOne(docCliente)).map(doc -> id);
 	}
 
 	public Mono<Cliente> buscarPorId(String idCliente) {
-		return Mono.from(collection.find(new Document("_id", idCliente))).map(doc -> {
-			var cliente = new Cliente();
-			cliente.setId(doc.getString("_id"));
-			cliente.setNome(doc.getString("nome"));
-			cliente.setEmail(doc.getString("email"));
-			cliente.setTelefone(doc.getString("telefone"));
-			return cliente;
-		});
+		return Mono.from(collection.find(new Document("_id", idCliente))).map(doc -> ClienteParser.fromDoc(doc));
 	}
 
 }

@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.bson.Document;
-import org.springframework.data.mongodb.core.MongoTemplate;
 
 import com.mongodb.reactivestreams.client.MongoCollection;
 import com.mongodb.reactivestreams.client.MongoDatabase;
@@ -30,16 +29,16 @@ public class RotaRepository {
 		doclocalizacao.append("latitude", localizacao.getLatitude());
 		doclocalizacao.append("longitude", localizacao.getLongitude());
 
-		var pushLocalizacao = new Document("$push", new Document("localizacoes", doclocalizacao));
+		var adicionarLocalizacao = new Document("$push", new Document("localizacoes", doclocalizacao));
 
-		return Mono.from(collection.updateMany(idRota, pushLocalizacao)).flatMap(res -> Mono.empty());
+		return Mono.from(collection.updateMany(idRota, adicionarLocalizacao)).then();
 	}
 
 	public Mono<Void> criar(Rota rota) {
 		var docRota = gerarIdRota(rota.obterIdVigia(), rota.obterData());
 		docRota.append("localizacoes", new ArrayList<>());
 
-		return Mono.from(collection.insertOne(docRota)).flatMap(res -> Mono.empty());
+		return Mono.from(collection.insertOne(docRota)).then();
 	}
 
 	public Mono<Rota> obterRotaPorId(IdRota id) {

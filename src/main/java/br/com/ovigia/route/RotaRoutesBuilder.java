@@ -9,10 +9,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import br.com.ovigia.businessrule.CriarLocalizacaoRule;
-import br.com.ovigia.businessrule.CriarRotaRule;
-import br.com.ovigia.businessrule.ObterRotaRule;
 import br.com.ovigia.businessrule.Response;
+import br.com.ovigia.businessrule.rota.CriarLocalizacaoRule;
+import br.com.ovigia.businessrule.rota.CriarRotaRule;
+import br.com.ovigia.businessrule.rota.ObterRotaRule;
 import br.com.ovigia.model.IdRota;
 import br.com.ovigia.model.Localizacao;
 import br.com.ovigia.repository.RotaRepository;

@@ -1,5 +1,7 @@
-package br.com.ovigia.businessrule;
+package br.com.ovigia.businessrule.rota;
 
+import br.com.ovigia.businessrule.BusinessRule;
+import br.com.ovigia.businessrule.Response;
 import br.com.ovigia.model.IdRota;
 import br.com.ovigia.model.Rota;
 import br.com.ovigia.repository.RotaRepository;

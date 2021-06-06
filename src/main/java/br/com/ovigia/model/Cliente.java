@@ -2,12 +2,19 @@ package br.com.ovigia.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Cliente {
 	private String id;
 	private String nome;
 	private String telefone;
 	private String email;
 	private List<Vigia> vigias;
+	private Localizacao localizacao;
+	
+	
+	@JsonIgnore
+	private String idVigia;
 
 	public String getId() {
 		return id;
@@ -47,5 +54,21 @@ public class Cliente {
 
 	public void setVigias(List<Vigia> vigias) {
 		this.vigias = vigias;
+	}
+
+	public Localizacao getLocalizacao() {
+		return localizacao;
+	}
+
+	public void setLocalizacao(Localizacao localizacao) {
+		this.localizacao = localizacao;
+	}
+
+	public String getIdVigia() {
+		return idVigia;
+	}
+
+	public void setIdVigia(String idVigia) {
+		this.idVigia = idVigia;
 	}
 }

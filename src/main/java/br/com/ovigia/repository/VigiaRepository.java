@@ -7,7 +7,9 @@ import org.bson.Document;
 import com.mongodb.reactivestreams.client.MongoCollection;
 import com.mongodb.reactivestreams.client.MongoDatabase;
 
+import br.com.ovigia.model.Cliente;
 import br.com.ovigia.model.Vigia;
+import br.com.ovigia.repository.parser.ClienteParser;
 import reactor.core.publisher.Mono;
 
 public class VigiaRepository {
@@ -35,4 +37,11 @@ public class VigiaRepository {
 		});
 	}
 
+	public Mono<Void> atualizarCliente(String idVigia, Cliente cliente) {
+		var docId = new Document("_id", idVigia);
+		var docCliente = ClienteParser.toDoc(cliente);
+
+		var adicionarCliente = new Document("$push", new Document("clientes", docCliente));
+		return Mono.from(collection.updateOne(docId, adicionarCliente)).then();
+	}
 }
