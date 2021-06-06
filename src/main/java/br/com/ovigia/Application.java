@@ -3,11 +3,9 @@ package br.com.ovigia;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
@@ -17,7 +15,6 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import com.mongodb.reactivestreams.client.MongoClients;
 import com.mongodb.reactivestreams.client.MongoDatabase;
 
-import br.com.ovigia.businessrule.cliente.CriarClienteRule;
 import br.com.ovigia.businessrule.vigia.CriarVigiaRule;
 import br.com.ovigia.repository.ClienteRepository;
 import br.com.ovigia.repository.RotaRepository;
@@ -78,7 +75,7 @@ public class Application {
 
 	@Bean
 	public RouterFunction<ServerResponse> rotas() {
-		return new VigiaRoutesBuilder(vigiaRepository()).build()
+		return new VigiaRoutesBuilder(vigiaRepository(), clienteRepository()).build()
 				.and(new ClienteRoutesBuilder(clienteRepository()).build())
 				.and(new RotaRoutesBuilder(rotaRepository()).build());
 	}

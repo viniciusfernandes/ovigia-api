@@ -9,10 +9,9 @@ public class Cliente {
 	private String nome;
 	private String telefone;
 	private String email;
-	private List<Vigia> vigias;
+	private List<String> vigias;
 	private Localizacao localizacao;
-	
-	
+
 	@JsonIgnore
 	private String idVigia;
 
@@ -48,14 +47,6 @@ public class Cliente {
 		this.email = email;
 	}
 
-	public List<Vigia> getVigias() {
-		return vigias;
-	}
-
-	public void setVigias(List<Vigia> vigias) {
-		this.vigias = vigias;
-	}
-
 	public Localizacao getLocalizacao() {
 		return localizacao;
 	}
@@ -70,5 +61,17 @@ public class Cliente {
 
 	public void setIdVigia(String idVigia) {
 		this.idVigia = idVigia;
+	}
+
+	public List<String> getVigias() {
+		return vigias;
+	}
+
+	public void setVigias(List<String> vigias) {
+		this.vigias = vigias;
+	}
+
+	public boolean hasVigias() {
+		return vigias != null && !vigias.isEmpty();
 	}
 }

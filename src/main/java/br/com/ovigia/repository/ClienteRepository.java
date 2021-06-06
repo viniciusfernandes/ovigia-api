@@ -30,4 +30,11 @@ public class ClienteRepository {
 		return Mono.from(collection.find(new Document("_id", idCliente))).map(doc -> ClienteParser.fromDoc(doc));
 	}
 
+	public Mono<Void> atualizarVigia(String idVigia, String idCliente) {
+		var docIdCliente = new Document("_id", idCliente);
+
+		var adicionarVigia = new Document("$push", new Document("vigias", idVigia));
+		return Mono.from(collection.updateOne(docIdCliente, adicionarVigia)).then();
+	}
+
 }

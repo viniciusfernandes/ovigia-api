@@ -1,5 +1,7 @@
 package br.com.ovigia.repository.parser;
 
+import java.util.ArrayList;
+
 import org.bson.Document;
 
 import br.com.ovigia.model.Cliente;
@@ -14,6 +16,21 @@ public class ClienteParser {
 		doc.append("nome", cliente.getNome());
 		doc.append("email", cliente.getEmail());
 		doc.append("telefone", cliente.getTelefone());
+
+		var localizacao = cliente.getLocalizacao();
+		if (localizacao != null) {
+			var docLocalizacao = new Document("latitude", localizacao.getLatitude());
+			docLocalizacao.append("longitude", localizacao.getLongitude());
+			doc.append("localicazao", docLocalizacao);
+		}
+		
+		if (cliente.hasVigias()) {
+			var idVigias = new ArrayList<String>();
+			cliente.getVigias().forEach(id -> idVigias.add(id));
+
+			doc.append("vigias", idVigias);
+		}
+
 		return doc;
 	}
 
