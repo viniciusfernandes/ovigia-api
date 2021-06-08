@@ -40,30 +40,28 @@ public class CalcularFrequenciaRondasRule implements BusinessRule<CalculoFrequen
 		if (localizacoesVigia == null || localizacoesVigia.isEmpty()) {
 			return 0;
 		}
+
+		// Ordenando a lista por horario de inclusao para poder determinar a data
+		// de inicio de ronda em frente a propriedade do cliente
+		localizacoesVigia.sort((loc1, loc2) -> loc1.getHora().compareTo(loc2.getHora()));
+
 		int totalRondas = 0;
 		Date dataInicio = null;
 		boolean isDistanciaOK = false;
-		boolean encontrou = false;
 		// AQUI ESTAMOS CONSIDERANDO QUE AS ROTAS ESTAO ORDENADAS PELA DATA E HORA DE
 		// INCLUSAO
 		for (var locVigia : localizacoesVigia) {
 			isDistanciaOK = localizacaoCliente.distanciaOf(locVigia) <= distanciaMinima;
-			if (isDistanciaOK && dataInicio == null) {
-				dataInicio = locVigia.getData();
-				encontrou = true;
+			if (isDistanciaOK && (dataInicio == null || isDataForaIntervalo(dataInicio, locVigia.getHora()))) {
+				dataInicio = locVigia.getHora();
 				totalRondas++;
-			} else if (isDistanciaOK && isDataDentroIntervalo(dataInicio, locVigia.getHora())) {
-				dataInicio = locVigia.getData();
-				totalRondas++;
-			} else if (encontrou) {
-				return totalRondas;
 			}
 		}
-		return 0;
+		return totalRondas;
 	}
 
-	private boolean isDataDentroIntervalo(Date dataAntes, Date dataDepois) {
-		return Math.abs(dataAntes.getTime() - dataDepois.getTime()) <= tolerancia;
+	private boolean isDataForaIntervalo(Date dataAntes, Date dataDepois) {
+		return Math.abs(dataAntes.getTime() - dataDepois.getTime()) >= tolerancia;
 	}
 
 	private Mono<List<FrequenciaRonda>> processarRotasPorId(List<String> idsVigias, Date data,
