@@ -8,10 +8,10 @@ import br.com.ovigia.model.Cliente;
 import br.com.ovigia.repository.ClienteRepository;
 import reactor.core.publisher.Mono;
 
-public class AtualizarClienteRotaRule implements BusinessRule<Cliente, Void> {
+public class AtualizarClienteLocalizacaoRule implements BusinessRule<Cliente, Void> {
 	private ClienteRepository repository;
 
-	public AtualizarClienteRotaRule(ClienteRepository repository) {
+	public AtualizarClienteLocalizacaoRule(ClienteRepository repository) {
 		this.repository = repository;
 	}
 

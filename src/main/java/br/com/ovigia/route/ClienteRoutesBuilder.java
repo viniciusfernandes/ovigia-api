@@ -6,7 +6,7 @@ import static org.springframework.web.reactive.function.server.RequestPredicates
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
 import br.com.ovigia.businessrule.Response;
-import br.com.ovigia.businessrule.cliente.AtualizarClienteRotaRule;
+import br.com.ovigia.businessrule.cliente.AtualizarClienteLocalizacaoRule;
 import br.com.ovigia.businessrule.cliente.CalcularFrequenciaRondasRule;
 import br.com.ovigia.businessrule.cliente.CalculoFrequencia;
 import br.com.ovigia.businessrule.cliente.CriarClienteRule;
@@ -46,7 +46,7 @@ public class ClienteRoutesBuilder extends RoutesBuilder {
 				cliente.setId(req.pathVariable("idCliente"));
 				cliente.setLocalizacao(localizacao);
 				return cliente;
-			}).flatMap(cliente -> new AtualizarClienteRotaRule(clienteRepository).apply(cliente));
+			}).flatMap(cliente -> new AtualizarClienteLocalizacaoRule(clienteRepository).apply(cliente));
 
 			return toBody(response);
 		}));

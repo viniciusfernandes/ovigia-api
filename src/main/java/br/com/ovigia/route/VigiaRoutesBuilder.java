@@ -6,9 +6,11 @@ import static org.springframework.web.reactive.function.server.RequestPredicates
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
 import br.com.ovigia.businessrule.vigia.AtualizarVigiaClienteRule;
+import br.com.ovigia.businessrule.vigia.AtualizarVigiaLocalizacaoRule;
 import br.com.ovigia.businessrule.vigia.CriarVigiaRule;
 import br.com.ovigia.businessrule.vigia.ObterVigiaRule;
 import br.com.ovigia.model.Cliente;
+import br.com.ovigia.model.Localizacao;
 import br.com.ovigia.model.Vigia;
 import br.com.ovigia.repository.ClienteRepository;
 import br.com.ovigia.repository.VigiaRepository;
@@ -34,6 +36,17 @@ public class VigiaRoutesBuilder extends RoutesBuilder {
 			});
 
 			return toBody(mAtualizar);
+		}));
+
+		add(route(PATCH("ovigia/vigias/{idVigia}/localizacao"), req -> {
+			var response = req.bodyToMono(Localizacao.class).map(localizacao -> {
+				var vigia = new Vigia();
+				vigia.setId(req.pathVariable("idVigia"));
+				vigia.setLocalizacao(localizacao);
+				return vigia;
+			}).flatMap(vigia -> new AtualizarVigiaLocalizacaoRule(vigiaRepository).apply(vigia));
+
+			return toBody(response);
 		}));
 
 	}

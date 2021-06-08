@@ -9,7 +9,9 @@ public class Vigia {
 	private String nome;
 	private String telefone;
 	private String email;
-	
+
+	private Localizacao localizacao;
+
 	@JsonIgnore
 	private List<Cliente> clientes;
 
@@ -59,6 +61,14 @@ public class Vigia {
 
 	public void setClientes(List<Cliente> clientes) {
 		this.clientes = clientes;
+	}
+
+	public Localizacao getLocalizacao() {
+		return localizacao;
+	}
+
+	public void setLocalizacao(Localizacao localizacao) {
+		this.localizacao = localizacao;
 	}
 
 }

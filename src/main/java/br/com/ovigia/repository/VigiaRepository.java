@@ -8,6 +8,7 @@ import com.mongodb.reactivestreams.client.MongoCollection;
 import com.mongodb.reactivestreams.client.MongoDatabase;
 
 import br.com.ovigia.model.Cliente;
+import br.com.ovigia.model.Localizacao;
 import br.com.ovigia.model.Vigia;
 import br.com.ovigia.repository.parser.ClienteParser;
 import reactor.core.publisher.Mono;
@@ -43,5 +44,11 @@ public class VigiaRepository {
 
 		var adicionarCliente = new Document("$push", new Document("clientes", docCliente));
 		return Mono.from(collection.updateOne(docId, adicionarCliente)).then();
+	}
+
+	public Mono<Void> atualizarLocalizacaoPorId(String idVigia, Localizacao localizacao) {
+		var docLocalizacao = new Document("localizacao", ClienteParser.toDoc(localizacao));
+		var update = new Document("$set", docLocalizacao);
+		return Mono.from(collection.updateOne(new Document("_id", idVigia), update)).then();
 	}
 }
