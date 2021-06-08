@@ -1,7 +1,6 @@
 package br.com.ovigia.repository.parser;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.bson.Document;
 
@@ -21,8 +20,7 @@ public class ClienteParser {
 
 		var localizacao = cliente.getLocalizacao();
 		if (localizacao != null) {
-			var docLocalizacao = new Document("latitude", localizacao.getLatitude());
-			docLocalizacao.append("longitude", localizacao.getLongitude());
+			var docLocalizacao = toDoc(localizacao);
 			doc.append("localizacao", docLocalizacao);
 		}
 
@@ -34,6 +32,15 @@ public class ClienteParser {
 		}
 
 		return doc;
+	}
+
+	public static Document toDoc(Localizacao localizacao) {
+
+		var docLocalizacao = new Document("latitude", localizacao.getLatitude());
+		docLocalizacao.append("longitude", localizacao.getLongitude());
+		docLocalizacao.append("data", localizacao.getData());
+
+		return docLocalizacao;
 	}
 
 	public static Cliente fromDoc(Document doc) {

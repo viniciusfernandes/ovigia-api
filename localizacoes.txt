@@ -1,0 +1,5 @@
+#comeco rua avare
+{"latitude": -23.68182, "longitude": -46.62335 }
+
+# fim joao ribeiro a 141m da rua avare
+{"latitude":-23.68201, "longitude": -46.62200}

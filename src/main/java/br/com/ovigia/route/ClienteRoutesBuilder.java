@@ -1,15 +1,19 @@
 package br.com.ovigia.route;
 
-import static org.springframework.web.reactive.function.server.RequestPredicates.*;
+import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
+import static org.springframework.web.reactive.function.server.RequestPredicates.PATCH;
+import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
 import br.com.ovigia.businessrule.Response;
+import br.com.ovigia.businessrule.cliente.AtualizarClienteRotaRule;
 import br.com.ovigia.businessrule.cliente.CalcularFrequenciaRondasRule;
 import br.com.ovigia.businessrule.cliente.CalculoFrequencia;
 import br.com.ovigia.businessrule.cliente.CriarClienteRule;
 import br.com.ovigia.businessrule.exception.DataRotaMalFormatadaException;
 import br.com.ovigia.businessrule.util.DataUtil;
 import br.com.ovigia.model.Cliente;
+import br.com.ovigia.model.Localizacao;
 import br.com.ovigia.repository.ClienteRepository;
 import br.com.ovigia.repository.RotaRepository;
 import reactor.core.publisher.Mono;
@@ -36,6 +40,16 @@ public class ClienteRoutesBuilder extends RoutesBuilder {
 			}
 		}));
 
+		add(route(PATCH("ovigia/clientes/{idCliente}/localizacao"), req -> {
+			var response = req.bodyToMono(Localizacao.class).map(localizacao -> {
+				var cliente = new Cliente();
+				cliente.setId(req.pathVariable("idCliente"));
+				cliente.setLocalizacao(localizacao);
+				return cliente;
+			}).flatMap(cliente -> new AtualizarClienteRotaRule(clienteRepository).apply(cliente));
+
+			return toBody(response);
+		}));
 	}
 
 }

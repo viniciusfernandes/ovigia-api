@@ -14,7 +14,7 @@ import reactor.core.publisher.Mono;
 
 public class CalcularFrequenciaRondasRule implements BusinessRule<CalculoFrequencia, List<FrequenciaRonda>> {
 	// Distancia em metros
-	private final double distanciaMinima = 0.015d;
+	private final double distanciaMinima = 0.02d;
 	private ClienteRepository clienteRepository;
 	private RotaRepository rotaRepository;
 
@@ -64,4 +64,3 @@ public class CalcularFrequenciaRondasRule implements BusinessRule<CalculoFrequen
 
 	}
 }
-
