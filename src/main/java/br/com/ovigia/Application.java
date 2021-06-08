@@ -76,7 +76,7 @@ public class Application {
 	@Bean
 	public RouterFunction<ServerResponse> rotas() {
 		return new VigiaRoutesBuilder(vigiaRepository(), clienteRepository()).build()
-				.and(new ClienteRoutesBuilder(clienteRepository()).build())
+				.and(new ClienteRoutesBuilder(clienteRepository(), rotaRepository()).build())
 				.and(new RotaRoutesBuilder(rotaRepository()).build());
 	}
 

@@ -42,7 +42,11 @@ public class RotaRepository {
 	}
 
 	public Mono<Rota> obterRotaPorId(IdRota id) {
-		return Mono.from(collection.find(gerarIdRota(id.getIdVigia(), id.getData()))).map(docRota -> {
+		return obterRotaPorId(id.getIdVigia(), id.getData());
+	}
+
+	public Mono<Rota> obterRotaPorId(String idVigia, Date data) {
+		return Mono.from(collection.find(gerarIdRota(idVigia, data))).map(docRota -> {
 			var docId = docRota.get("_id", Document.class);
 
 			var idRota = new IdRota();

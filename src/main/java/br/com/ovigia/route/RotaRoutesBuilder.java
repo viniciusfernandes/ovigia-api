@@ -23,7 +23,11 @@ public class RotaRoutesBuilder extends RoutesBuilder {
 
 	public RotaRoutesBuilder(RotaRepository repository) {
 		add(route(POST("/ovigia/vigias/{idVigia}/localizacoes"), req -> {
-			return toBody(handleRequest(req, Localizacao.class, new CriarLocalizacaoRule(repository)));
+			var response = req.bodyToMono(Localizacao.class).map(localizacao -> {
+				localizacao.setIdVigia(req.pathVariable("idVigia"));
+				return localizacao;
+			}).flatMap(localizacao -> new CriarLocalizacaoRule(repository).apply(localizacao));
+			return toBody(response);
 		}));
 
 		add(route(POST("/ovigia/vigias/{idVigia}/rotas"), req -> {

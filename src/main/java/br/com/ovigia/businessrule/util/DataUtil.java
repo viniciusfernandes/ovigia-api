@@ -11,7 +11,7 @@ import org.springframework.dao.DataAccessResourceFailureException;
 import br.com.ovigia.businessrule.exception.DataRotaMalFormatadaException;
 
 public class DataUtil {
-	private static String dataRotaPadrao = "dd-MM-yyyy";
+	public static String dataRotaPadrao = "dd-MM-yyyy";
 	private static DateFormat format = new SimpleDateFormat(dataRotaPadrao);
 
 	public static Date gerarData(Date data) {

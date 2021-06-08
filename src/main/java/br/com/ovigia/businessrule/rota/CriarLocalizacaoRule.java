@@ -22,9 +22,6 @@ public class CriarLocalizacaoRule implements BusinessRule<Localizacao, Void> {
 	public Mono<Response<Void>> apply(Localizacao localizacao) {
 		var dataAtual = new Date();
 		localizacao.setHora(dataAtual);
-
-		localizacao.setIdVigia("1234");
-
 		return repository.criarLocalizacao(localizacao.getIdVigia(), gerarData(dataAtual), localizacao)
 				.map(id -> Response.ok(id));
 	}

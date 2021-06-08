@@ -15,6 +15,6 @@ public class CriarClienteRule implements BusinessRule<Cliente, String> {
 
 	@Override
 	public Mono<Response<String>> apply(Cliente cliente) {
-		return repository.criar(cliente).map(id ->  Response.ok(id));
+		return repository.criar(cliente).map(id -> Response.ok(id));
 	}
 }
