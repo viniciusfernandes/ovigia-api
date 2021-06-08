@@ -15,6 +15,10 @@ import reactor.core.publisher.Mono;
 public class CalcularFrequenciaRondasRule implements BusinessRule<CalculoFrequencia, List<FrequenciaRonda>> {
 	// Distancia em metros
 	private final double distanciaMinima = 0.02d;
+	// INTERVALO DE TOLERANCIA EM MILISEGUNDOS PARA TERMINAR A FREQUENCIA DA RONDA E
+	// ELIMINAR O CENARIO EM QUE O VIGIA ESTA PARADO EM FRENTE A PROPRIEDADE DO
+	// CLIENTE EM 5 MINUTOS
+	private final long tolerancia = 5 * 60 * 1000;
 	private ClienteRepository clienteRepository;
 	private RotaRepository rotaRepository;
 
@@ -36,13 +40,30 @@ public class CalcularFrequenciaRondasRule implements BusinessRule<CalculoFrequen
 		if (localizacoesVigia == null || localizacoesVigia.isEmpty()) {
 			return 0;
 		}
-		int total = 0;
+		int totalRondas = 0;
+		Date dataInicio = null;
+		boolean isDistanciaOK = false;
+		boolean encontrou = false;
+		// AQUI ESTAMOS CONSIDERANDO QUE AS ROTAS ESTAO ORDENADAS PELA DATA E HORA DE
+		// INCLUSAO
 		for (var locVigia : localizacoesVigia) {
-			if (localizacaoCliente.distanciaOf(locVigia) <= distanciaMinima) {
-				total++;
+			isDistanciaOK = localizacaoCliente.distanciaOf(locVigia) <= distanciaMinima;
+			if (isDistanciaOK && dataInicio == null) {
+				dataInicio = locVigia.getData();
+				encontrou = true;
+				totalRondas++;
+			} else if (isDistanciaOK && isDataDentroIntervalo(dataInicio, locVigia.getHora())) {
+				dataInicio = locVigia.getData();
+				totalRondas++;
+			} else if (encontrou) {
+				return totalRondas;
 			}
 		}
-		return total;
+		return 0;
+	}
+
+	private boolean isDataDentroIntervalo(Date dataAntes, Date dataDepois) {
+		return Math.abs(dataAntes.getTime() - dataDepois.getTime()) <= tolerancia;
 	}
 
 	private Mono<List<FrequenciaRonda>> processarRotasPorId(List<String> idsVigias, Date data,
