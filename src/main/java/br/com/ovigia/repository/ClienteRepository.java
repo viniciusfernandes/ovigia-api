@@ -11,6 +11,7 @@ import com.mongodb.reactivestreams.client.MongoDatabase;
 import br.com.ovigia.model.Cliente;
 import br.com.ovigia.model.Localizacao;
 import br.com.ovigia.repository.parser.ClienteParser;
+import br.com.ovigia.repository.parser.LocalizacaoParser;
 import reactor.core.publisher.Mono;
 
 public class ClienteRepository {
@@ -56,7 +57,7 @@ public class ClienteRepository {
 	}
 
 	public Mono<Void> atualizarLocalizacaoPorId(String idCliente, Localizacao localizacao) {
-		var docLocalizacao = new Document("localizacao", ClienteParser.toDoc(localizacao));
+		var docLocalizacao = new Document("localizacao", LocalizacaoParser.toDoc(localizacao));
 		var update = new Document("$set", docLocalizacao);
 		return Mono.from(collection.updateOne(new Document("_id", idCliente), update)).then();
 	}

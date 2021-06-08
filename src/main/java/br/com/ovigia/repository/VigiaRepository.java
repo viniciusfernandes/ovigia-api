@@ -11,6 +11,8 @@ import br.com.ovigia.model.Cliente;
 import br.com.ovigia.model.Localizacao;
 import br.com.ovigia.model.Vigia;
 import br.com.ovigia.repository.parser.ClienteParser;
+import br.com.ovigia.repository.parser.LocalizacaoParser;
+import br.com.ovigia.repository.parser.VigiaParser;
 import reactor.core.publisher.Mono;
 
 public class VigiaRepository {
@@ -28,14 +30,9 @@ public class VigiaRepository {
 		return Mono.from(collection.insertOne(docvigia)).map(doc -> id);
 	}
 
-	public Mono<Vigia> buscarPorId(String idVigia) {
+	public Mono<Vigia> obterPorId(String idVigia) {
 		var mvigia = collection.find(new Document("_id", idVigia));
-		return Mono.from(mvigia).map(doc -> {
-			var vigia = new Vigia(doc.getString("_id"), doc.getString("nome"));
-			vigia.setEmail(doc.getString("email"));
-			vigia.setTelefone(doc.getString("telefone"));
-			return vigia;
-		});
+		return Mono.from(mvigia).map(doc -> VigiaParser.fromDoc(doc));
 	}
 
 	public Mono<Void> atualizarCliente(String idVigia, Cliente cliente) {
@@ -47,7 +44,7 @@ public class VigiaRepository {
 	}
 
 	public Mono<Void> atualizarLocalizacaoPorId(String idVigia, Localizacao localizacao) {
-		var docLocalizacao = new Document("localizacao", ClienteParser.toDoc(localizacao));
+		var docLocalizacao = new Document("localizacao", LocalizacaoParser.toDoc(localizacao));
 		var update = new Document("$set", docLocalizacao);
 		return Mono.from(collection.updateOne(new Document("_id", idVigia), update)).then();
 	}
