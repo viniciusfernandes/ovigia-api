@@ -13,6 +13,7 @@ import br.com.ovigia.businessrule.Response;
 import br.com.ovigia.businessrule.rota.CriarLocalizacaoRule;
 import br.com.ovigia.businessrule.rota.CriarRotaRule;
 import br.com.ovigia.businessrule.rota.ObterRotaRule;
+import br.com.ovigia.model.Cliente;
 import br.com.ovigia.model.IdRota;
 import br.com.ovigia.model.Localizacao;
 import br.com.ovigia.repository.RotaRepository;
@@ -31,6 +32,9 @@ public class RotaRoutesBuilder extends RoutesBuilder {
 		}));
 
 		add(route(POST("/ovigia/vigias/{idVigia}/rotas"), req -> {
+			req.formData().subscribe(x -> x.forEach((k, v) -> System.out.println(k + " - " + v)));
+			req.bodyToMono(Cliente.class).subscribe(x -> System.out.println(x));
+			System.out.println(req.headers().asHttpHeaders());
 			return toBody(handleRequest(req.pathVariable("idVigia"), new CriarRotaRule(repository)));
 		}));
 

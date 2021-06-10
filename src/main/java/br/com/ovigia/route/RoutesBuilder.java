@@ -7,11 +7,15 @@ import static org.springframework.web.reactive.function.server.ServerResponse.un
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.BiFunction;
 
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import org.springframework.web.reactive.function.server.ServerResponse.BodyBuilder;
+
+import com.mongodb.Function;
 
 import br.com.ovigia.businessrule.BusinessRule;
 import br.com.ovigia.businessrule.Response;
@@ -37,6 +41,10 @@ public abstract class RoutesBuilder {
 		return routes;
 	}
 
+	<T> Mono<T> fromFormData(ServerRequest request, Function<Map<String, List<String>>, T> mapping) {
+		return request.formData().map(formData -> mapping.apply(formData));
+	}
+
 	<V> Mono<ServerResponse> toBody(Mono<Response<V>> mResponse) {
 		return mResponse.flatMap(response -> {
 
@@ -55,6 +63,7 @@ public abstract class RoutesBuilder {
 
 			return bodyBuilder.bodyValue(response);
 		});
+
 	}
 
 	<T, V> Mono<Response<V>> handleRequest(ServerRequest serverRequest, Class<T> requestClazz,
@@ -65,4 +74,5 @@ public abstract class RoutesBuilder {
 	<T, V> Mono<Response<V>> handleRequest(T t, BusinessRule<T, V> rule) {
 		return rule.apply(t);
 	}
+
 }
