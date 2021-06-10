@@ -12,7 +12,7 @@ import br.com.ovigia.model.Rota;
 import br.com.ovigia.repository.RotaRepository;
 import reactor.core.publisher.Mono;
 
-public class CriarRotaRule implements BusinessRule<String, Void> {
+public class CriarRotaRule implements BusinessRule<CriarRotaRequest, Void> {
 
 	private RotaRepository repository;
 
@@ -21,11 +21,11 @@ public class CriarRotaRule implements BusinessRule<String, Void> {
 	}
 
 	@Override
-	public Mono<Response<Void>> apply(String idVigia) {
+	public Mono<Response<Void>> apply(CriarRotaRequest request) {
 		var rota = new Rota();
 		IdRota id = new IdRota();
 		id.setData(gerarData(new Date()));
-		id.setIdVigia(idVigia);
+		id.setIdVigia(request.getIdVigia());
 		rota.setId(id);
 
 		rota.setLocalizacoes(new ArrayList<>());

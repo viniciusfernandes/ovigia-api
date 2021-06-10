@@ -20,6 +20,7 @@ import br.com.ovigia.repository.ClienteRepository;
 import br.com.ovigia.repository.RotaRepository;
 import br.com.ovigia.repository.VigiaRepository;
 import br.com.ovigia.route.ClienteRouter;
+import br.com.ovigia.route.RotaRouter;
 import br.com.ovigia.route.RoutesRegister;
 import br.com.ovigia.route.VigiaRouter;
 
@@ -73,17 +74,13 @@ public class Application {
 		return new CriarVigiaRule(vigiaRepository());
 	}
 
-	/*
-	 * @Bean public RouterFunction<ServerResponse> rotas() { return new
-	 * VigiaRoutesBuilder(vigiaRepository(), clienteRepository()).build() .and(new
-	 * ClienteRoutesBuilder(clienteRepository(), rotaRepository()).build()) .and(new
-	 * RotaRoutesBuilder(rotaRepository()).build()); }
-	 */
 	@Bean
 	public RouterFunction<ServerResponse> rotas() {
 		var register = RoutesRegister.getInstance();
-		new VigiaRouter(vigiaRepository(), clienteRepository()).registry(register);
-		new ClienteRouter(clienteRepository(), rotaRepository()).registry(register);
+		register.registry(new VigiaRouter(vigiaRepository(), clienteRepository()));
+		register.registry(new VigiaRouter(vigiaRepository(), clienteRepository()));
+		register.registry(new ClienteRouter(clienteRepository(), rotaRepository()));
+		register.registry(new RotaRouter(rotaRepository()));
 		return register.build();
 	}
 

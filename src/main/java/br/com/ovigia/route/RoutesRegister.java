@@ -51,7 +51,15 @@ public class RoutesRegister {
 		return routes;
 	}
 
+	public void registry(Router router) {
+		router.getRoutes().forEach(route -> registry(route));
+
+	}
+
 	public <T, V> void registry(Route<T, V> route) {
+		if (route == null) {
+			System.out.println("xxx");
+		}
 		System.out.println(route);
 		var verboHTTP = definirVerboHTTP(route.getTipoRequest(), route.getUrl());
 
