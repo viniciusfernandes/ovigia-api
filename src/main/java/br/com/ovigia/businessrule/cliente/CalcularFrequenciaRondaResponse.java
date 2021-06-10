@@ -1,6 +1,6 @@
 package br.com.ovigia.businessrule.cliente;
 
-public class FrequenciaRonda {
+public class CalcularFrequenciaRondaResponse {
 	private String idVigia;
 	private String nomeVigia;
 	private int totalRonda;

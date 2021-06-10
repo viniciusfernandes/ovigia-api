@@ -25,21 +25,52 @@ import org.springframework.web.reactive.function.server.ServerResponse.BodyBuild
 import br.com.ovigia.businessrule.Response;
 import reactor.core.publisher.Mono;
 
-public abstract class NovoRoutesBuilder {
-	private List<RouterFunction<ServerResponse>> routerFunctions = new ArrayList<>();
+public class RoutesRegister {
+	private static List<RouterFunction<ServerResponse>> routerFunctions = new ArrayList<>();
+	private static final RoutesRegister register;
+	static {
+		register = new RoutesRegister();
+	}
 
-	private <T, V> void buildRoute(RequestHandler<T, V> handler) {
-		RequestPredicate verboHTTP = definirVerboHTTP(handler.tipoRequest, handler.url);
+	private RoutesRegister() {
+	}
 
-		var route = route(verboHTTP, request -> {
-			return fromBody(request, handler.bodyClazz).flatMap(entidade -> {
-				entidade = fromPath(request, handler.fromPath, entidade);
-				return toResponse(handler.rule.apply(entidade));
+	public static RoutesRegister getInstance() {
+		return register;
+	}
 
-			});
+	public RouterFunction<ServerResponse> build() {
+		RouterFunction<ServerResponse> routes = null;
+		for (var route : routerFunctions) {
+			if (routes == null) {
+				routes = route;
+				continue;
+			}
+			routes = routes.and(route);
+		}
+		return routes;
+	}
 
+	public <T, V> void registry(Route<T, V> route) {
+		System.out.println(route);
+		var verboHTTP = definirVerboHTTP(route.getTipoRequest(), route.getUrl());
+
+		var routerFunction = route(verboHTTP, request -> {
+			if (route.isBodyEnviado() && route.hasPathVariable()) {
+				return fromBody(request, route.getRequestClazz()).flatMap(entidade -> {
+					extractFromPath(request, route.getExtractFromPath(), entidade);
+					return toResponse(route.getRule().apply(entidade));
+
+				});
+			} else if (!route.isBodyEnviado() && route.hasPathVariable()) {
+				T entidade = route.newInstanceRequest();
+				extractFromPath(request, route.getExtractFromPath(), entidade);
+				return toResponse(route.getRule().apply(entidade));
+			}
+
+			return null;
 		});
-		routerFunctions.add(route);
+		routerFunctions.add(routerFunction);
 	}
 
 	private RequestPredicate definirVerboHTTP(TipoRequest tipoRequest, String url) {
@@ -58,28 +89,17 @@ public abstract class NovoRoutesBuilder {
 		return verboHTTP;
 	}
 
-	private <T> Mono<T> fromBody(ServerRequest request, Class<T> bodyClazz) {
+	private static <T> Mono<T> fromBody(ServerRequest request, Class<T> bodyClazz) {
 		return request.bodyToMono(bodyClazz);
 	}
 
-	private <T> T fromPath(ServerRequest request, BiFunction<Map<String, String>, T, T> fillFromPAth, T entity) {
+	private static <T> T extractFromPath(ServerRequest request, BiFunction<Map<String, String>, T, T> fillFromPAth,
+			T entity) {
 		if (fillFromPAth == null) {
 			return entity;
 		}
 		var pathVariables = request.pathVariables();
 		return fillFromPAth.apply(pathVariables, entity);
-	}
-
-	public RouterFunction<ServerResponse> build() {
-		RouterFunction<ServerResponse> routes = null;
-		for (var route : routerFunctions) {
-			if (routes == null) {
-				routes = route;
-				continue;
-			}
-			routes = routes.and(route);
-		}
-		return routes;
 	}
 
 	private <V> Mono<ServerResponse> toResponse(Mono<Response<V>> mResponse) {

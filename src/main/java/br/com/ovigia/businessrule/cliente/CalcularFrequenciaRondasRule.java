@@ -12,7 +12,7 @@ import br.com.ovigia.repository.RotaRepository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public class CalcularFrequenciaRondasRule implements BusinessRule<CalculoFrequencia, List<FrequenciaRonda>> {
+public class CalcularFrequenciaRondasRule implements BusinessRule<CalcularFrequenciaRondaRequest, List<CalcularFrequenciaRondaResponse>> {
 	// Distancia em metros
 	private final double distanciaMinima = 0.02d;
 	// INTERVALO DE TOLERANCIA EM MILISEGUNDOS PARA TERMINAR A FREQUENCIA DA RONDA E
@@ -28,7 +28,7 @@ public class CalcularFrequenciaRondasRule implements BusinessRule<CalculoFrequen
 	}
 
 	@Override
-	public Mono<Response<List<FrequenciaRonda>>> apply(CalculoFrequencia calculoFrequencia) {
+	public Mono<Response<List<CalcularFrequenciaRondaResponse>>> apply(CalcularFrequenciaRondaRequest calculoFrequencia) {
 		var data = DataUtil.gerarData(calculoFrequencia.getDataRonda());
 
 		return clienteRepository.obterVigiasELocalizacao(calculoFrequencia.getIdCliente())
@@ -64,7 +64,7 @@ public class CalcularFrequenciaRondasRule implements BusinessRule<CalculoFrequen
 		return Math.abs(dataAntes.getTime() - dataDepois.getTime()) >= tolerancia;
 	}
 
-	private Mono<List<FrequenciaRonda>> processarRotasPorId(List<String> idsVigias, Date data,
+	private Mono<List<CalcularFrequenciaRondaResponse>> processarRotasPorId(List<String> idsVigias, Date data,
 			Localizacao localizacao) {
 		return Flux.fromIterable(idsVigias).flatMap(idVigia -> {
 			return calcularFrequenciaRonda(idVigia, data, localizacao);
@@ -72,9 +72,9 @@ public class CalcularFrequenciaRondasRule implements BusinessRule<CalculoFrequen
 
 	}
 
-	private Mono<FrequenciaRonda> calcularFrequenciaRonda(String idVigia, Date data, Localizacao localizacao) {
+	private Mono<CalcularFrequenciaRondaResponse> calcularFrequenciaRonda(String idVigia, Date data, Localizacao localizacao) {
 		return rotaRepository.obterRotaPorId(idVigia, data).map(rota -> {
-			var frequenciaRonda = new FrequenciaRonda();
+			var frequenciaRonda = new CalcularFrequenciaRondaResponse();
 			var totalRondas = calcularNumeroRodas(localizacao, rota.getLocalizacoes());
 			frequenciaRonda.setIdVigia(rota.getId().getIdVigia());
 			frequenciaRonda.setTotalRonda(totalRondas);

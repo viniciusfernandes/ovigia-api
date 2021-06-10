@@ -2,7 +2,7 @@ package br.com.ovigia.businessrule.cliente;
 
 import java.util.Date;
 
-public class CalculoFrequencia {
+public class CalcularFrequenciaRondaRequest {
 	private String idCliente;
 	private Date dataRonda;
 

@@ -4,11 +4,11 @@ import java.util.Date;
 
 import br.com.ovigia.businessrule.BusinessRule;
 import br.com.ovigia.businessrule.Response;
-import br.com.ovigia.model.Vigia;
+import br.com.ovigia.model.Localizacao;
 import br.com.ovigia.repository.VigiaRepository;
 import reactor.core.publisher.Mono;
 
-public class AtualizarVigiaLocalizacaoRule implements BusinessRule<Vigia, Void> {
+public class AtualizarVigiaLocalizacaoRule implements BusinessRule<AtualizarVigiaLocalizacaoRequest, Void> {
 	private VigiaRepository repository;
 
 	public AtualizarVigiaLocalizacaoRule(VigiaRepository repository) {
@@ -16,9 +16,11 @@ public class AtualizarVigiaLocalizacaoRule implements BusinessRule<Vigia, Void> 
 	}
 
 	@Override
-	public Mono<Response<Void>> apply(Vigia vigia) {
-		var localizacao = vigia.getLocalizacao();
+	public Mono<Response<Void>> apply(AtualizarVigiaLocalizacaoRequest request) {
+		var localizacao = new Localizacao();
 		localizacao.setData(new Date());
-		return repository.atualizarLocalizacaoPorId(vigia.getId(), localizacao).map(id -> Response.nonResult());
+		localizacao.setLatitude(request.getLatitude());
+		localizacao.setLongitude(request.getLongitude());
+		return repository.atualizarLocalizacaoPorId(request.getIdVigia(), localizacao).map(id -> Response.nonResult());
 	}
 }

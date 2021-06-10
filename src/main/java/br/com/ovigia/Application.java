@@ -19,9 +19,9 @@ import br.com.ovigia.businessrule.vigia.CriarVigiaRule;
 import br.com.ovigia.repository.ClienteRepository;
 import br.com.ovigia.repository.RotaRepository;
 import br.com.ovigia.repository.VigiaRepository;
-import br.com.ovigia.route.ClienteRoutesBuilder;
-import br.com.ovigia.route.RotaRoutesBuilder;
-import br.com.ovigia.route.VigiaRoutesBuilder;
+import br.com.ovigia.route.ClienteRouter;
+import br.com.ovigia.route.RoutesRegister;
+import br.com.ovigia.route.VigiaRouter;
 
 @SpringBootConfiguration
 @Configuration
@@ -73,11 +73,18 @@ public class Application {
 		return new CriarVigiaRule(vigiaRepository());
 	}
 
+	/*
+	 * @Bean public RouterFunction<ServerResponse> rotas() { return new
+	 * VigiaRoutesBuilder(vigiaRepository(), clienteRepository()).build() .and(new
+	 * ClienteRoutesBuilder(clienteRepository(), rotaRepository()).build()) .and(new
+	 * RotaRoutesBuilder(rotaRepository()).build()); }
+	 */
 	@Bean
 	public RouterFunction<ServerResponse> rotas() {
-		return new VigiaRoutesBuilder(vigiaRepository(), clienteRepository()).build()
-				.and(new ClienteRoutesBuilder(clienteRepository(), rotaRepository()).build())
-				.and(new RotaRoutesBuilder(rotaRepository()).build());
+		var register = RoutesRegister.getInstance();
+		new VigiaRouter(vigiaRepository(), clienteRepository()).registry(register);
+		new ClienteRouter(clienteRepository(), rotaRepository()).registry(register);
+		return register.build();
 	}
 
 }

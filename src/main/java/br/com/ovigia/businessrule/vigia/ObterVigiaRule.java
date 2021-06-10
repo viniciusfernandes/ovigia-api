@@ -6,7 +6,7 @@ import br.com.ovigia.model.Vigia;
 import br.com.ovigia.repository.VigiaRepository;
 import reactor.core.publisher.Mono;
 
-public class ObterVigiaRule implements BusinessRule<String, Vigia> {
+public class ObterVigiaRule implements BusinessRule<ObterVigiaRequest, Vigia> {
 
 	private VigiaRepository repository;
 
@@ -15,7 +15,7 @@ public class ObterVigiaRule implements BusinessRule<String, Vigia> {
 	}
 
 	@Override
-	public Mono<Response<Vigia>> apply(String idVigia) {
-		return repository.obterPorId(idVigia).map(vigia -> Response.ok(vigia));
+	public Mono<Response<Vigia>> apply(ObterVigiaRequest request) {
+		return repository.obterPorId(request.getIdVigia()).map(vigia -> Response.ok(vigia));
 	}
 }
