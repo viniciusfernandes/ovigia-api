@@ -8,7 +8,7 @@ import br.com.ovigia.businessrule.Response;
 import br.com.ovigia.businessrule.util.DataUtil;
 import br.com.ovigia.model.Localizacao;
 import br.com.ovigia.repository.ClienteRepository;
-import br.com.ovigia.repository.RotaRepository;
+import br.com.ovigia.repository.RondaRepository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -20,9 +20,9 @@ public class CalcularFrequenciaRondasRule implements BusinessRule<CalcularFreque
 	// CLIENTE EM 5 MINUTOS
 	private final long tolerancia = 5 * 60 * 1000;
 	private ClienteRepository clienteRepository;
-	private RotaRepository rotaRepository;
+	private RondaRepository rotaRepository;
 
-	public CalcularFrequenciaRondasRule(ClienteRepository clienteRepository, RotaRepository rotaRepository) {
+	public CalcularFrequenciaRondasRule(ClienteRepository clienteRepository, RondaRepository rotaRepository) {
 		this.clienteRepository = clienteRepository;
 		this.rotaRepository = rotaRepository;
 	}
@@ -73,7 +73,7 @@ public class CalcularFrequenciaRondasRule implements BusinessRule<CalcularFreque
 	}
 
 	private Mono<CalcularFrequenciaRondaResponse> calcularFrequenciaRonda(String idVigia, Date data, Localizacao localizacao) {
-		return rotaRepository.obterRotaPorId(idVigia, data).map(rota -> {
+		return rotaRepository.obterRondaPorId(idVigia, data).map(rota -> {
 			var frequenciaRonda = new CalcularFrequenciaRondaResponse();
 			var totalRondas = calcularNumeroRodas(localizacao, rota.getLocalizacoes());
 			frequenciaRonda.setIdVigia(rota.getId().getIdVigia());

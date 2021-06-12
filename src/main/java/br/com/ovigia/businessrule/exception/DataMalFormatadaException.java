@@ -1,6 +1,6 @@
 package br.com.ovigia.businessrule.exception;
 
-public class DataRotaMalFormatadaException extends Exception{
+public class DataMalFormatadaException extends Exception {
 
 	/**
 	 * 

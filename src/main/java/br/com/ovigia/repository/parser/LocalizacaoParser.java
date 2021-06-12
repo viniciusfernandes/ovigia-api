@@ -17,16 +17,22 @@ public class LocalizacaoParser {
 		return docLocalizacao;
 	}
 
-	public static Localizacao fromDoc(Document doc) {
+	public static Localizacao fromNestedDoc(Document doc) {
 
 		var docLoc = doc.get("localizacao", Document.class);
-		Localizacao localizacao = null;
 		if (docLoc != null) {
-			localizacao = new Localizacao();
-			localizacao.setLatitude(docLoc.getDouble("latitude"));
-			localizacao.setLongitude(docLoc.getDouble("longitude"));
-			localizacao.setData(docLoc.getDate("data"));
+			return fromDoc(docLoc);
 		}
+
+		return null;
+	}
+
+	public static Localizacao fromDoc(Document doc) {
+
+		var localizacao = new Localizacao();
+		localizacao.setLatitude(doc.getDouble("latitude"));
+		localizacao.setLongitude(doc.getDouble("longitude"));
+		localizacao.setData(doc.getDate("data"));
 
 		return localizacao;
 	}

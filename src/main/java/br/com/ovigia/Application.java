@@ -17,7 +17,7 @@ import com.mongodb.reactivestreams.client.MongoDatabase;
 
 import br.com.ovigia.businessrule.vigia.CriarVigiaRule;
 import br.com.ovigia.repository.ClienteRepository;
-import br.com.ovigia.repository.RotaRepository;
+import br.com.ovigia.repository.RondaRepository;
 import br.com.ovigia.repository.VigiaRepository;
 import br.com.ovigia.route.ClienteRouter;
 import br.com.ovigia.route.RotaRouter;
@@ -51,7 +51,9 @@ public class Application {
 
 	@Bean
 	public MongoDatabase mongodb() {
-		return MongoClients.create("mongodb://localhost:27017").getDatabase("ovigia");
+		// return
+		// MongoClients.create("mongodb://localhost:27017").getDatabase("ovigia");
+		return MongoClients.create().getDatabase("ovigia");
 	}
 
 	@Bean
@@ -65,8 +67,8 @@ public class Application {
 	}
 
 	@Bean
-	public RotaRepository rotaRepository() {
-		return new RotaRepository(mongodb());
+	public RondaRepository rotaRepository() {
+		return new RondaRepository(mongodb());
 	}
 
 	@Bean

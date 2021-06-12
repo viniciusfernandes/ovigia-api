@@ -8,15 +8,15 @@ import br.com.ovigia.businessrule.cliente.CalcularFrequenciaRondaRequest;
 import br.com.ovigia.businessrule.cliente.CalcularFrequenciaRondaResponse;
 import br.com.ovigia.businessrule.cliente.CalcularFrequenciaRondasRule;
 import br.com.ovigia.businessrule.cliente.CriarClienteRule;
-import br.com.ovigia.businessrule.exception.DataRotaMalFormatadaException;
+import br.com.ovigia.businessrule.exception.DataMalFormatadaException;
 import br.com.ovigia.businessrule.util.DataUtil;
 import br.com.ovigia.model.Cliente;
 import br.com.ovigia.repository.ClienteRepository;
-import br.com.ovigia.repository.RotaRepository;
+import br.com.ovigia.repository.RondaRepository;
 
 public class ClienteRouter extends Router {
 
-	public ClienteRouter(ClienteRepository clienteRepository, RotaRepository rotaRepository) {
+	public ClienteRouter(ClienteRepository clienteRepository, RondaRepository rotaRepository) {
 
 		var criarClienteRoute = Route.<Cliente, String>post();
 		criarClienteRoute.url("/ovigia/clientes").contemBody().requestClass(Cliente.class)
@@ -26,34 +26,27 @@ public class ClienteRouter extends Router {
 		calcularFreqRoute.url("ovigia/clientes/{idCliente}/frequencia-rondas/{data}")
 				.requestClass(CalcularFrequenciaRondaRequest.class)
 				.rule(new CalcularFrequenciaRondasRule(clienteRepository, rotaRepository))
-				.extractFromPath((mapa, calculo) -> {
+				.extractFromPath((mapa, request) -> {
 					try {
-						calculo.setDataRonda(DataUtil.parseToDataRota(mapa.get("data")));
-						calculo.setIdCliente(mapa.get("idCliente"));
-					} catch (DataRotaMalFormatadaException e) {
-						e.printStackTrace();
-						String mensagem = String.format("A data enviada nao esta no padrao %s. Tente novamente.",
-								DataUtil.dataRotaPadrao);
-						// var mResponse = Mono.just(Response.unprocessable(req.pathVariable("data"),
-						// mensagem));
-						// return toBody(mResponse);
+						request.setDataRonda(DataUtil.parseToDataRota(mapa.get("data")));
+						request.setIdCliente(mapa.get("idCliente"));
+					} catch (DataMalFormatadaException e) {
+						throw new IllegalArgumentException(e); 
 					}
-					return calculo;
+					return request;
 				});
 
 		var alterarLocalizacaoRoute = Route.<AtualizarClienteLocalizacaoRequest, Void>patch();
 		alterarLocalizacaoRoute.url("ovigia/clientes/{idCliente}/localizacao").contemBody()
-				.requestClass(AtualizarClienteLocalizacaoRequest.class).extractFromPath((mapa, localizacao) -> {
-					localizacao.idCliente = mapa.get("idCliente");
-					return localizacao;
+				.requestClass(AtualizarClienteLocalizacaoRequest.class).extractFromPath((mapa, request) -> {
+					request.idCliente = mapa.get("idCliente");
+					return request;
 				}).rule(new AtualizarClienteLocalizacaoRule(clienteRepository));
-		
-		
+
 		add(criarClienteRoute);
 		add(calcularFreqRoute);
 		add(alterarLocalizacaoRoute);
 
 	}
 
-	 
 }

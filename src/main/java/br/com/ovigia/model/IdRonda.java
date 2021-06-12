@@ -2,14 +2,14 @@ package br.com.ovigia.model;
 
 import java.util.Date;
 
-public class IdRota {
+public class IdRonda {
 	private String idVigia;
 	private Date data;
 
-	public IdRota() {
+	public IdRonda() {
 	}
 
-	public IdRota(String idVigia, Date data) {
+	public IdRonda(String idVigia, Date data) {
 		super();
 		this.idVigia = idVigia;
 		this.data = data;

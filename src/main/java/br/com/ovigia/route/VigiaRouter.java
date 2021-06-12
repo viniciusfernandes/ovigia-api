@@ -27,16 +27,16 @@ public class VigiaRouter extends Router {
 
 		var atualizarVigiaClienteRoute = Route.<Cliente, Void>patch();
 		atualizarVigiaClienteRoute.url("/ovigia/vigias/{idVigia}/clientes").contemBody().requestClass(Cliente.class)
-				.extractFromPath((mapa, cliente) -> {
-					cliente.setIdVigia(mapa.get("idVigia"));
-					return cliente;
+				.extractFromPath((mapa, request) -> {
+					request.setIdVigia(mapa.get("idVigia"));
+					return request;
 				}).rule(new AtualizarVigiaClienteRule(vigiaRepository, clienteRepository));
 
 		var atualizarVigiaLocRoute = Route.<AtualizarVigiaLocalizacaoRequest, Void>patch();
 		atualizarVigiaLocRoute.url("ovigia/vigias/{idVigia}/localizacao").contemBody()
-				.requestClass(AtualizarVigiaLocalizacaoRequest.class).extractFromPath((mapa, localizacao) -> {
-					localizacao.setIdVigia(mapa.get("idVigia"));
-					return localizacao;
+				.requestClass(AtualizarVigiaLocalizacaoRequest.class).extractFromPath((mapa, request) -> {
+					request.setIdVigia(mapa.get("idVigia"));
+					return request;
 				}).rule(new AtualizarVigiaLocalizacaoRule(vigiaRepository));
 
 		add(criarClienteRoute);

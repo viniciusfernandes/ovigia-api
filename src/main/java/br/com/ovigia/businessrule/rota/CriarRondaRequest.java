@@ -1,6 +1,6 @@
 package br.com.ovigia.businessrule.rota;
 
-public class CriarRotaRequest {
+public class CriarRondaRequest {
 	private String idVigia;
 
 	public String getIdVigia() {

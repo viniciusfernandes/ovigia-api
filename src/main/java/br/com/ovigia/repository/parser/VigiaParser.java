@@ -24,7 +24,7 @@ public class VigiaParser {
 		vigia.setNome(doc.getString("nome"));
 		vigia.setEmail(doc.getString("email"));
 		vigia.setTelefone(doc.getString("telefone"));
-		vigia.setLocalizacao(LocalizacaoParser.fromDoc(doc));
+		vigia.setLocalizacao(LocalizacaoParser.fromNestedDoc(doc));
 		return vigia;
 	}
 

@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Rota {
-	private IdRota id;
+public class Ronda {
+	private IdRonda id;
 	private List<Localizacao> localizacoes;
 
-	public Rota() {
+	public Ronda() {
 	}
 
-	public Rota(IdRota id) {
+	public Ronda(IdRonda id) {
 		this.id = id;
 	}
 
@@ -30,11 +30,11 @@ public class Rota {
 		localizacoes.add(localizacao);
 	}
 
-	public IdRota getId() {
+	public IdRonda getId() {
 		return id;
 	}
 
-	public void setId(IdRota id) {
+	public void setId(IdRonda id) {
 		this.id = id;
 	}
 

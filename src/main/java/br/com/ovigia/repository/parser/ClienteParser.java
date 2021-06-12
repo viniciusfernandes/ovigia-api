@@ -40,7 +40,7 @@ public class ClienteParser {
 		cliente.setNome(doc.getString("nome"));
 		cliente.setEmail(doc.getString("email"));
 		cliente.setTelefone(doc.getString("telefone"));
-		cliente.setLocalizacao(LocalizacaoParser.fromDoc(doc));
+		cliente.setLocalizacao(LocalizacaoParser.fromNestedDoc(doc));
 
 		cliente.setVigias(doc.getList("vigias", String.class));
 

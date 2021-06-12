@@ -8,7 +8,7 @@ import java.util.Date;
 
 import org.springframework.dao.DataAccessResourceFailureException;
 
-import br.com.ovigia.businessrule.exception.DataRotaMalFormatadaException;
+import br.com.ovigia.businessrule.exception.DataMalFormatadaException;
 
 public class DataUtil {
 	public static String dataRotaPadrao = "dd-MM-yyyy";
@@ -24,7 +24,7 @@ public class DataUtil {
 		return cal.getTime();
 	}
 
-	public static Date parseToDataRota(String data) throws DataRotaMalFormatadaException {
+	public static Date parseToDataRota(String data) throws DataMalFormatadaException {
 		Date dataRota;
 		try {
 			dataRota = format.parse(data);
