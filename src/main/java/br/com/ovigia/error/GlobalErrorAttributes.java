@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 
+import br.com.ovigia.businessrule.exception.AutenticacaoException;
+
 @Component
 public class GlobalErrorAttributes extends DefaultErrorAttributes {
 	private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -29,7 +31,11 @@ public class GlobalErrorAttributes extends DefaultErrorAttributes {
 		error.timestamp = df.format((Date) map.get("timestamp"));
 		error.url = (String) map.get("path");
 		error.status = (int) map.get("status");
-		if (error.status == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
+		if (ex instanceof AutenticacaoException) {
+			error.mensagem = "Usuario nao autenticado.";
+			error.tipo = ex.getClass().getSimpleName();
+			error.status = HttpStatus.UNAUTHORIZED.value();
+		} else if (error.status == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
 			error.mensagem = "Falha interna no servidor. Procure a equipe de desenvolvimento caso o problema persistir.";
 			error.tipo = ex.getClass().getSimpleName();
 		}

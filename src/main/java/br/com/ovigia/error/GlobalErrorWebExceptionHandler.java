@@ -41,9 +41,9 @@ public class GlobalErrorWebExceptionHandler extends AbstractErrorWebExceptionHan
 
 		final Map<String, Object> errorPropertiesMap = getErrorAttributes(request, includeStackTrace);
 
-		Object error = errorPropertiesMap.get("error");
+		GlobalError error = (GlobalError) errorPropertiesMap.get("error");
 
-		return ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.APPLICATION_JSON_UTF8)
+		return ServerResponse.status(HttpStatus.valueOf(error.status)).contentType(MediaType.APPLICATION_JSON_UTF8)
 				.body(BodyInserters.fromObject(error));
 	}
 

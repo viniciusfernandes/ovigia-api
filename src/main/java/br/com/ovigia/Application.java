@@ -1,11 +1,14 @@
 package br.com.ovigia;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.web.server.ServerHttpSecurity;
+import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
@@ -15,6 +18,10 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import com.mongodb.reactivestreams.client.MongoClients;
 import com.mongodb.reactivestreams.client.MongoDatabase;
 
+import br.com.ovigia.auth.JwtAuthenticationManager;
+import br.com.ovigia.auth.JwtServerAuthenticationConverter;
+import br.com.ovigia.auth.JwtSigner;
+import br.com.ovigia.auth.SecurityWebFilter;
 import br.com.ovigia.businessrule.vigia.CriarVigiaRule;
 import br.com.ovigia.repository.ClienteRepository;
 import br.com.ovigia.repository.RondaRepository;
@@ -32,6 +39,9 @@ public class Application {
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
+
+	@Autowired
+	private ServerHttpSecurity serverHttpSecurity;
 
 	@Bean
 	public CorsWebFilter corsFilter() {
@@ -84,6 +94,27 @@ public class Application {
 		register.registry(new ClienteRouter(clienteRepository(), rotaRepository()));
 		register.registry(new RotaRouter(rotaRepository()));
 		return register.build();
+	}
+
+	@Bean
+	public JwtSigner jwtSigner() {
+		return new JwtSigner();
+	}
+
+	@Bean
+	public JwtAuthenticationManager jwtAuthenticationManager() {
+		return new JwtAuthenticationManager(jwtSigner());
+	}
+
+	@Bean
+	public JwtServerAuthenticationConverter jwtServerAuthenticationConverter() {
+		return new JwtServerAuthenticationConverter();
+	}
+
+	@Bean
+	public SecurityWebFilterChain SecurityWebFilter() {
+		return SecurityWebFilter.filtering(serverHttpSecurity, jwtAuthenticationManager(),
+				jwtServerAuthenticationConverter());
 	}
 
 }
