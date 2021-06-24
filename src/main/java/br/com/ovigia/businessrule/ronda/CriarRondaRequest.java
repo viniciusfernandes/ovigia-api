@@ -1,4 +1,4 @@
-package br.com.ovigia.businessrule.rota;
+package br.com.ovigia.businessrule.ronda;
 
 public class CriarRondaRequest {
 	private String idVigia;

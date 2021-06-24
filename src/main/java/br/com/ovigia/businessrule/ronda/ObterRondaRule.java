@@ -1,4 +1,4 @@
-package br.com.ovigia.businessrule.rota;
+package br.com.ovigia.businessrule.ronda;
 
 import br.com.ovigia.businessrule.BusinessRule;
 import br.com.ovigia.businessrule.Response;
@@ -7,10 +7,10 @@ import br.com.ovigia.model.Ronda;
 import br.com.ovigia.repository.RondaRepository;
 import reactor.core.publisher.Mono;
 
-public class ObterRotaRule implements BusinessRule<IdRonda, Ronda> {
+public class ObterRondaRule implements BusinessRule<IdRonda, Ronda> {
 	private RondaRepository repository;
 
-	public ObterRotaRule(RondaRepository repository) {
+	public ObterRondaRule(RondaRepository repository) {
 		this.repository = repository;
 	}
 

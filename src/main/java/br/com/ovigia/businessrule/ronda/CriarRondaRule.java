@@ -1,4 +1,4 @@
-package br.com.ovigia.businessrule.rota;
+package br.com.ovigia.businessrule.ronda;
 
 import static br.com.ovigia.businessrule.util.DataUtil.gerarData;
 

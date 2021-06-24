@@ -20,11 +20,16 @@ public class JwtAuthenticationManager implements ReactiveAuthenticationManager {
 	public Mono<Authentication> authenticate(Authentication authentication) {
 		return Mono.just(authentication).map(auth -> {
 			var credentials = auth.getCredentials();
-			var token = credentials != null ? credentials.toString() : null;
-			var jws = jwtSigner.parseJwt(token);
+			if (credentials == null) {
+				return new UsernamePasswordAuthenticationToken(null, null);
+			}
+			var token = credentials.toString();
+			var jws = jwtSigner.parseJwt(credentials.toString());
 			auth = new UsernamePasswordAuthenticationToken(jws.getBody().getSubject(), token,
 					Arrays.asList(new SimpleGrantedAuthority("ROLE_USER")));
 			return auth;
+		}).onErrorResume(ex -> {
+			return Mono.just(new UsernamePasswordAuthenticationToken(null, null));
 		});
 
 	}

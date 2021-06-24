@@ -21,13 +21,13 @@ import com.mongodb.reactivestreams.client.MongoDatabase;
 import br.com.ovigia.auth.JwtAuthenticationManager;
 import br.com.ovigia.auth.JwtServerAuthenticationConverter;
 import br.com.ovigia.auth.JwtSigner;
-import br.com.ovigia.auth.SecurityWebFilter;
+import br.com.ovigia.auth.SecurityWebFilterBuilder;
 import br.com.ovigia.businessrule.vigia.CriarVigiaRule;
 import br.com.ovigia.repository.ClienteRepository;
 import br.com.ovigia.repository.RondaRepository;
 import br.com.ovigia.repository.VigiaRepository;
 import br.com.ovigia.route.ClienteRouter;
-import br.com.ovigia.route.RotaRouter;
+import br.com.ovigia.route.RondaRouter;
 import br.com.ovigia.route.RoutesRegister;
 import br.com.ovigia.route.VigiaRouter;
 
@@ -92,7 +92,7 @@ public class Application {
 		register.registry(new VigiaRouter(vigiaRepository(), clienteRepository()));
 		register.registry(new VigiaRouter(vigiaRepository(), clienteRepository()));
 		register.registry(new ClienteRouter(clienteRepository(), rotaRepository()));
-		register.registry(new RotaRouter(rotaRepository()));
+		register.registry(new RondaRouter(rotaRepository()));
 		return register.build();
 	}
 
@@ -113,7 +113,7 @@ public class Application {
 
 	@Bean
 	public SecurityWebFilterChain SecurityWebFilter() {
-		return SecurityWebFilter.filtering(serverHttpSecurity, jwtAuthenticationManager(),
+		return SecurityWebFilterBuilder.buildFilter(serverHttpSecurity, jwtAuthenticationManager(),
 				jwtServerAuthenticationConverter());
 	}
 

@@ -12,6 +12,7 @@ import org.springframework.boot.web.reactive.error.DefaultErrorAttributes;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
+import org.springframework.web.server.ResponseStatusException;
 
 import br.com.ovigia.businessrule.exception.AutenticacaoException;
 
@@ -31,7 +32,10 @@ public class GlobalErrorAttributes extends DefaultErrorAttributes {
 		error.timestamp = df.format((Date) map.get("timestamp"));
 		error.url = (String) map.get("path");
 		error.status = (int) map.get("status");
-		if (ex instanceof AutenticacaoException) {
+		if (ex instanceof ResponseStatusException) {
+			error.mensagem = "Recurso nao existente";
+			error.status = ((ResponseStatusException) ex).getStatus().value();
+		} else if (ex instanceof AutenticacaoException) {
 			error.mensagem = "Usuario nao autenticado.";
 			error.tipo = ex.getClass().getSimpleName();
 			error.status = HttpStatus.UNAUTHORIZED.value();
