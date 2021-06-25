@@ -24,17 +24,22 @@ public class AuthenticationREST {
 		this.userService = userService;
 	}
 
-	@PostMapping("/ovigia/auth/login")
-	public Mono<ResponseEntity<AuthResponse>> login(@RequestBody AuthRequest request) {
-		return userService.obterPorEmail(request.getEmail())
-				.filter(password -> passwordEncoder.encode(request.getPassword()).equals(password))
-				.map(userDetails -> ResponseEntity.ok(new AuthResponse(jwtUtil.generateToken(userDetails))))
+	@PostMapping("/ovigia/auth/signin")
+	public Mono<ResponseEntity<AuthResponse>> signIn(@RequestBody AuthRequest request) {
+		return userService.obterPorEmail(request.getEmail()).filter(password ->
+
+		{
+			System.out.println("PAss: " + password);
+			return passwordEncoder.encode(request.getPassword()).equals(password);
+		}
+
+		).map(userDetails -> ResponseEntity.ok(new AuthResponse(jwtUtil.generateToken(userDetails))))
 				.switchIfEmpty(Mono.just(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()));
 	}
 
-	@PostMapping("/ovigia/auth/signin")
-	public Mono<ResponseEntity<AuthResponse>> signIn(@RequestBody AuthRequest request) {
-		var usuario = new Usuario(request.getEmail(), request.getPassword());
+	@PostMapping("/ovigia/auth/signon")
+	public Mono<ResponseEntity<AuthResponse>> signOn(@RequestBody AuthRequest request) {
+		var usuario = new Usuario(request.getEmail(), passwordEncoder.encode(request.getPassword()));
 		return userService.criarUsuario(usuario)
 				.thenReturn(ResponseEntity.ok(new AuthResponse(jwtUtil.generateToken(request.getEmail()))));
 	}
