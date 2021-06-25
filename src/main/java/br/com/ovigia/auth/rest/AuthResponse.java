@@ -1,4 +1,4 @@
-package br.com.ovigia.auth.security.model;
+package br.com.ovigia.auth.rest;
 
 /**
  *

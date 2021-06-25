@@ -6,31 +6,37 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.ovigia.auth.security.JWTUtil;
+import br.com.ovigia.auth.model.Usuario;
+import br.com.ovigia.auth.security.JwtUtil;
 import br.com.ovigia.auth.security.PBKDF2Encoder;
-import br.com.ovigia.auth.security.model.AuthRequest;
-import br.com.ovigia.auth.security.model.AuthResponse;
 import br.com.ovigia.auth.service.UserService;
 import reactor.core.publisher.Mono;
 
 @RestController
 public class AuthenticationREST {
-	private JWTUtil jwtUtil;
+	private JwtUtil jwtUtil;
 	private PBKDF2Encoder passwordEncoder;
 	private UserService userService;
 
-	public AuthenticationREST(JWTUtil jwtUtil, PBKDF2Encoder passwordEncoder, UserService userService) {
+	public AuthenticationREST(JwtUtil jwtUtil, PBKDF2Encoder passwordEncoder, UserService userService) {
 		this.jwtUtil = jwtUtil;
 		this.passwordEncoder = passwordEncoder;
 		this.userService = userService;
 	}
 
-	@PostMapping("/login")
-	public Mono<ResponseEntity<AuthResponse>> login(@RequestBody AuthRequest ar) {
-		return userService.findByUsername(ar.getUsername())
-				.filter(userDetails -> passwordEncoder.encode(ar.getPassword()).equals(userDetails.getPassword()))
+	@PostMapping("/ovigia/auth/login")
+	public Mono<ResponseEntity<AuthResponse>> login(@RequestBody AuthRequest request) {
+		return userService.obterPorEmail(request.getEmail())
+				.filter(password -> passwordEncoder.encode(request.getPassword()).equals(password))
 				.map(userDetails -> ResponseEntity.ok(new AuthResponse(jwtUtil.generateToken(userDetails))))
 				.switchIfEmpty(Mono.just(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()));
+	}
+
+	@PostMapping("/ovigia/auth/signin")
+	public Mono<ResponseEntity<AuthResponse>> signIn(@RequestBody AuthRequest request) {
+		var usuario = new Usuario(request.getEmail(), request.getPassword());
+		return userService.criarUsuario(usuario)
+				.thenReturn(ResponseEntity.ok(new AuthResponse(jwtUtil.generateToken(request.getEmail()))));
 	}
 
 }

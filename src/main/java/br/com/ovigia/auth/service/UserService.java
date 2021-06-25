@@ -1,38 +1,30 @@
 package br.com.ovigia.auth.service;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.annotation.PostConstruct;
-
 import org.springframework.stereotype.Service;
 
-import br.com.ovigia.auth.model.User;
-import br.com.ovigia.auth.security.model.Role;
+import br.com.ovigia.auth.model.Usuario;
+import br.com.ovigia.auth.repository.UsuarioRepository;
 import reactor.core.publisher.Mono;
 
 /**
- * This is just an example, you can load the user from the database from the repository.
+ * This is just an example, you can load the user from the database from the
+ * repository.
  * 
  */
 @Service
 public class UserService {
 
-    private Map<String, User> data;
+	private UsuarioRepository repository;
 
-    @PostConstruct
-    public void init() {
-        data = new HashMap<>();
+	public UserService(UsuarioRepository repository) {
+		this.repository = repository;
+	}
 
-        //username:passwowrd -> user:user
-        data.put("user", new User("user", "cBrlgyL2GI2GINuLUUwgojITuIufFycpLG4490dhGtY=", true, Arrays.asList(Role.ROLE_USER)));
+	public Mono<String> obterPorEmail(String email) {
+		return repository.obterPorEmail(email);
+	}
 
-        //username:passwowrd -> admin:admin
-        data.put("admin", new User("admin", "dQNjUIMorJb8Ubj2+wVGYp6eAeYkdekqAcnYp+aRq5w=", true, Arrays.asList(Role.ROLE_ADMIN)));
-    }
-
-    public Mono<User> findByUsername(String username) {
-        return Mono.justOrEmpty(data.get(username));
-    }
+	public Mono<Void> criarUsuario(Usuario usuario) {
+		return repository.criarUsuario(usuario);
+	}
 }
