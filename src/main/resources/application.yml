@@ -5,3 +5,14 @@ spring.data.mongodb.uri: mongodb://localhost:27017/ovigia
 logging:
   level:
     org.springframework.data.mongodb.core.MongoTemplate: DEBUG
+    
+    
+springbootwebfluxjjwt:
+  password.encoder:
+    secret: mysecret
+    iteration: 33
+    keylength: 256
+  jjwt:
+    secret: ThisIsSecretForJWTHS512SignatureAlgorithmThatMUSTHave64ByteLength
+    expiration: 28800
+    
