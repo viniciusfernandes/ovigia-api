@@ -7,7 +7,6 @@ import org.bson.Document;
 import com.mongodb.reactivestreams.client.MongoCollection;
 import com.mongodb.reactivestreams.client.MongoDatabase;
 
-import br.com.ovigia.auth.model.Usuario;
 import reactor.core.publisher.Mono;
 
 public class UsuarioRepository {
@@ -28,11 +27,6 @@ public class UsuarioRepository {
 		return Mono.from(collection.aggregate(list)).map(docUsuario -> {
 			return true;
 		}).switchIfEmpty(Mono.just(false));
-	}
-
-	public Mono<Void> criarUsuario(Usuario usuario) {
-		var docUsuario = new Document("_id", usuario.getEmail()).append("password", usuario.getPassword());
-		return Mono.from(collection.insertOne(docUsuario)).then();
 	}
 
 	public Mono<Void> criarUsuario(String email, String password) {

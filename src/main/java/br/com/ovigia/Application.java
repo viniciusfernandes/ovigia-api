@@ -6,7 +6,9 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
@@ -15,10 +17,12 @@ import com.mongodb.reactivestreams.client.MongoDatabase;
 
 import br.com.ovigia.auth.repository.UsuarioRepository;
 import br.com.ovigia.auth.route.AuthRouter;
+import br.com.ovigia.auth.security.CORSFilter;
 import br.com.ovigia.auth.security.JwtAuthenticationConverter;
 import br.com.ovigia.auth.security.JwtAuthenticationManager;
 import br.com.ovigia.auth.security.JwtUtil;
 import br.com.ovigia.auth.security.PBKDF2Encoder;
+import br.com.ovigia.auth.security.WebSecurityConfig;
 import br.com.ovigia.businessrule.vigia.CriarVigiaRule;
 import br.com.ovigia.repository.ClienteRepository;
 import br.com.ovigia.repository.RondaRepository;
@@ -86,6 +90,17 @@ public class Application {
 	@Bean
 	public JwtAuthenticationConverter jwtAuthenticationConverter() {
 		return new JwtAuthenticationConverter();
+	}
+
+	@Bean
+	public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
+		return new WebSecurityConfig(jwtAuthenticationManager(), jwtAuthenticationConverter())
+				.securitygWebFilterChain(http);
+	}
+
+	@Bean
+	public CORSFilter corsFilter() {
+		return new CORSFilter();
 	}
 
 	@Bean

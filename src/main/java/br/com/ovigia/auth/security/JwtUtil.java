@@ -4,15 +4,9 @@ import java.security.Key;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
-import br.com.ovigia.auth.model.Usuario;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -49,11 +43,6 @@ public class JwtUtil {
 			return true;
 		}
 		return expiration.before(new Date());
-	}
-
-	public String generateToken(Usuario user) {
-
-		return doGenerateToken(user.getEmail());
 	}
 
 	public String generateToken(String email) {
