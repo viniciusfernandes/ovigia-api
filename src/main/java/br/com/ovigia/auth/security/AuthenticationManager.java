@@ -15,11 +15,11 @@ import reactor.core.publisher.Mono;
 @Component
 public class AuthenticationManager implements ReactiveAuthenticationManager {
 
-	public AuthenticationManager(JwtUtil jwtUtil) {
+	public AuthenticationManager(JWTUtil jwtUtil) {
 		this.jwtUtil = jwtUtil;
 	}
 
-	private JwtUtil jwtUtil;
+	private JWTUtil jwtUtil;
 
 	@Override
 	@SuppressWarnings("unchecked")

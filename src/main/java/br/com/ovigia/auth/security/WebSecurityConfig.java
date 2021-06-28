@@ -32,9 +32,7 @@ public class WebSecurityConfig {
 						(swe, e) -> Mono.fromRunnable(() -> swe.getResponse().setStatusCode(HttpStatus.FORBIDDEN)))
 				.and().csrf().disable().formLogin().disable().httpBasic().disable()
 				.authenticationManager(authenticationManager).securityContextRepository(securityContextRepository)
-				.authorizeExchange().pathMatchers(HttpMethod.OPTIONS).permitAll()
-				.pathMatchers("/ovigia/auth/signon")
-				.permitAll().pathMatchers("/ovigia/auth/signin").permitAll().anyExchange().authenticated().and()
-				.build();
+				.authorizeExchange().pathMatchers(HttpMethod.OPTIONS).permitAll().pathMatchers("/login").permitAll()
+				.anyExchange().authenticated().and().build();
 	}
 }

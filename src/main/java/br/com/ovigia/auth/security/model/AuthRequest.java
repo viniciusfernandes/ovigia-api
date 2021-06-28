@@ -1,11 +1,11 @@
-package br.com.ovigia.auth.rest;
+package br.com.ovigia.auth.security.model;
 
 /**
  *
  * @author ard333
  */
 public class AuthRequest {
-	private String email;
+	private String username;
 	private String password;
 
 	public AuthRequest() {
@@ -13,21 +13,21 @@ public class AuthRequest {
 	}
 
 	public AuthRequest(String username, String password) {
-		this.email = username;
+		this.username = username;
 		this.password = password;
 	}
 
 	@Override
 	public String toString() {
-		return "AuthRequest [username=" + email + ", password=" + password + "]";
+		return "AuthRequest [username=" + username + ", password=" + password + "]";
 	}
 
-	public String getEmail() {
-		return email;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setEmail(String username) {
-		this.email = username;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getPassword() {

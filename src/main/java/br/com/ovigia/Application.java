@@ -22,6 +22,7 @@ import br.com.ovigia.repository.VigiaRepository;
 import br.com.ovigia.route.ClienteRouter;
 import br.com.ovigia.route.RondaRouter;
 import br.com.ovigia.route.RoutesRegister;
+import br.com.ovigia.route.TesteRouter;
 import br.com.ovigia.route.VigiaRouter;
 
 @SpringBootConfiguration
@@ -65,6 +66,7 @@ public class Application {
 		register.registry(new VigiaRouter(vigiaRepository(), clienteRepository()));
 		register.registry(new ClienteRouter(clienteRepository(), rotaRepository()));
 		register.registry(new RondaRouter(rotaRepository()));
+		register.registry(new TesteRouter());
 		return register.build();
 	}
 
