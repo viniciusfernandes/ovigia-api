@@ -17,10 +17,10 @@ import reactor.core.publisher.Mono;
 public class WebSecurityConfig {
 
 	private JwtAuthenticationManager authenticationManager;
-	private JwtServerAuthenticationConverter authenticationConverter;
+	private JwtAuthenticationConverter authenticationConverter;
 
 	public WebSecurityConfig(JwtAuthenticationManager authenticationManager,
-			JwtServerAuthenticationConverter authenticationConverter) {
+			JwtAuthenticationConverter authenticationConverter) {
 		this.authenticationManager = authenticationManager;
 		this.authenticationConverter = authenticationConverter;
 	}

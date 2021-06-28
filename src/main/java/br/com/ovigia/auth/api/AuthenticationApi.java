@@ -11,7 +11,7 @@ import br.com.ovigia.auth.security.JwtUtil;
 import br.com.ovigia.auth.service.UserService;
 import reactor.core.publisher.Mono;
 
-@RestController
+//@RestController
 public class AuthenticationApi {
 	private JwtUtil jwtUtil;
 	private UserService userService;
@@ -21,7 +21,7 @@ public class AuthenticationApi {
 		this.userService = userService;
 	}
 
-	@PostMapping("/ovigia/auth/signin")
+	//@PostMapping("/ovigia/auth/signin")
 	public Mono<ResponseEntity<AuthResponse>> signIn(@RequestBody AuthRequest request) {
 		return userService.isUsuarioExistente(request.getEmail(), request.getPassword()).map(usurioExiste -> {
 			if (usurioExiste) {
@@ -31,7 +31,7 @@ public class AuthenticationApi {
 		});
 	}
 
-	@PostMapping("/ovigia/auth/signon")
+	//@PostMapping("/ovigia/auth/signon")
 	public Mono<ResponseEntity<AuthResponse>> signOn(@RequestBody AuthRequest request) {
 		var usuario = new Usuario(request.getEmail(), request.getPassword());
 		return userService.criarUsuario(usuario)

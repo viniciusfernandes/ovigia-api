@@ -3,7 +3,6 @@ package br.com.ovigia.auth.repository;
 import java.util.Arrays;
 
 import org.bson.Document;
-import org.springframework.stereotype.Repository;
 
 import com.mongodb.reactivestreams.client.MongoCollection;
 import com.mongodb.reactivestreams.client.MongoDatabase;
@@ -11,7 +10,6 @@ import com.mongodb.reactivestreams.client.MongoDatabase;
 import br.com.ovigia.auth.model.Usuario;
 import reactor.core.publisher.Mono;
 
-@Repository
 public class UsuarioRepository {
 
 	private final MongoCollection<Document> collection;
@@ -34,6 +32,11 @@ public class UsuarioRepository {
 
 	public Mono<Void> criarUsuario(Usuario usuario) {
 		var docUsuario = new Document("_id", usuario.getEmail()).append("password", usuario.getPassword());
+		return Mono.from(collection.insertOne(docUsuario)).then();
+	}
+
+	public Mono<Void> criarUsuario(String email, String password) {
+		var docUsuario = new Document("_id", email).append("password", password);
 		return Mono.from(collection.insertOne(docUsuario)).then();
 	}
 

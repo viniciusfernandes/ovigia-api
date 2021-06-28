@@ -1,11 +1,9 @@
 package br.com.ovigia.businessrule;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class Response<V> {
+	@JsonIgnore
 	private final ResponseStatus status;
 	private final V value;
 
@@ -49,6 +47,11 @@ public class Response<V> {
 		return ResponseStatus.UNPROCESSABLE_ENTITY == status;
 	}
 
+	@JsonIgnore
+	public boolean isUnauthorized() {
+		return ResponseStatus.UNAUTHORIZED == status;
+	}
+
 	public ResponseStatus getStatus() {
 		return status;
 	}
@@ -77,6 +80,10 @@ public class Response<V> {
 		return new ResponseMessage<>(ResponseStatus.UNPROCESSABLE_ENTITY, value, mensagem);
 	}
 
+	public static <T> Response<T> unautorized() {
+		return new ResponseMessage<>(ResponseStatus.UNAUTHORIZED);
+	}
+
 	private static class ResponseMessage<V> extends Response<V> {
 		private String[] mensagens;
 
@@ -85,10 +92,14 @@ public class Response<V> {
 			this.mensagens = mensagens;
 		}
 
+		private ResponseMessage(ResponseStatus status) {
+			super(status, null);
+		}
+
 	}
 
 }
 
 enum ResponseStatus {
-	OK, NO_RESULT, BAD_REQUEST, INTERNAL_SERVER_ERROR, UNPROCESSABLE_ENTITY
+	OK, NO_RESULT, BAD_REQUEST, INTERNAL_SERVER_ERROR, UNPROCESSABLE_ENTITY, UNAUTHORIZED
 }

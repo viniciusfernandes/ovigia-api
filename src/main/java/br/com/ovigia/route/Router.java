@@ -3,7 +3,7 @@ package br.com.ovigia.route;
 import java.util.ArrayList;
 import java.util.List;
 
-class Router {
+public class Router {
 	private List<Route<?, ?>> routes = new ArrayList<>();
 
 	public <T, V> void add(Route<T, V> route) {

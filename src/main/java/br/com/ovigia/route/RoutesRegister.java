@@ -9,6 +9,7 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 import static org.springframework.web.reactive.function.server.ServerResponse.badRequest;
 import static org.springframework.web.reactive.function.server.ServerResponse.noContent;
 import static org.springframework.web.reactive.function.server.ServerResponse.ok;
+import static org.springframework.web.reactive.function.server.ServerResponse.status;
 import static org.springframework.web.reactive.function.server.ServerResponse.unprocessableEntity;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.server.RequestPredicate;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -61,7 +63,10 @@ public class RoutesRegister {
 		var verboHTTP = definirVerboHTTP(route.getTipoRequest(), route.getUrl());
 
 		var routerFunction = route(verboHTTP, request -> {
-			if (route.isBodyEnviado() && route.hasPathVariable()) {
+			if (route.isBodyEnviado() && !route.hasPathVariable()) {
+				return fromBody(request, route.getRequestClazz())
+						.flatMap(entidade -> toResponse(route.getRule().apply(entidade)));
+			} else if (route.isBodyEnviado() && route.hasPathVariable()) {
 				return fromBody(request, route.getRequestClazz()).flatMap(entidade -> {
 					extractFromPath(request, route.getExtractFromPath(), entidade);
 					return toResponse(route.getRule().apply(entidade));
@@ -121,6 +126,8 @@ public class RoutesRegister {
 				bodyBuilder = badRequest();
 			} else if (response.isUnprocessable()) {
 				bodyBuilder = unprocessableEntity();
+			} else if (response.isUnauthorized()) {
+				bodyBuilder = status(HttpStatus.UNAUTHORIZED);
 			}
 
 			return bodyBuilder.bodyValue(response);

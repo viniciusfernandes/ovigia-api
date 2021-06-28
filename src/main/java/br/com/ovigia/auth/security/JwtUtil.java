@@ -18,11 +18,9 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 
-@Component
 public class JwtUtil {
 
-	@Value("${springbootwebfluxjjwt.jjwt.secret}")
-	private String secret;
+	private String secret = "ThisIsSecretForJWTHS512SignatureAlgorithmThatMUSTHave64ByteLength";
 
 	private Key key;
 
