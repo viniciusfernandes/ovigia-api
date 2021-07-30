@@ -5,8 +5,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
 
-import javax.annotation.PostConstruct;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -14,13 +12,10 @@ import io.jsonwebtoken.security.Keys;
 
 public class JwtUtil {
 
-	private String secret = "ThisIsSecretForJWTHS512SignatureAlgorithmThatMUSTHave64ByteLength";
-
 	private Key key;
 
-	@PostConstruct
-	public void init() {
-		this.key = Keys.hmacShaKeyFor(secret.getBytes());
+	public JwtUtil(String secretKey) {
+		this.key = Keys.hmacShaKeyFor(secretKey.getBytes());
 	}
 
 	public Claims getAllClaimsFromToken(String token) {

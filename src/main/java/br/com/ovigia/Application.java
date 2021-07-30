@@ -4,9 +4,7 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
@@ -31,12 +29,11 @@ import br.com.ovigia.route.RondaRouter;
 import br.com.ovigia.route.RoutesRegister;
 import br.com.ovigia.route.VigiaRouter;
 
-@SpringBootConfiguration
-@Configuration
 @EnableAutoConfiguration
 public class Application {
 	@Autowired
 	private GenericApplicationContext context;
+	private String secretKey = "ThisIsSecretForJWTHS512SignatureAlgorithmThatMUSTHave64ByteLength";
 
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
@@ -62,11 +59,11 @@ public class Application {
 	}
 
 	private void registerSecurityWebFilterChain(GenericApplicationContext context) {
-		var jwtUtil = new JwtUtil();
+		var jwtUtil = new JwtUtil(secretKey);
 		var authManager = new JwtAuthenticationManager(jwtUtil);
 		var authConverter = new JwtAuthenticationConverter();
 
-		context.registerBean(JwtUtil.class, () -> new JwtUtil());
+		context.registerBean(JwtUtil.class, () -> jwtUtil);
 		context.registerBean(JwtAuthenticationManager.class, () -> authManager);
 		context.registerBean(JwtAuthenticationConverter.class, () -> authConverter);
 		context.registerBean(PBKDF2Encoder.class, () -> new PBKDF2Encoder());
