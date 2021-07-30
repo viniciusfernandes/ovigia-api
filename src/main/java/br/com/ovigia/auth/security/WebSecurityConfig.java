@@ -1,6 +1,5 @@
 package br.com.ovigia.auth.security;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
@@ -20,8 +19,7 @@ public class WebSecurityConfig {
 		this.authenticationManager = authenticationManager;
 		this.authenticationConverter = authenticationConverter;
 	}
-
-	@Bean
+ 
 	public SecurityWebFilterChain securitygWebFilterChain(ServerHttpSecurity http) {
 
 		var authenticationWebFilter = new AuthenticationWebFilter(authenticationManager);

@@ -1,16 +1,16 @@
 package br.com.ovigia;
 
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.web.reactive.function.server.RouterFunction;
-import org.springframework.web.reactive.function.server.ServerResponse;
 
 import com.mongodb.reactivestreams.client.MongoClients;
 import com.mongodb.reactivestreams.client.MongoDatabase;
@@ -23,7 +23,6 @@ import br.com.ovigia.auth.security.JwtAuthenticationManager;
 import br.com.ovigia.auth.security.JwtUtil;
 import br.com.ovigia.auth.security.PBKDF2Encoder;
 import br.com.ovigia.auth.security.WebSecurityConfig;
-import br.com.ovigia.businessrule.vigia.CriarVigiaRule;
 import br.com.ovigia.repository.ClienteRepository;
 import br.com.ovigia.repository.RondaRepository;
 import br.com.ovigia.repository.VigiaRepository;
@@ -35,83 +34,65 @@ import br.com.ovigia.route.VigiaRouter;
 @SpringBootConfiguration
 @Configuration
 @EnableAutoConfiguration
-@ComponentScan
 public class Application {
+	@Autowired
+	private GenericApplicationContext context;
 
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
+
 	}
 
-	@Bean
-	public MongoDatabase mongodb() {
-		return MongoClients.create().getDatabase("ovigia");
+	@PostConstruct
+	public void register() {
+		registerRepository(context);
+		registerSecurityWebFilterChain(context);
+		registerCorsFilter(context);
+		registerRoutes(context);
 	}
 
-	@Bean
-	public VigiaRepository vigiaRepository() {
-		return new VigiaRepository(mongodb());
+	private void registerRepository(GenericApplicationContext context) {
+		var mongodb = MongoClients.create().getDatabase("ovigia");
+		context.registerBean(MongoDatabase.class, () -> mongodb);
+
+		context.registerBean(VigiaRepository.class, () -> new VigiaRepository(mongodb));
+		context.registerBean(ClienteRepository.class, () -> new ClienteRepository(mongodb));
+		context.registerBean(RondaRepository.class, () -> new RondaRepository(mongodb));
+		context.registerBean(UsuarioRepository.class, () -> new UsuarioRepository(mongodb));
 	}
 
-	@Bean
-	public ClienteRepository clienteRepository() {
-		return new ClienteRepository(mongodb());
+	private void registerSecurityWebFilterChain(GenericApplicationContext context) {
+		var jwtUtil = new JwtUtil();
+		var authManager = new JwtAuthenticationManager(jwtUtil);
+		var authConverter = new JwtAuthenticationConverter();
+
+		context.registerBean(JwtUtil.class, () -> new JwtUtil());
+		context.registerBean(JwtAuthenticationManager.class, () -> authManager);
+		context.registerBean(JwtAuthenticationConverter.class, () -> authConverter);
+		context.registerBean(PBKDF2Encoder.class, () -> new PBKDF2Encoder());
+
+		ServerHttpSecurity http = context.getBean(ServerHttpSecurity.class);
+		context.registerBean(SecurityWebFilterChain.class,
+				() -> new WebSecurityConfig(authManager, authConverter).securitygWebFilterChain(http));
 	}
 
-	@Bean
-	public RondaRepository rotaRepository() {
-		return new RondaRepository(mongodb());
+	private void registerCorsFilter(GenericApplicationContext context) {
+		context.registerBean(CORSFilter.class, () -> new CORSFilter());
 	}
 
-	@Bean
-	public UsuarioRepository usuarioRepository() {
-		return new UsuarioRepository(mongodb());
-	}
-
-	@Bean
-	public CriarVigiaRule vigiaService() {
-		return new CriarVigiaRule(vigiaRepository());
-	}
-
-	@Bean
-	public JwtUtil jwtUtil() {
-		return new JwtUtil();
-	}
-
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new PBKDF2Encoder();
-	}
-
-	@Bean
-	public JwtAuthenticationManager jwtAuthenticationManager() {
-		return new JwtAuthenticationManager(jwtUtil());
-	}
-
-	@Bean
-	public JwtAuthenticationConverter jwtAuthenticationConverter() {
-		return new JwtAuthenticationConverter();
-	}
-
-	@Bean
-	public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
-		return new WebSecurityConfig(jwtAuthenticationManager(), jwtAuthenticationConverter())
-				.securitygWebFilterChain(http);
-	}
-
-	@Bean
-	public CORSFilter corsFilter() {
-		return new CORSFilter();
-	}
-
-	@Bean
-	public RouterFunction<ServerResponse> rotas() {
+	private void registerRoutes(GenericApplicationContext context) {
 		var register = RoutesRegister.getInstance();
-		register.registry(new VigiaRouter(vigiaRepository(), clienteRepository()));
-		register.registry(new VigiaRouter(vigiaRepository(), clienteRepository()));
-		register.registry(new ClienteRouter(clienteRepository(), rotaRepository()));
-		register.registry(new RondaRouter(rotaRepository()));
-		register.registry(new AuthRouter(usuarioRepository(), passwordEncoder(), jwtUtil()));
-		return register.build();
+		register.registry(new VigiaRouter(getBean(VigiaRepository.class), getBean(ClienteRepository.class)));
+		register.registry(new ClienteRouter(getBean(ClienteRepository.class), getBean(RondaRepository.class)));
+		register.registry(new RondaRouter(getBean(RondaRepository.class)));
+		register.registry(
+				new AuthRouter(getBean(UsuarioRepository.class), getBean(PBKDF2Encoder.class), getBean(JwtUtil.class)));
+
+		context.registerBean(RouterFunction.class, () -> register.build());
+	}
+
+	private <T> T getBean(Class<T> clazz) {
+		return context.getBean(clazz);
 	}
 
 }
