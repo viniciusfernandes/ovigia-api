@@ -8,10 +8,8 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 
-@Component
-public class PBKDF2Encoder implements PasswordEncoder {
+ public class PBKDF2Encoder implements PasswordEncoder {
 
 	private String secret = "mysecret";
 

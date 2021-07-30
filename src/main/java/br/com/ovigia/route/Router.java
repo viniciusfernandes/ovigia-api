@@ -6,7 +6,7 @@ import java.util.List;
 public class Router {
 	private List<Route<?, ?>> routes = new ArrayList<>();
 
-	public <T, V> void add(Route<T, V> route) {
+	public <T, V> void addRoute(Route<T, V> route) {
 		routes.add(route);
 	}
 

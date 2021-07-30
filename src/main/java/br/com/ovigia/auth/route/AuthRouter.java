@@ -22,8 +22,8 @@ public class AuthRouter extends Router {
 		sigonRoute.url("/ovigia/auth/signon").contemBody().requestClass(AuthRequest.class)
 				.rule(new SigOnRule(usuarioRepository, passwordEncoder, jwtUtil));
 
-		add(siginRoute);
-		add(sigonRoute);
+		addRoute(siginRoute);
+		addRoute(sigonRoute);
 	}
 
 }

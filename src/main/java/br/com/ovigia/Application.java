@@ -4,7 +4,8 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
@@ -26,10 +27,11 @@ import br.com.ovigia.repository.RondaRepository;
 import br.com.ovigia.repository.VigiaRepository;
 import br.com.ovigia.route.ClienteRouter;
 import br.com.ovigia.route.RondaRouter;
-import br.com.ovigia.route.RoutesRegister;
+import br.com.ovigia.route.RoutesBuilder;
 import br.com.ovigia.route.VigiaRouter;
 
-@EnableAutoConfiguration
+@SpringBootApplication
+@ComponentScan(basePackages = "br.com.ovigia.error")
 public class Application {
 	@Autowired
 	private GenericApplicationContext context;
@@ -41,7 +43,7 @@ public class Application {
 	}
 
 	@PostConstruct
-	public void register() {
+	public void registerBeans() {
 		registerRepository(context);
 		registerSecurityWebFilterChain(context);
 		registerCorsFilter(context);
@@ -78,14 +80,14 @@ public class Application {
 	}
 
 	private void registerRoutes(GenericApplicationContext context) {
-		var register = RoutesRegister.getInstance();
-		register.registry(new VigiaRouter(getBean(VigiaRepository.class), getBean(ClienteRepository.class)));
-		register.registry(new ClienteRouter(getBean(ClienteRepository.class), getBean(RondaRepository.class)));
-		register.registry(new RondaRouter(getBean(RondaRepository.class)));
-		register.registry(
+		var routesBuilder = RoutesBuilder.getInstance();
+		routesBuilder.addRouter(new VigiaRouter(getBean(VigiaRepository.class), getBean(ClienteRepository.class)));
+		routesBuilder.addRouter(new ClienteRouter(getBean(ClienteRepository.class), getBean(RondaRepository.class)));
+		routesBuilder.addRouter(new RondaRouter(getBean(RondaRepository.class)));
+		routesBuilder.addRouter(
 				new AuthRouter(getBean(UsuarioRepository.class), getBean(PBKDF2Encoder.class), getBean(JwtUtil.class)));
 
-		context.registerBean(RouterFunction.class, () -> register.build());
+		context.registerBean(RouterFunction.class, () -> routesBuilder.build());
 	}
 
 	private <T> T getBean(Class<T> clazz) {

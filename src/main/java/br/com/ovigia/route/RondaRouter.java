@@ -40,9 +40,9 @@ public class RondaRouter extends Router {
 					return request;
 				}).rule(new ObterRondaRule(repository));
 
-		add(criarLocalizacoesRoute);
-		add(criarRondaRoute);
-		add(obterRondaRoute);
+		addRoute(criarLocalizacoesRoute);
+		addRoute(criarRondaRoute);
+		addRoute(obterRondaRoute);
 	}
 
 }

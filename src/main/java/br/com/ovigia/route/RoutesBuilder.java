@@ -27,17 +27,17 @@ import org.springframework.web.reactive.function.server.ServerResponse.BodyBuild
 import br.com.ovigia.businessrule.Response;
 import reactor.core.publisher.Mono;
 
-public class RoutesRegister {
+public class RoutesBuilder {
 	private static List<RouterFunction<ServerResponse>> routerFunctions = new ArrayList<>();
-	private static final RoutesRegister register;
+	private static final RoutesBuilder register;
 	static {
-		register = new RoutesRegister();
+		register = new RoutesBuilder();
 	}
 
-	private RoutesRegister() {
+	private RoutesBuilder() {
 	}
 
-	public static RoutesRegister getInstance() {
+	public static RoutesBuilder getInstance() {
 		return register;
 	}
 
@@ -53,12 +53,12 @@ public class RoutesRegister {
 		return routes;
 	}
 
-	public void registry(Router router) {
-		router.getRoutes().forEach(route -> registry(route));
+	public void addRouter(Router router) {
+		router.getRoutes().forEach(route -> addRoute(route));
 
 	}
 
-	public <T, V> void registry(Route<T, V> route) {
+	public <T, V> void addRoute(Route<T, V> route) {
 
 		var verboHTTP = definirVerboHTTP(route.getTipoRequest(), route.getUrl());
 

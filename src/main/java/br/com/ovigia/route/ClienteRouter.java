@@ -43,9 +43,9 @@ public class ClienteRouter extends Router {
 					return request;
 				}).rule(new AtualizarClienteLocalizacaoRule(clienteRepository));
 
-		add(criarClienteRoute);
-		add(calcularFreqRoute);
-		add(alterarLocalizacaoRoute);
+		addRoute(criarClienteRoute);
+		addRoute(calcularFreqRoute);
+		addRoute(alterarLocalizacaoRoute);
 
 	}
 

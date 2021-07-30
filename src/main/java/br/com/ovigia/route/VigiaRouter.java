@@ -39,10 +39,10 @@ public class VigiaRouter extends Router {
 					return request;
 				}).rule(new AtualizarVigiaLocalizacaoRule(vigiaRepository));
 
-		add(criarClienteRoute);
-		add(obterVigiaRoute);
-		add(atualizarVigiaClienteRoute);
-		add(atualizarVigiaLocRoute);
+		addRoute(criarClienteRoute);
+		addRoute(obterVigiaRoute);
+		addRoute(atualizarVigiaClienteRoute);
+		addRoute(atualizarVigiaLocRoute);
 	}
 
 }
