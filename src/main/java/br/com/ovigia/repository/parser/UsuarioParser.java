@@ -14,8 +14,13 @@ public class UsuarioParser {
 		var doc = new Document("_id", usuario.email);
 		doc.append("nome", usuario.nome);
 		doc.append("telefone", usuario.telefone);
-		doc.append("tipoUsuario", usuario.tipoUsuario.toString());
-
+		if (usuario.tipoUsuario != null) {
+			doc.append("tipoUsuario", usuario.tipoUsuario.toString());
+		}
+		
+		if (usuario.password != null) {
+			doc.append("password", usuario.password);
+		}
 		var localizacao = usuario.localizacao;
 		if (localizacao != null) {
 			var docLocalizacao = LocalizacaoParser.toDoc(localizacao);
@@ -29,7 +34,10 @@ public class UsuarioParser {
 		t.nome = doc.getString("nome");
 		t.email = doc.getString("_id");
 		t.telefone = doc.getString("telefone");
-		t.tipoUsuario = TipoUsuario.valueOf(doc.getString("tipoUsuario"));
+		var tipo = doc.getString("tipoUsuario");
+		if (tipo != null) {
+			t.tipoUsuario = TipoUsuario.valueOf(tipo);
+		}
 		t.localizacao = LocalizacaoParser.fromNestedDoc(doc);
 		return t;
 	}

@@ -1,25 +1,19 @@
 package br.com.ovigia.auth.api;
 
-/**
- *
- * @author ard333
- */
+import br.com.ovigia.model.Localizacao;
+import br.com.ovigia.model.Usuario;
+import br.com.ovigia.model.enumeration.TipoUsuario;
+
 public class AuthResponse {
-	private String token;
+	public String token;
+	public String nome;
+	public TipoUsuario tipoUsuario;
+	public Localizacao localizacao;
 
-	public AuthResponse() {
-	}
-
-	public AuthResponse(String token) {
-		super();
-		this.token = token;
-	}
-
-	public String getToken() {
-		return token;
-	}
-
-	public void setToken(String token) {
+	public AuthResponse(Usuario usuario, String token) {
+		nome = usuario.nome;
+		tipoUsuario = usuario.tipoUsuario;
+		localizacao = usuario.localizacao;
 		this.token = token;
 	}
 

@@ -11,12 +11,12 @@ import br.com.ovigia.businessrule.Response;
 import br.com.ovigia.model.Usuario;
 import reactor.core.publisher.Mono;
 
-public class SigOnRule implements BusinessRule<SignOnRequest, AuthResponse> {
+public class SingOnRule implements BusinessRule<SignOnRequest, AuthResponse> {
 	private UsuarioRepository repository;
 	private PasswordEncoder passwordEncoder;
 	private JwtUtil jwtUtil;
 
-	public SigOnRule(UsuarioRepository repository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
+	public SingOnRule(UsuarioRepository repository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
 		this.repository = repository;
 		this.passwordEncoder = passwordEncoder;
 		this.jwtUtil = jwtUtil;
@@ -34,7 +34,7 @@ public class SigOnRule implements BusinessRule<SignOnRequest, AuthResponse> {
 		usuario.password = passwordEncoder.encode(request.password);
 
 		return repository.criarUsuario(usuario)
-				.thenReturn(Response.ok(new AuthResponse(jwtUtil.generateToken(request.email))));
+				.thenReturn(Response.ok(new AuthResponse(usuario, jwtUtil.generateToken(request.email))));
 	}
 
 }
