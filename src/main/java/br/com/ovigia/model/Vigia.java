@@ -4,55 +4,21 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public class Vigia {
-	private String id;
-	private String nome;
-	private String telefone;
-	private String email;
+import br.com.ovigia.model.enumeration.TipoUsuario;
 
-	private Localizacao localizacao;
+public class Vigia extends Usuario {
 
 	@JsonIgnore
 	private List<Cliente> clientes;
 
 	public Vigia() {
+		tipoUsuario = TipoUsuario.VIGIA;
 	}
 
-	public Vigia(String id, String nome) {
-		this.id = id;
-		this.nome = nome;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public String getTelefone() {
-		return telefone;
-	}
-
-	public void setTelefone(String telefone) {
-		this.telefone = telefone;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
+	public Vigia(String email, String nome) {
 		this.email = email;
+		this.nome = nome;
+		tipoUsuario = TipoUsuario.VIGIA;
 	}
 
 	public List<Cliente> getClientes() {
@@ -61,14 +27,6 @@ public class Vigia {
 
 	public void setClientes(List<Cliente> clientes) {
 		this.clientes = clientes;
-	}
-
-	public Localizacao getLocalizacao() {
-		return localizacao;
-	}
-
-	public void setLocalizacao(Localizacao localizacao) {
-		this.localizacao = localizacao;
 	}
 
 }

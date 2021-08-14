@@ -3,8 +3,8 @@ package br.com.ovigia.businessrule.vigia;
 import br.com.ovigia.businessrule.BusinessRule;
 import br.com.ovigia.businessrule.Response;
 import br.com.ovigia.model.Cliente;
-import br.com.ovigia.repository.ClienteRepository;
-import br.com.ovigia.repository.VigiaRepository;
+import br.com.ovigia.model.repository.ClienteRepository;
+import br.com.ovigia.model.repository.VigiaRepository;
 import reactor.core.publisher.Mono;
 
 public class AtualizarVigiaClienteRule implements BusinessRule<Cliente, Void> {
@@ -19,8 +19,8 @@ public class AtualizarVigiaClienteRule implements BusinessRule<Cliente, Void> {
 
 	@Override
 	public Mono<Response<Void>> apply(Cliente cliente) {
-		return vigiaRepository.atualizarCliente(cliente.getIdVigia(), cliente)
-				.and(clienteRepository.atualizarVigia(cliente.getIdVigia(), cliente.getId()))
+		return vigiaRepository.atualizarCliente(cliente.email, cliente)
+				.and(clienteRepository.atualizarVigia(cliente.email, cliente.email))
 				.thenReturn(Response.nonResult());
 	}
 }

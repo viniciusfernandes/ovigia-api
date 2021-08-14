@@ -7,7 +7,7 @@ import java.util.Date;
 import br.com.ovigia.businessrule.BusinessRule;
 import br.com.ovigia.businessrule.Response;
 import br.com.ovigia.model.Localizacao;
-import br.com.ovigia.repository.RondaRepository;
+import br.com.ovigia.model.repository.RondaRepository;
 import reactor.core.publisher.Mono;
 
 public class CriarLocalizacaoRule implements BusinessRule<Localizacao, Void> {

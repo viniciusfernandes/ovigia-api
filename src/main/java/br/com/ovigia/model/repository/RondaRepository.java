@@ -1,4 +1,4 @@
-package br.com.ovigia.repository;
+package br.com.ovigia.model.repository;
 
 import java.util.ArrayList;
 import java.util.Date;

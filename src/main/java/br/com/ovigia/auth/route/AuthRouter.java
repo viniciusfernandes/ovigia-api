@@ -3,8 +3,11 @@ package br.com.ovigia.auth.route;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import br.com.ovigia.auth.api.AuthRequest;
+import br.com.ovigia.auth.api.AuthResponse;
+import br.com.ovigia.auth.api.SignOnRequest;
 import br.com.ovigia.auth.businessrule.SigInRule;
 import br.com.ovigia.auth.businessrule.SigOnRule;
+import br.com.ovigia.auth.businessrule.UsuarioAutenticado;
 import br.com.ovigia.auth.repository.UsuarioRepository;
 import br.com.ovigia.auth.security.JwtUtil;
 import br.com.ovigia.route.Route;
@@ -14,12 +17,12 @@ public class AuthRouter extends Router {
 
 	public AuthRouter(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
 
-		var siginRoute = Route.<AuthRequest, String>post();
+		var siginRoute = Route.<AuthRequest, UsuarioAutenticado>post();
 		siginRoute.url("/ovigia/auth/signin").contemBody().requestClass(AuthRequest.class)
 				.rule(new SigInRule(usuarioRepository, passwordEncoder, jwtUtil));
 
-		var sigonRoute = Route.<AuthRequest, String>post();
-		sigonRoute.url("/ovigia/auth/signon").contemBody().requestClass(AuthRequest.class)
+		var sigonRoute = Route.<SignOnRequest, AuthResponse>post();
+		sigonRoute.url("/ovigia/auth/signon").contemBody().requestClass(SignOnRequest.class)
 				.rule(new SigOnRule(usuarioRepository, passwordEncoder, jwtUtil));
 
 		addRoute(siginRoute);

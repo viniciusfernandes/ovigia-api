@@ -1,6 +1,4 @@
-package br.com.ovigia.repository;
-
-import java.util.UUID;
+package br.com.ovigia.model.repository;
 
 import org.bson.Document;
 
@@ -22,12 +20,9 @@ public class VigiaRepository {
 		collection = database.getCollection("vigia");
 	}
 
-	public Mono<String> criar(Vigia vigia) {
-		var id = UUID.randomUUID().toString();
-		var docvigia = new Document("_id", id).append("nome", vigia.getNome()).append("email", vigia.getEmail())
-				.append("telefone", vigia.getTelefone());
-
-		return Mono.from(collection.insertOne(docvigia)).map(doc -> id);
+	public Mono<Void> criar(Vigia vigia) {
+		var doc = VigiaParser.toDoc(vigia);
+		return Mono.from(collection.insertOne(doc)).then();
 	}
 
 	public Mono<Vigia> obterPorId(String idVigia) {

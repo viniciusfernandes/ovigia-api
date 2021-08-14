@@ -7,6 +7,8 @@ import org.bson.Document;
 import com.mongodb.reactivestreams.client.MongoCollection;
 import com.mongodb.reactivestreams.client.MongoDatabase;
 
+import br.com.ovigia.model.Usuario;
+import br.com.ovigia.repository.parser.UsuarioParser;
 import reactor.core.publisher.Mono;
 
 public class UsuarioRepository {
@@ -17,21 +19,20 @@ public class UsuarioRepository {
 		collection = database.getCollection("usuario");
 	}
 
-	public Mono<Boolean> isUsuarioExistente(String email, String password) {
+	public Mono<Usuario> obterUsuario(String email, String password) {
 		var filtro = new Document("_id", email).append("password", password);
 		var match = new Document("$match", filtro);
-		var fields = new Document("_id", 1);
+		var fields = new Document("tipoUsuario", 1).append("nome", 1).append("localizacao", 1);
 		var project = new Document("$project", fields);
 
 		var list = Arrays.asList(match, project);
-		return Mono.from(collection.aggregate(list)).map(docUsuario -> {
-			return true;
-		}).switchIfEmpty(Mono.just(false));
+		return Mono.from(collection.aggregate(list))
+				.map(docUsuario -> UsuarioParser.fromDoc(new Usuario(), docUsuario));
 	}
 
-	public Mono<Void> criarUsuario(String email, String password) {
-		var docUsuario = new Document("_id", email).append("password", password);
-		return Mono.from(collection.insertOne(docUsuario)).then();
+	public Mono<Void> criarUsuario(Usuario usuario) {
+		var doc = UsuarioParser.toDoc(usuario);
+		return Mono.from(collection.insertOne(doc)).then();
 	}
 
 }

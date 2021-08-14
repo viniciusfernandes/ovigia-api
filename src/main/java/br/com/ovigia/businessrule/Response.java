@@ -83,7 +83,9 @@ public class Response<V> {
 	public static <T> Response<T> unautorized() {
 		return new ResponseMessage<>(ResponseStatus.UNAUTHORIZED);
 	}
-
+	public static <T> Response<T> accepted() {
+		return new ResponseMessage<>(ResponseStatus.ACCEPTED);
+	}
 	private static class ResponseMessage<V> extends Response<V> {
 		private String[] mensagens;
 
@@ -101,5 +103,5 @@ public class Response<V> {
 }
 
 enum ResponseStatus {
-	OK, NO_RESULT, BAD_REQUEST, INTERNAL_SERVER_ERROR, UNPROCESSABLE_ENTITY, UNAUTHORIZED
+	OK, NO_RESULT, BAD_REQUEST, INTERNAL_SERVER_ERROR, UNPROCESSABLE_ENTITY, UNAUTHORIZED, ACCEPTED
 }

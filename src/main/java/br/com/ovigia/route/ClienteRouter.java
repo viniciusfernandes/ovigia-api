@@ -11,14 +11,14 @@ import br.com.ovigia.businessrule.cliente.CriarClienteRule;
 import br.com.ovigia.businessrule.exception.DataMalFormatadaException;
 import br.com.ovigia.businessrule.util.DataUtil;
 import br.com.ovigia.model.Cliente;
-import br.com.ovigia.repository.ClienteRepository;
-import br.com.ovigia.repository.RondaRepository;
+import br.com.ovigia.model.repository.ClienteRepository;
+import br.com.ovigia.model.repository.RondaRepository;
 
 public class ClienteRouter extends Router {
 
 	public ClienteRouter(ClienteRepository clienteRepository, RondaRepository rotaRepository) {
 
-		var criarClienteRoute = Route.<Cliente, String>post();
+		var criarClienteRoute = Route.<Cliente, Void>post();
 		criarClienteRoute.url("/ovigia/clientes").contemBody().requestClass(Cliente.class)
 				.rule(new CriarClienteRule(clienteRepository));
 
@@ -31,7 +31,7 @@ public class ClienteRouter extends Router {
 						request.setDataRonda(DataUtil.parseToDataRota(mapa.get("data")));
 						request.setIdCliente(mapa.get("idCliente"));
 					} catch (DataMalFormatadaException e) {
-						throw new IllegalArgumentException(e); 
+						throw new IllegalArgumentException(e);
 					}
 					return request;
 				});

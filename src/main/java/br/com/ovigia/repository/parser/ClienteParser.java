@@ -12,20 +12,11 @@ public class ClienteParser {
 
 	public static Document toDoc(Cliente cliente) {
 
-		var doc = new Document("_id", cliente.getId());
-		doc.append("nome", cliente.getNome());
-		doc.append("email", cliente.getEmail());
-		doc.append("telefone", cliente.getTelefone());
-
-		var localizacao = cliente.getLocalizacao();
-		if (localizacao != null) {
-			var docLocalizacao = LocalizacaoParser.toDoc(localizacao);
-			doc.append("localizacao", docLocalizacao);
-		}
+		var doc = UsuarioParser.toDoc(cliente);
 
 		if (cliente.hasVigias()) {
 			var idVigias = new ArrayList<String>();
-			cliente.getVigias().forEach(id -> idVigias.add(id));
+			cliente.vigias.forEach(id -> idVigias.add(id));
 
 			doc.append("vigias", idVigias);
 		}
@@ -34,15 +25,8 @@ public class ClienteParser {
 	}
 
 	public static Cliente fromDoc(Document doc) {
-
-		var cliente = new Cliente();
-		cliente.setId(doc.getString("_id"));
-		cliente.setNome(doc.getString("nome"));
-		cliente.setEmail(doc.getString("email"));
-		cliente.setTelefone(doc.getString("telefone"));
-		cliente.setLocalizacao(LocalizacaoParser.fromNestedDoc(doc));
-
-		cliente.setVigias(doc.getList("vigias", String.class));
+		var cliente = UsuarioParser.fromDoc(new Cliente(), doc);
+		cliente.vigias = doc.getList("vigias", String.class);
 
 		return cliente;
 	}

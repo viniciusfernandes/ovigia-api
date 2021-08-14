@@ -9,7 +9,7 @@ import br.com.ovigia.businessrule.util.DataUtil;
 import br.com.ovigia.model.IdRonda;
 import br.com.ovigia.model.Localizacao;
 import br.com.ovigia.model.Ronda;
-import br.com.ovigia.repository.RondaRepository;
+import br.com.ovigia.model.repository.RondaRepository;
 
 public class RondaRouter extends Router {
 

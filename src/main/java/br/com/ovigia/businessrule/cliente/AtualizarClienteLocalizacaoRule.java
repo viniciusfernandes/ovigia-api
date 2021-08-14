@@ -5,7 +5,7 @@ import java.util.Date;
 import br.com.ovigia.businessrule.BusinessRule;
 import br.com.ovigia.businessrule.Response;
 import br.com.ovigia.model.Localizacao;
-import br.com.ovigia.repository.ClienteRepository;
+import br.com.ovigia.model.repository.ClienteRepository;
 import reactor.core.publisher.Mono;
 
 public class AtualizarClienteLocalizacaoRule implements BusinessRule<AtualizarClienteLocalizacaoRequest, Void> {

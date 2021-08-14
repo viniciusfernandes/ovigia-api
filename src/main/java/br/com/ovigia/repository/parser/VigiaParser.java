@@ -10,22 +10,15 @@ public class VigiaParser {
 
 	public static Document toDoc(Vigia vigia) {
 
-		var docvigia = new Document("_id", vigia.getId());
-		docvigia.append("nome", vigia.getNome());
-		docvigia.append("email", vigia.getEmail());
-		docvigia.append("telefone", vigia.getTelefone());
-		docvigia.append("localizacao", LocalizacaoParser.toDoc(vigia.getLocalizacao()));
+		var docvigia = new Document("_id", vigia.email);
+		docvigia.append("nome", vigia.nome);
+		docvigia.append("telefone", vigia.telefone);
+		docvigia.append("localizacao", LocalizacaoParser.toDoc(vigia.localizacao));
 		return docvigia;
 	}
 
 	public static Vigia fromDoc(Document doc) {
-		var vigia = new Vigia();
-		vigia.setId(doc.getString("_id"));
-		vigia.setNome(doc.getString("nome"));
-		vigia.setEmail(doc.getString("email"));
-		vigia.setTelefone(doc.getString("telefone"));
-		vigia.setLocalizacao(LocalizacaoParser.fromNestedDoc(doc));
-		return vigia;
+		return UsuarioParser.fromDoc(new Vigia(), doc);
 	}
 
 }

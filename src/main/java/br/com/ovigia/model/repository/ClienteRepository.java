@@ -1,7 +1,6 @@
-package br.com.ovigia.repository;
+package br.com.ovigia.model.repository;
 
 import java.util.Arrays;
-import java.util.UUID;
 
 import org.bson.Document;
 
@@ -21,12 +20,9 @@ public class ClienteRepository {
 		collection = database.getCollection("cliente");
 	}
 
-	public Mono<String> criar(Cliente cliente) {
-		var id = UUID.randomUUID().toString();
-		cliente.setId(id);
-
-		var docCliente = ClienteParser.toDoc(cliente);
-		return Mono.from(collection.insertOne(docCliente)).map(doc -> id);
+	public Mono<Void> criar(Cliente cliente) {
+	 		var doc = ClienteParser.toDoc(cliente);
+		return Mono.from(collection.insertOne(doc)).then();
 	}
 
 	public Mono<Cliente> obterPorId(String idCliente) {

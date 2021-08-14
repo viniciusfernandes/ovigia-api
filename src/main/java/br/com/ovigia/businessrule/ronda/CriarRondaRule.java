@@ -9,7 +9,7 @@ import br.com.ovigia.businessrule.BusinessRule;
 import br.com.ovigia.businessrule.Response;
 import br.com.ovigia.model.IdRonda;
 import br.com.ovigia.model.Ronda;
-import br.com.ovigia.repository.RondaRepository;
+import br.com.ovigia.model.repository.RondaRepository;
 import reactor.core.publisher.Mono;
 
 public class CriarRondaRule implements BusinessRule<CriarRondaRequest, Void> {
