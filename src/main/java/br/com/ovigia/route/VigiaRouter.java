@@ -1,11 +1,11 @@
 package br.com.ovigia.route;
 
-import br.com.ovigia.businessrule.vigia.AtualizarVigiaClienteRule;
-import br.com.ovigia.businessrule.vigia.AtualizarVigiaLocalizacaoRequest;
-import br.com.ovigia.businessrule.vigia.AtualizarVigiaLocalizacaoRule;
-import br.com.ovigia.businessrule.vigia.CriarVigiaRule;
-import br.com.ovigia.businessrule.vigia.ObterVigiaRequest;
-import br.com.ovigia.businessrule.vigia.ObterVigiaRule;
+import br.com.ovigia.businessrule.vigia.atualizar.AtualizarVigiaClienteRule;
+import br.com.ovigia.businessrule.vigia.atualizar.AtualizarVigiaLocalizacaoRequest;
+import br.com.ovigia.businessrule.vigia.atualizar.AtualizarVigiaLocalizacaoRule;
+import br.com.ovigia.businessrule.vigia.criar.CriarVigiaRule;
+import br.com.ovigia.businessrule.vigia.obter.ObterVigiaRequest;
+import br.com.ovigia.businessrule.vigia.obter.ObterVigiaRule;
 import br.com.ovigia.model.Cliente;
 import br.com.ovigia.model.Vigia;
 import br.com.ovigia.model.repository.ClienteRepository;

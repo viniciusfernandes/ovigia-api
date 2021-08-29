@@ -1,4 +1,4 @@
-package br.com.ovigia.businessrule.vigia;
+package br.com.ovigia.businessrule.vigia.atualizar;
 
 public class AtualizarVigiaLocalizacaoRequest {
 	public String email;

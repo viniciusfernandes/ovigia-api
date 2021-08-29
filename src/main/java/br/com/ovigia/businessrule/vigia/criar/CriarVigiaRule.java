@@ -1,4 +1,4 @@
-package br.com.ovigia.businessrule.vigia;
+package br.com.ovigia.businessrule.vigia.criar;
 
 import br.com.ovigia.businessrule.BusinessRule;
 import br.com.ovigia.businessrule.Response;

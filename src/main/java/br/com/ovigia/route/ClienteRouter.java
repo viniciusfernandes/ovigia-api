@@ -2,12 +2,12 @@ package br.com.ovigia.route;
 
 import java.util.List;
 
-import br.com.ovigia.businessrule.cliente.AtualizarClienteLocalizacaoRequest;
-import br.com.ovigia.businessrule.cliente.AtualizarClienteLocalizacaoRule;
-import br.com.ovigia.businessrule.cliente.CalcularFrequenciaRondaRequest;
-import br.com.ovigia.businessrule.cliente.CalcularFrequenciaRondaResponse;
-import br.com.ovigia.businessrule.cliente.CalcularFrequenciaRondasRule;
-import br.com.ovigia.businessrule.cliente.CriarClienteRule;
+import br.com.ovigia.businessrule.cliente.atualizar.AtualizarClienteLocalizacaoRequest;
+import br.com.ovigia.businessrule.cliente.atualizar.AtualizarClienteLocalizacaoRule;
+import br.com.ovigia.businessrule.cliente.calcular.CalcularFrequenciaRondaRequest;
+import br.com.ovigia.businessrule.cliente.calcular.CalcularFrequenciaRondaResponse;
+import br.com.ovigia.businessrule.cliente.calcular.CalcularFrequenciaRondasRule;
+import br.com.ovigia.businessrule.cliente.criar.CriarClienteRule;
 import br.com.ovigia.businessrule.exception.DataMalFormatadaException;
 import br.com.ovigia.businessrule.util.DataUtil;
 import br.com.ovigia.model.Cliente;

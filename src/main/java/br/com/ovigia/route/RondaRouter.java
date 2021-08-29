@@ -1,10 +1,10 @@
 package br.com.ovigia.route;
 
 import br.com.ovigia.businessrule.exception.DataMalFormatadaException;
-import br.com.ovigia.businessrule.ronda.CriarLocalizacaoRule;
-import br.com.ovigia.businessrule.ronda.CriarRondaRequest;
-import br.com.ovigia.businessrule.ronda.CriarRondaRule;
-import br.com.ovigia.businessrule.ronda.ObterRondaRule;
+import br.com.ovigia.businessrule.ronda.criar.CriarLocalizacaoRule;
+import br.com.ovigia.businessrule.ronda.criar.CriarRondaRequest;
+import br.com.ovigia.businessrule.ronda.criar.CriarRondaRule;
+import br.com.ovigia.businessrule.ronda.obter.ObterRondaRule;
 import br.com.ovigia.businessrule.util.DataUtil;
 import br.com.ovigia.model.IdRonda;
 import br.com.ovigia.model.Localizacao;

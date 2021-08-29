@@ -32,13 +32,13 @@ import br.com.ovigia.route.VigiaRouter;
 
 @SpringBootApplication
 @ComponentScan(basePackages = "br.com.ovigia.error")
-public class Application {
+public class OvigiaApplication {
 	@Autowired
 	private GenericApplicationContext context;
 	private String secretKey = "ThisIsSecretForJWTHS512SignatureAlgorithmThatMUSTHave64ByteLength";
 
 	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
+		SpringApplication.run(OvigiaApplication.class, args);
 
 	}
 

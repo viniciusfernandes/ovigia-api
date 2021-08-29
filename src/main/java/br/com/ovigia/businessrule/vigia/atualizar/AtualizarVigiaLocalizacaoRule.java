@@ -1,4 +1,4 @@
-package br.com.ovigia.businessrule.vigia;
+package br.com.ovigia.businessrule.vigia.atualizar;
 
 import java.util.Date;
 

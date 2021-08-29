@@ -1,4 +1,4 @@
-package br.com.ovigia.businessrule.cliente;
+package br.com.ovigia.businessrule.cliente.atualizar;
 
 public class AtualizarClienteLocalizacaoRequest {
 	public String idCliente;

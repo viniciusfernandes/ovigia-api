@@ -1,4 +1,4 @@
-package br.com.ovigia.businessrule.ronda;
+package br.com.ovigia.businessrule.ronda.criar;
 
 import static br.com.ovigia.businessrule.util.DataUtil.gerarData;
 

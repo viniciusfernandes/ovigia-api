@@ -1,4 +1,4 @@
-package br.com.ovigia.businessrule.cliente;
+package br.com.ovigia.businessrule.cliente.calcular;
 
 public class CalcularFrequenciaRondaResponse {
 	private String idVigia;

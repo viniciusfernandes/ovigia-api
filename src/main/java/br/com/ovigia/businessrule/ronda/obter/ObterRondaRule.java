@@ -1,4 +1,4 @@
-package br.com.ovigia.businessrule.ronda;
+package br.com.ovigia.businessrule.ronda.obter;
 
 import br.com.ovigia.businessrule.BusinessRule;
 import br.com.ovigia.businessrule.Response;
