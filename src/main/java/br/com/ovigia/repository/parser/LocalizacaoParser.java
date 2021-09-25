@@ -9,16 +9,13 @@ public class LocalizacaoParser {
 	}
 
 	public static Document toDoc(Localizacao localizacao) {
-
-		var docLocalizacao = new Document("latitude", localizacao.getLatitude());
-		docLocalizacao.append("longitude", localizacao.getLongitude());
-		docLocalizacao.append("data", localizacao.getData());
-
+		var docLocalizacao = new Document("latitude", localizacao.latitude);
+		docLocalizacao.append("longitude", localizacao.longitude);
+		docLocalizacao.append("data", localizacao.data);
 		return docLocalizacao;
 	}
 
 	public static Localizacao fromNestedDoc(Document doc) {
-
 		var docLoc = doc.get("localizacao", Document.class);
 		if (docLoc != null) {
 			return fromDoc(docLoc);
@@ -28,12 +25,10 @@ public class LocalizacaoParser {
 	}
 
 	public static Localizacao fromDoc(Document doc) {
-
 		var localizacao = new Localizacao();
-		localizacao.setLatitude(doc.getDouble("latitude"));
-		localizacao.setLongitude(doc.getDouble("longitude"));
-		localizacao.setData(doc.getDate("data"));
-
+		localizacao.latitude = doc.getDouble("latitude");
+		localizacao.longitude = doc.getDouble("longitude");
+		localizacao.data = doc.getDate("data");
 		return localizacao;
 	}
 

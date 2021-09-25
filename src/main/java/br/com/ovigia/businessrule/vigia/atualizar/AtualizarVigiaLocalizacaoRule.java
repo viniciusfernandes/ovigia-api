@@ -18,9 +18,9 @@ public class AtualizarVigiaLocalizacaoRule implements BusinessRule<AtualizarVigi
 	@Override
 	public Mono<Response<Void>> apply(AtualizarVigiaLocalizacaoRequest request) {
 		var localizacao = new Localizacao();
-		localizacao.setData(new Date());
-		localizacao.setLatitude(request.latitude);
-		localizacao.setLongitude(request.longitude);
+		localizacao.data = new Date();
+		localizacao.latitude = request.latitude;
+		localizacao.longitude = request.longitude;
 		return repository.atualizarLocalizacaoPorId(request.email, localizacao).map(id -> Response.nonResult());
 	}
 }

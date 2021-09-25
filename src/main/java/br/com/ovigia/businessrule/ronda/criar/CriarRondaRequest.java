@@ -1,13 +1,12 @@
 package br.com.ovigia.businessrule.ronda.criar;
 
+import java.util.Date;
+import java.util.List;
+
+import br.com.ovigia.model.Localizacao;
+
 public class CriarRondaRequest {
-	private String idVigia;
-
-	public String getIdVigia() {
-		return idVigia;
-	}
-
-	public void setIdVigia(String idVigia) {
-		this.idVigia = idVigia;
-	}
+	public Date data;
+	public String idVigia;
+	public List<Localizacao> localizacoes;
 }

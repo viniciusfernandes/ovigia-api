@@ -21,8 +21,8 @@ public class CriarLocalizacaoRule implements BusinessRule<Localizacao, Void> {
 	@Override
 	public Mono<Response<Void>> apply(Localizacao localizacao) {
 		var dataAtual = new Date();
-		localizacao.setHora(dataAtual);
-		return repository.criarLocalizacao(localizacao.getIdVigia(), gerarData(dataAtual), localizacao)
+		localizacao.timestamp = dataAtual;
+		return repository.criarLocalizacao(localizacao.idVigia, gerarData(dataAtual), localizacao)
 				.map(id -> Response.ok(id));
 	}
 

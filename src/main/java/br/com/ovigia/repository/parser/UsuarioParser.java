@@ -11,13 +11,14 @@ public class UsuarioParser {
 
 	public static Document toDoc(Usuario usuario) {
 
-		var doc = new Document("_id", usuario.email);
+		var doc = new Document("_id", usuario.id);
 		doc.append("nome", usuario.nome);
+		doc.append("email", usuario.email);
 		doc.append("telefone", usuario.telefone);
 		if (usuario.tipoUsuario != null) {
 			doc.append("tipoUsuario", usuario.tipoUsuario.toString());
 		}
-		
+
 		if (usuario.password != null) {
 			doc.append("password", usuario.password);
 		}
@@ -30,16 +31,22 @@ public class UsuarioParser {
 		return doc;
 	}
 
-	public static <T extends Usuario> T fromDoc(T t, Document doc) {
-		t.nome = doc.getString("nome");
-		t.email = doc.getString("_id");
-		t.telefone = doc.getString("telefone");
+	public static <T extends Usuario> T fromDoc(T usuario, Document doc) {
+		usuario.id = doc.getString("_id");
+		usuario.nome = doc.getString("nome");
+		usuario.email = doc.getString("email");
+
+		usuario.telefone = doc.getString("telefone");
 		var tipo = doc.getString("tipoUsuario");
 		if (tipo != null) {
-			t.tipoUsuario = TipoUsuario.valueOf(tipo);
+			usuario.tipoUsuario = TipoUsuario.valueOf(tipo);
 		}
-		t.localizacao = LocalizacaoParser.fromNestedDoc(doc);
-		return t;
+		usuario.localizacao = LocalizacaoParser.fromNestedDoc(doc);
+		return usuario;
+	}
+
+	public static Usuario fromDoc(Document doc) {
+		return fromDoc(new Usuario(), doc);
 	}
 
 }

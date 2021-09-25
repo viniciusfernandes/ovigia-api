@@ -4,6 +4,7 @@ import br.com.ovigia.model.enumeration.TipoUsuario;
 
 public class Usuario {
 	// ID FIELD
+	public String id;
 	public String email;
 	public String nome;
 	public String telefone;
