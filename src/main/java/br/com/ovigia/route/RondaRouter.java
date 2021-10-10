@@ -2,6 +2,7 @@ package br.com.ovigia.route;
 
 import br.com.ovigia.businessrule.exception.DataMalFormatadaException;
 import br.com.ovigia.businessrule.ronda.criar.CriarRondaRequest;
+import br.com.ovigia.businessrule.ronda.criar.CriarRondaResponse;
 import br.com.ovigia.businessrule.ronda.criar.CriarRondaRule;
 import br.com.ovigia.businessrule.ronda.obter.ObterRondaRule;
 import br.com.ovigia.businessrule.util.DataUtil;
@@ -12,15 +13,8 @@ import br.com.ovigia.model.repository.RondaRepository;
 public class RondaRouter extends Router {
 
 	public RondaRouter(RondaRepository repository) {
-		var criarLocalizacoesRoute = Route.<CriarRondaRequest, Void>post();
-		criarLocalizacoesRoute.url("/ovigia/vigias/{idVigia}/localizacoes").contemBody()
-				.requestClass(CriarRondaRequest.class).extractFromPath((mapa, request) -> {
-					request.idVigia = mapa.get("idVigia");
-					return request;
-				}).rule(new CriarRondaRule(repository));
-
-		var criarRondaRoute = Route.<CriarRondaRequest, Void>post();
-		criarRondaRoute.url("ovigia/vigias/{idVigia}/rondas").requestClass(CriarRondaRequest.class)
+		var criarRondaRoute = Route.<CriarRondaRequest, CriarRondaResponse>post();
+		criarRondaRoute.url("/ovigia/vigias/{idVigia}/rondas").contemBody().requestClass(CriarRondaRequest.class)
 				.extractFromPath((mapa, request) -> {
 					request.idVigia = mapa.get("idVigia");
 					return request;
@@ -38,7 +32,6 @@ public class RondaRouter extends Router {
 					return request;
 				}).rule(new ObterRondaRule(repository));
 
-		addRoute(criarLocalizacoesRoute);
 		addRoute(criarRondaRoute);
 		addRoute(obterRondaRoute);
 	}

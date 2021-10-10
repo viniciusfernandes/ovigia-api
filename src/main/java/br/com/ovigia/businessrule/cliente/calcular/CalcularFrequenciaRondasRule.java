@@ -8,6 +8,7 @@ import br.com.ovigia.businessrule.Response;
 import br.com.ovigia.businessrule.util.DataUtil;
 import br.com.ovigia.model.IdRonda;
 import br.com.ovigia.model.Localizacao;
+import br.com.ovigia.model.calculadora.CalculadoraDistancia;
 import br.com.ovigia.model.repository.ClienteRepository;
 import br.com.ovigia.model.repository.RondaRepository;
 import reactor.core.publisher.Flux;
@@ -23,6 +24,8 @@ public class CalcularFrequenciaRondasRule
 	private final long tolerancia = 5 * 60 * 1000;
 	private ClienteRepository clienteRepository;
 	private RondaRepository rotaRepository;
+
+	private CalculadoraDistancia calculadoraDistancia = CalculadoraDistancia.calculadoraEsferica();
 
 	public CalcularFrequenciaRondasRule(ClienteRepository clienteRepository, RondaRepository rotaRepository) {
 		this.clienteRepository = clienteRepository;
@@ -54,7 +57,7 @@ public class CalcularFrequenciaRondasRule
 		// AQUI ESTAMOS CONSIDERANDO QUE AS ROTAS ESTAO ORDENADAS PELA DATA E HORA DE
 		// INCLUSAO
 		for (var locVigia : localizacoesVigia) {
-			isDistanciaOK = localizacaoCliente.distanciaOf(locVigia) <= distanciaMinima;
+			isDistanciaOK = calculadoraDistancia.isDistanciaOk(locVigia, localizacaoCliente, distanciaMinima);
 			if (isDistanciaOK && (dataInicio == null || isDataForaIntervalo(dataInicio, locVigia.timestamp))) {
 				dataInicio = locVigia.timestamp;
 				totalRondas++;
