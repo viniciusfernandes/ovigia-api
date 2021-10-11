@@ -1,5 +1,8 @@
 package br.com.ovigia.repository.parser;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bson.Document;
 
 import br.com.ovigia.model.Localizacao;
@@ -11,8 +14,14 @@ public class LocalizacaoParser {
 	public static Document toDoc(Localizacao localizacao) {
 		var docLocalizacao = new Document("latitude", localizacao.latitude);
 		docLocalizacao.append("longitude", localizacao.longitude);
-		docLocalizacao.append("data", localizacao.data);
+		docLocalizacao.append("timestamp", localizacao.timestamp);
 		return docLocalizacao;
+	}
+
+	public static List<Document> toDoc(List<Localizacao> localizacoes) {
+		var docLocalizacoes = new ArrayList<Document>(localizacoes.size());
+		localizacoes.forEach(locl -> docLocalizacoes.add(toDoc(locl)));
+		return docLocalizacoes;
 	}
 
 	public static Localizacao fromNestedDoc(Document doc) {

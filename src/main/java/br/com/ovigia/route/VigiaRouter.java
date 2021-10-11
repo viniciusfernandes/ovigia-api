@@ -25,6 +25,14 @@ public class VigiaRouter extends Router {
 					return request;
 				}).rule(new ObterVigiaRule(vigiaRepository));
 
+		var obterVigiaLocalizacaoRoute = Route.<ObterVigiaRequest, Vigia>get();
+		obterVigiaRoute.url("/ovigia/vigias/localizacao").requestClass(ObterVigiaRequest.class)
+				.extractFromPath((mapa, request) -> {
+					request.email = mapa.get("idVigia");
+					return request;
+				}).rule(new ObterVigiaRule(vigiaRepository));
+
+		
 		var atualizarVigiaClienteRoute = Route.<Cliente, Void>patch();
 		atualizarVigiaClienteRoute.url("/ovigia/vigias/{idVigia}/clientes").contemBody().requestClass(Cliente.class)
 				.extractFromPath((mapa, request) -> {
@@ -43,6 +51,7 @@ public class VigiaRouter extends Router {
 		addRoute(obterVigiaRoute);
 		addRoute(atualizarVigiaClienteRoute);
 		addRoute(atualizarVigiaLocRoute);
+	//	addRoute(obterVigiaLocalizacaoRoute );
 	}
 
 }

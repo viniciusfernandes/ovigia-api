@@ -11,6 +11,7 @@ import br.com.ovigia.model.Vigia;
 import br.com.ovigia.repository.parser.ClienteParser;
 import br.com.ovigia.repository.parser.LocalizacaoParser;
 import br.com.ovigia.repository.parser.VigiaParser;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public class VigiaRepository {
@@ -29,7 +30,12 @@ public class VigiaRepository {
 		var mvigia = collection.find(new Document("_id", idVigia));
 		return Mono.from(mvigia).map(doc -> VigiaParser.fromDoc(doc));
 	}
-
+	
+	public Flux<Vigia> obterPorLocalizacao(Long latitude ,Long longitude) {
+		return null; 
+	//	return Mono.from(mvigia).map(doc -> VigiaParser.fromDoc(doc));
+	}
+	
 	public Mono<Void> atualizarCliente(String idVigia, Cliente cliente) {
 		var docId = new Document("_id", idVigia);
 		var docCliente = ClienteParser.toDoc(cliente);

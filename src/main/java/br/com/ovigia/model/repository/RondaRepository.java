@@ -1,6 +1,7 @@
 package br.com.ovigia.model.repository;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import br.com.ovigia.model.Localizacao;
 import br.com.ovigia.model.Ronda;
 import br.com.ovigia.repository.parser.LocalizacaoParser;
 import reactor.core.publisher.Mono;
+import static br.com.ovigia.repository.parser.RondaParser.*;
 
 public class RondaRepository {
 	private final MongoCollection<Document> collection;
@@ -32,9 +34,7 @@ public class RondaRepository {
 	}
 
 	public Mono<Void> criar(Ronda ronda) {
-		var docRota = toIdDoc(ronda.id);
-		docRota.append("localizacoes", new ArrayList<>());
-
+		var docRota = toDoc(ronda);
 		return Mono.from(collection.insertOne(docRota)).then();
 	}
 
@@ -57,12 +57,4 @@ public class RondaRepository {
 		});
 	}
 
-	private Document toIdDoc(IdRonda id) {
-		return toIdDoc(id.idVigia, id.data);
-	}
-
-	private Document toIdDoc(String idVigia, Date data) {
-		var value = new Document().append("idVigia", idVigia).append("data", data);
-		return new Document("_id", value);
-	}
 }

@@ -1,5 +1,7 @@
 package br.com.ovigia.businessrule.ronda.criar;
 
+import java.util.Date;
+
 import br.com.ovigia.businessrule.BusinessRule;
 import br.com.ovigia.businessrule.Response;
 import br.com.ovigia.model.IdRonda;
@@ -20,7 +22,7 @@ public class CriarRondaRule implements BusinessRule<CriarRondaRequest, CriarRond
 	@Override
 	public Mono<Response<CriarRondaResponse>> apply(CriarRondaRequest request) {
 		var ronda = new Ronda();
-		ronda.id = new IdRonda(request.idVigia, request.data);
+		ronda.id = new IdRonda(request.idVigia, new Date());
 		ronda.localizacoes = request.localizacoes;
 		ronda.fim = request.fim;
 		ronda.inicio = request.inicio;
