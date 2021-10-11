@@ -52,7 +52,7 @@ public class CalcularFrequenciaRondasRule
 		localizacoesVigia.sort((loc1, loc2) -> loc1.timestamp.compareTo(loc2.timestamp));
 
 		int totalRondas = 0;
-		Date dataInicio = null;
+		Long dataInicio = null;
 		boolean isDistanciaOK = false;
 		// AQUI ESTAMOS CONSIDERANDO QUE AS ROTAS ESTAO ORDENADAS PELA DATA E HORA DE
 		// INCLUSAO
@@ -66,8 +66,8 @@ public class CalcularFrequenciaRondasRule
 		return totalRondas;
 	}
 
-	private boolean isDataForaIntervalo(Date dataAntes, Date dataDepois) {
-		return Math.abs(dataAntes.getTime() - dataDepois.getTime()) >= tolerancia;
+	private boolean isDataForaIntervalo(long dataAntes, long dataDepois) {
+		return Math.abs(dataAntes - dataDepois) >= tolerancia;
 	}
 
 	private Mono<List<CalcularFrequenciaRondaResponse>> processarRotasPorId(List<String> idsVigias, Date data,

@@ -17,7 +17,8 @@ public class AtualizarClienteLocalizacaoRule implements BusinessRule<AtualizarCl
 
 	@Override
 	public Mono<Response<Void>> apply(AtualizarClienteLocalizacaoRequest clienteLocalizacao) {
-		var localizacao = new Localizacao(new Date(), clienteLocalizacao.latitude, clienteLocalizacao.longitude);
+		var localizacao = new Localizacao(new Date().getTime(), clienteLocalizacao.latitude,
+				clienteLocalizacao.longitude);
 		return repository.atualizarLocalizacaoPorId(clienteLocalizacao.idCliente, localizacao)
 				.map(id -> Response.nonResult());
 	}

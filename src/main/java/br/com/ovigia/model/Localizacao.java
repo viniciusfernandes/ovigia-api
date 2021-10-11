@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class Localizacao {
 
-	public Date timestamp;
+	public Long timestamp;
 	public Double latitude;
 	public Double longitude;
 	public Double velocidade;
@@ -20,8 +20,8 @@ public class Localizacao {
 	public Localizacao() {
 	}
 
-	public Localizacao(Date hora, Double latitude, Double longitude) {
-		this.timestamp = hora;
+	public Localizacao(Long timestamp, Double latitude, Double longitude) {
+		this.timestamp = timestamp;
 		this.latitude = latitude;
 		this.longitude = longitude;
 	}

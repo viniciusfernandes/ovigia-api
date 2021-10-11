@@ -7,6 +7,8 @@ import br.com.ovigia.model.Localizacao;
 
 public class CriarRondaRequest {
 	public Date data;
+	public Date inicio;
+	public Date fim;
 	public String idVigia;
 	public List<Localizacao> localizacoes;
 }

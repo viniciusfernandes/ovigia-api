@@ -1,9 +1,14 @@
 package br.com.ovigia.model.calculadora;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 import br.com.ovigia.model.Localizacao;
 import br.com.ovigia.model.Ronda;
 
 public abstract class CalculadoraDistancia {
+	public final static double MILISEGUNDOS_TO_HORAS_RATE = 1000.0 * 3600.d;
+
 	public double calcularDistancia(Ronda ronda) {
 		double totDist = 0;
 		var localizacoes = ronda.localizacoes;
@@ -20,7 +25,31 @@ public abstract class CalculadoraDistancia {
 			}
 		}
 
-		return totDist;
+		return round(totDist);
+	}
+
+	public TempoEscala calcularTempo(Ronda ronda) {
+		System.out.println(ronda.fim);
+		System.out.println(ronda.inicio);
+		var intervalo = (ronda.fim.getTime() - ronda.inicio.getTime()) / MILISEGUNDOS_TO_HORAS_RATE;
+
+		var escala = EscalaTemporal.HORAS;
+		if (intervalo < 0.09) {
+			intervalo *= 60.0;
+			escala = EscalaTemporal.MINUTOS;
+
+			if (intervalo < 0.9) {
+				intervalo *= 60.0;
+				escala = EscalaTemporal.SEGUNDOS;
+			}
+		}
+
+		intervalo = round(intervalo);
+		return new TempoEscala(intervalo, escala.getPrefixo());
+	}
+
+	public double calcularTempo(Localizacao loc1, Localizacao loc2) {
+		return (loc1.timestamp - loc2.timestamp) / MILISEGUNDOS_TO_HORAS_RATE;
 	}
 
 	public abstract double distanciaOf(Localizacao loc1, Localizacao loc2);
@@ -35,5 +64,23 @@ public abstract class CalculadoraDistancia {
 
 	public static CalculadoraDistancia calculadoraEsferica() {
 		return new CalculadoraDistanciaEsferica();
+	}
+
+	public double round(double value) {
+		return new BigDecimal(value).setScale(1, RoundingMode.HALF_UP).doubleValue();
+	}
+}
+
+enum EscalaTemporal {
+	SEGUNDOS('s'), MINUTOS('m'), HORAS('h');
+
+	private char prefixo;
+
+	private EscalaTemporal(char prefixo) {
+		this.prefixo = prefixo;
+	}
+
+	public char getPrefixo() {
+		return prefixo;
 	}
 }

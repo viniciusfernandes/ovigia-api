@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import br.com.ovigia.model.calculadora.CalculadoraDistancia;
-
 public class Ronda {
 	public IdRonda id;
+	public Date inicio;
+	public Date fim;
 	public List<Localizacao> localizacoes = new ArrayList<>();
 
 	public Ronda() {
@@ -34,17 +34,4 @@ public class Ronda {
 		}
 		return id.data;
 	}
-
-//	public static void main(String... d) {
-//		var ronda = new Ronda();
-//		ronda.add(new Localizacao(new Date(), -23.68178d, -46.62335));
-//		ronda.add(new Localizacao(new Date(), -23.68133d, -46.62325));
-//		ronda.add(new Localizacao(new Date(), -23.68186d, -46.62286));
-//		ronda.add(new Localizacao(new Date(), -23.68007d, -46.62029));
-//
-//		var calcEuclid = CalculadoraDistancia.calculadoraEuclidiana();
-//		var calcEsfer = CalculadoraDistancia.calculadoraEsferica();
-//		System.out.println(calcEuclid.calcularDistancia(ronda));
-//		System.out.println(calcEsfer.calcularDistancia(ronda));
-//	}
 }

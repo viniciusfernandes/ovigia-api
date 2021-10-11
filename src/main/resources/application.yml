@@ -8,4 +8,4 @@ logging:
 
 spring:
   codec:
-    max-in-memory-size: 20MB
+    max-in-memory-size: 15MB

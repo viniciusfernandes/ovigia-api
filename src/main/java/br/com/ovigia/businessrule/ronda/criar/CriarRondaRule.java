@@ -22,8 +22,12 @@ public class CriarRondaRule implements BusinessRule<CriarRondaRequest, CriarRond
 		var ronda = new Ronda();
 		ronda.id = new IdRonda(request.idVigia, request.data);
 		ronda.localizacoes = request.localizacoes;
+		ronda.fim = request.fim;
+		ronda.inicio = request.inicio;
 
-		var response = new CriarRondaResponse(calculadoraDistancia.calcularDistancia(ronda));
+		var distancia = calculadoraDistancia.calcularDistancia(ronda);
+		var tempoEscala = calculadoraDistancia.calcularTempo(ronda);
+		var response = new CriarRondaResponse(distancia, tempoEscala.tempo, tempoEscala.escala);
 		return repository.criar(ronda).thenReturn(Response.ok(response));
 	}
 
