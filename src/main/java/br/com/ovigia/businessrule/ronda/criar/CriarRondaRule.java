@@ -1,6 +1,6 @@
 package br.com.ovigia.businessrule.ronda.criar;
 
-import java.util.Date;
+import static br.com.ovigia.businessrule.util.DataUtil.gerarData;
 
 import br.com.ovigia.businessrule.BusinessRule;
 import br.com.ovigia.businessrule.Response;
@@ -22,15 +22,24 @@ public class CriarRondaRule implements BusinessRule<CriarRondaRequest, CriarRond
 	@Override
 	public Mono<Response<CriarRondaResponse>> apply(CriarRondaRequest request) {
 		var ronda = new Ronda();
-		ronda.id = new IdRonda(request.idVigia, new Date());
+		ronda.id = new IdRonda(request.idVigia, gerarData());
 		ronda.localizacoes = request.localizacoes;
 		ronda.fim = request.fim;
 		ronda.inicio = request.inicio;
 
-		var distancia = calculadoraDistancia.calcularDistancia(ronda);
-		var tempoEscala = calculadoraDistancia.calcularTempo(ronda);
-		var response = new CriarRondaResponse(distancia, tempoEscala.tempo, tempoEscala.escala);
-		return repository.criar(ronda).thenReturn(Response.ok(response));
+		return repository.contemRonda(ronda.id).flatMap(contem -> {
+			Mono<Void> mono = null;
+			if (contem) {
+				mono = repository.atualizarLocalizacoes(ronda);
+			} else {
+				mono = repository.criar(ronda);
+			}
+
+			var distancia = calculadoraDistancia.calcularDistancia(ronda);
+			var tempoEscala = calculadoraDistancia.calcularTempo(ronda);
+			var response = new CriarRondaResponse(distancia, tempoEscala.tempo, tempoEscala.escala);
+			return mono.thenReturn(Response.ok(response));
+		});
 	}
 
 }

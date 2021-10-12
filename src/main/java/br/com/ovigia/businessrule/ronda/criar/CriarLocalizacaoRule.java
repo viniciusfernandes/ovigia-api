@@ -1,6 +1,6 @@
 package br.com.ovigia.businessrule.ronda.criar;
 
-import static br.com.ovigia.businessrule.util.DataUtil.gerarData;
+import static br.com.ovigia.businessrule.util.DataUtil.ajustarData;
 
 import java.util.Date;
 
@@ -22,7 +22,7 @@ public class CriarLocalizacaoRule implements BusinessRule<Localizacao, Void> {
 	public Mono<Response<Void>> apply(Localizacao localizacao) {
 		var dataAtual = new Date();
 		localizacao.timestamp = dataAtual.getTime();
-		return repository.criarLocalizacao(localizacao.idVigia, gerarData(dataAtual), localizacao)
+		return repository.criarLocalizacao(localizacao.idVigia, ajustarData(dataAtual), localizacao)
 				.map(id -> Response.ok(id));
 	}
 

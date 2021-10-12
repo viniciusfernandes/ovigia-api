@@ -1,6 +1,8 @@
 package br.com.ovigia.model.repository;
 
-import java.util.ArrayList;
+import static br.com.ovigia.repository.parser.RondaParser.*;
+import static br.com.ovigia.repository.parser.RondaParser.toIdDoc;
+
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -15,7 +17,6 @@ import br.com.ovigia.model.Localizacao;
 import br.com.ovigia.model.Ronda;
 import br.com.ovigia.repository.parser.LocalizacaoParser;
 import reactor.core.publisher.Mono;
-import static br.com.ovigia.repository.parser.RondaParser.*;
 
 public class RondaRepository {
 	private final MongoCollection<Document> collection;
@@ -57,4 +58,19 @@ public class RondaRepository {
 		});
 	}
 
+	public Mono<Boolean> contemRonda(IdRonda id) {
+		var match = new Document("$match", toIdDoc(id));
+		var fields = new Document("_id", 1);
+		var project = new Document("$project", fields);
+
+		var list = Arrays.asList(match, project);
+		return Mono.from(collection.aggregate(list)).map(ronda -> true).switchIfEmpty(Mono.just(false));
+	}
+
+	public Mono<Void> atualizarLocalizacoes(Ronda ronda) {
+		var each = new Document("$each", LocalizacaoParser.toDoc(ronda.localizacoes));
+		var docLocalizacoes = new Document("localizacoes", each);
+		var update = new Document("$push", docLocalizacoes).append("$set", new Document("fim", ronda.fim	));
+		return Mono.from(collection.updateOne(toIdDoc(ronda.id), update)).then();
+	}
 }

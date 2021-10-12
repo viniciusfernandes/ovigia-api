@@ -29,8 +29,6 @@ public abstract class CalculadoraDistancia {
 	}
 
 	public TempoEscala calcularTempo(Ronda ronda) {
-		System.out.println(ronda.fim);
-		System.out.println(ronda.inicio);
 		var intervalo = (ronda.fim.getTime() - ronda.inicio.getTime()) / MILISEGUNDOS_TO_HORAS_RATE;
 
 		var escala = EscalaTemporal.HORAS;

@@ -35,7 +35,7 @@ public class CalcularFrequenciaRondasRule
 	@Override
 	public Mono<Response<List<CalcularFrequenciaRondaResponse>>> apply(
 			CalcularFrequenciaRondaRequest calculoFrequencia) {
-		var data = DataUtil.gerarData(calculoFrequencia.getDataRonda());
+		var data = DataUtil.ajustarData(calculoFrequencia.getDataRonda());
 
 		return clienteRepository.obterVigiasELocalizacao(calculoFrequencia.getIdCliente())
 				.flatMap(cliente -> processarRotasPorId(cliente.vigias, data, cliente.localizacao))
