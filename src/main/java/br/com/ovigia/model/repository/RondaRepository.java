@@ -70,7 +70,7 @@ public class RondaRepository {
 	public Mono<Void> atualizarLocalizacoes(Ronda ronda) {
 		var each = new Document("$each", LocalizacaoParser.toDoc(ronda.localizacoes));
 		var docLocalizacoes = new Document("localizacoes", each);
-		var update = new Document("$push", docLocalizacoes).append("$set", new Document("fim", ronda.fim	));
+		var update = new Document("$push", docLocalizacoes).append("$set", new Document("fim", ronda.fim));
 		return Mono.from(collection.updateOne(toIdDoc(ronda.id), update)).then();
 	}
 }

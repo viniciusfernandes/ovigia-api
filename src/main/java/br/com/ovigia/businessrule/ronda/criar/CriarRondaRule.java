@@ -35,11 +35,14 @@ public class CriarRondaRule implements BusinessRule<CriarRondaRequest, CriarRond
 				mono = repository.criar(ronda);
 			}
 
-			var distancia = calculadoraDistancia.calcularDistancia(ronda);
-			var tempoEscala = calculadoraDistancia.calcularTempo(ronda);
-			var response = new CriarRondaResponse(distancia, tempoEscala.tempo, tempoEscala.escala);
-			return mono.thenReturn(Response.ok(response));
+			return mono.thenReturn(Response.ok(gerarResponse(ronda)));
 		});
+	}
+
+	private CriarRondaResponse gerarResponse(Ronda ronda) {
+		var distancia = calculadoraDistancia.calcularDistancia(ronda);
+		var tempoEscala = calculadoraDistancia.calcularTempo(ronda);
+		return new CriarRondaResponse(distancia, tempoEscala.tempo, tempoEscala.escala);
 	}
 
 }
