@@ -20,10 +20,14 @@ public class Localizacao {
 	public Localizacao() {
 	}
 
-	public Localizacao(Long timestamp, Double latitude, Double longitude) {
-		this.timestamp = timestamp;
+	public Localizacao(Double latitude, Double longitude) {
 		this.latitude = latitude;
 		this.longitude = longitude;
+	}
+
+	public Localizacao(Long timestamp, Double latitude, Double longitude) {
+		this(latitude, longitude);
+		this.timestamp = timestamp;
 	}
 
 }

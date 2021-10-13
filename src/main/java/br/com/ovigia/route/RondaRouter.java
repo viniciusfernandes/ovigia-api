@@ -13,15 +13,15 @@ import br.com.ovigia.model.repository.RondaRepository;
 public class RondaRouter extends Router {
 
 	public RondaRouter(RondaRepository repository) {
-		var criarRondaRoute = Route.<CriarRondaRequest, CriarRondaResponse>post();
-		criarRondaRoute.url("/ovigia/vigias/{idVigia}/rondas").contemBody().requestClass(CriarRondaRequest.class)
+		var criarRonda = Route.<CriarRondaRequest, CriarRondaResponse>post();
+		criarRonda.url("/ovigia/vigias/{idVigia}/rondas").contemBody().requestClass(CriarRondaRequest.class)
 				.extractFromPath((mapa, request) -> {
 					request.idVigia = mapa.get("idVigia");
 					return request;
 				}).rule(new CriarRondaRule(repository));
 
-		var obterRondaRoute = Route.<Id, Ronda>get();
-		obterRondaRoute.url("ovigia/vigias/{idVigia}/rondas/{data}").requestClass(Id.class)
+		var obterRonda = Route.<Id, Ronda>get();
+		obterRonda.url("ovigia/vigias/{idVigia}/rondas/{data}").requestClass(Id.class)
 				.extractFromPath((mapa, request) -> {
 					try {
 						request.data = DataUtil.parseToDataRota(mapa.get("data"));
@@ -32,8 +32,8 @@ public class RondaRouter extends Router {
 					return request;
 				}).rule(new ObterRondaRule(repository));
 
-		addRoute(criarRondaRoute);
-		addRoute(obterRondaRoute);
+		addRoute(criarRonda);
+		addRoute(obterRonda);
 	}
 
 }

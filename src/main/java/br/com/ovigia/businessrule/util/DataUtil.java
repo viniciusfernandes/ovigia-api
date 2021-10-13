@@ -12,8 +12,9 @@ import org.springframework.dao.DataAccessResourceFailureException;
 import br.com.ovigia.businessrule.exception.DataMalFormatadaException;
 
 public class DataUtil {
-	public static String dataRotaPadrao = "dd-MM-yyyy";
-	private static DateFormat format = new SimpleDateFormat(dataRotaPadrao);
+	private static final String DATA_PATTERN = "dd-MM-yyyy";
+	private static final DateFormat DATA_FORMATTER = new SimpleDateFormat(DATA_PATTERN);
+	private static final DateFormat DATA_HORA_FORMATTER = new SimpleDateFormat("dd/MM/yyyyHH:mm");
 
 	public static Date ajustarData(Date data) {
 		var cal = Calendar.getInstance(TimeZone.getTimeZone("America/Sao_Paulo"));
@@ -32,12 +33,18 @@ public class DataUtil {
 	public static Date parseToDataRota(String data) throws DataMalFormatadaException {
 		Date dataRota;
 		try {
-			dataRota = format.parse(data);
+			dataRota = DATA_FORMATTER.parse(data);
 		} catch (ParseException e) {
 			throw new DataAccessResourceFailureException(
-					String.format("Data %s mal formatada. Ela deve estar no padrao %s", data, dataRotaPadrao), e);
+					String.format("Data %s mal formatada. Ela deve estar no padrao %s", data, DATA_PATTERN), e);
 		}
 		return ajustarData(dataRota);
 	}
 
+	public static DataHora gerarDataHora(Date date) {
+		var dataHora = DATA_HORA_FORMATTER.format(date);
+		var data = dataHora.substring(0, 10);
+		var hora = dataHora.substring(10);
+		return new DataHora(data, hora);
+	}
 }

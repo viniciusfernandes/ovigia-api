@@ -8,6 +8,9 @@ public class Chamado {
 	public String id;
 	public Date data;
 	public String idCliente;
+	public String nomeCliente;
 	public String idVigia;
+	public String logradouro;
+	public Localizacao localizacao;
 	public TipoSituacaoChamado situacao;
 }
