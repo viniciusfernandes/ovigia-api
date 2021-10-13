@@ -4,7 +4,7 @@ import java.util.Date;
 
 import org.bson.Document;
 
-import br.com.ovigia.model.IdRonda;
+import br.com.ovigia.model.Id;
 import br.com.ovigia.model.Ronda;
 import br.com.ovigia.model.Vigia;
 
@@ -24,7 +24,7 @@ public class RondaParser {
 		return UsuarioParser.fromDoc(new Vigia(), doc);
 	}
 
-	public static Document toIdDoc(IdRonda id) {
+	public static Document toIdDoc(Id id) {
 		return toIdDoc(id.idVigia, id.data);
 	}
 

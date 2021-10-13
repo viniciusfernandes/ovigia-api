@@ -4,7 +4,7 @@ import static br.com.ovigia.businessrule.util.DataUtil.gerarData;
 
 import br.com.ovigia.businessrule.BusinessRule;
 import br.com.ovigia.businessrule.Response;
-import br.com.ovigia.model.IdRonda;
+import br.com.ovigia.model.Id;
 import br.com.ovigia.model.Ronda;
 import br.com.ovigia.model.calculadora.CalculadoraDistancia;
 import br.com.ovigia.model.repository.RondaRepository;
@@ -22,7 +22,7 @@ public class CriarRondaRule implements BusinessRule<CriarRondaRequest, CriarRond
 	@Override
 	public Mono<Response<CriarRondaResponse>> apply(CriarRondaRequest request) {
 		var ronda = new Ronda();
-		ronda.id = new IdRonda(request.idVigia, gerarData());
+		ronda.id = new Id(request.idVigia, gerarData());
 		ronda.localizacoes = request.localizacoes;
 		ronda.fim = request.fim;
 		ronda.inicio = request.inicio;

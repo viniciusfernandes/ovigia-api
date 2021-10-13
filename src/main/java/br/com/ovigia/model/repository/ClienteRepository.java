@@ -21,7 +21,7 @@ public class ClienteRepository {
 	}
 
 	public Mono<Void> criar(Cliente cliente) {
-	 		var doc = ClienteParser.toDoc(cliente);
+		var doc = ClienteParser.toDoc(cliente);
 		return Mono.from(collection.insertOne(doc)).then();
 	}
 

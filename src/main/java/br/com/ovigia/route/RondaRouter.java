@@ -6,7 +6,7 @@ import br.com.ovigia.businessrule.ronda.criar.CriarRondaResponse;
 import br.com.ovigia.businessrule.ronda.criar.CriarRondaRule;
 import br.com.ovigia.businessrule.ronda.obter.ObterRondaRule;
 import br.com.ovigia.businessrule.util.DataUtil;
-import br.com.ovigia.model.IdRonda;
+import br.com.ovigia.model.Id;
 import br.com.ovigia.model.Ronda;
 import br.com.ovigia.model.repository.RondaRepository;
 
@@ -20,8 +20,8 @@ public class RondaRouter extends Router {
 					return request;
 				}).rule(new CriarRondaRule(repository));
 
-		var obterRondaRoute = Route.<IdRonda, Ronda>get();
-		obterRondaRoute.url("ovigia/vigias/{idVigia}/rondas/{data}").requestClass(IdRonda.class)
+		var obterRondaRoute = Route.<Id, Ronda>get();
+		obterRondaRoute.url("ovigia/vigias/{idVigia}/rondas/{data}").requestClass(Id.class)
 				.extractFromPath((mapa, request) -> {
 					try {
 						request.data = DataUtil.parseToDataRota(mapa.get("data"));

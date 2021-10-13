@@ -22,9 +22,11 @@ import br.com.ovigia.auth.security.JwtAuthenticationManager;
 import br.com.ovigia.auth.security.JwtUtil;
 import br.com.ovigia.auth.security.PBKDF2Encoder;
 import br.com.ovigia.auth.security.WebSecurityConfig;
+import br.com.ovigia.model.repository.ChamadoRepository;
 import br.com.ovigia.model.repository.ClienteRepository;
 import br.com.ovigia.model.repository.RondaRepository;
 import br.com.ovigia.model.repository.VigiaRepository;
+import br.com.ovigia.route.ChamadoRouter;
 import br.com.ovigia.route.ClienteRouter;
 import br.com.ovigia.route.RondaRouter;
 import br.com.ovigia.route.RoutesBuilder;
@@ -58,6 +60,7 @@ public class OvigiaApplication {
 		context.registerBean(ClienteRepository.class, () -> new ClienteRepository(mongodb));
 		context.registerBean(RondaRepository.class, () -> new RondaRepository(mongodb));
 		context.registerBean(UsuarioRepository.class, () -> new UsuarioRepository(mongodb));
+		context.registerBean(ChamadoRepository.class, () -> new ChamadoRepository(mongodb));
 	}
 
 	private void registerSecurityWebFilterChain(GenericApplicationContext context) {
@@ -81,6 +84,7 @@ public class OvigiaApplication {
 
 	private void registerRoutes(GenericApplicationContext context) {
 		var routesBuilder = RoutesBuilder.getInstance();
+		routesBuilder.addRouter(new ChamadoRouter(getBean(ChamadoRepository.class)));
 		routesBuilder.addRouter(new VigiaRouter(getBean(VigiaRepository.class), getBean(ClienteRepository.class)));
 		routesBuilder.addRouter(new ClienteRouter(getBean(ClienteRepository.class), getBean(RondaRepository.class)));
 		routesBuilder.addRouter(new RondaRouter(getBean(RondaRepository.class)));

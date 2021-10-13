@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 public class Ronda {
-	public IdRonda id;
+	public Id id;
 	public Date inicio;
 	public Date fim;
 	public List<Localizacao> localizacoes = new ArrayList<>();
@@ -13,7 +13,7 @@ public class Ronda {
 	public Ronda() {
 	}
 
-	public Ronda(IdRonda id) {
+	public Ronda(Id id) {
 		this.id = id;
 	}
 

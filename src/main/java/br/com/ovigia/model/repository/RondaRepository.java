@@ -12,7 +12,7 @@ import org.bson.Document;
 import com.mongodb.reactivestreams.client.MongoCollection;
 import com.mongodb.reactivestreams.client.MongoDatabase;
 
-import br.com.ovigia.model.IdRonda;
+import br.com.ovigia.model.Id;
 import br.com.ovigia.model.Localizacao;
 import br.com.ovigia.model.Ronda;
 import br.com.ovigia.repository.parser.LocalizacaoParser;
@@ -39,11 +39,11 @@ public class RondaRepository {
 		return Mono.from(collection.insertOne(docRota)).then();
 	}
 
-	public Mono<Ronda> obterRondaPorId(IdRonda id) {
+	public Mono<Ronda> obterRondaPorId(Id id) {
 		return Mono.from(collection.find(toIdDoc(id))).map(docRonda -> {
 			var docId = docRonda.get("_id", Document.class);
 
-			var idRonda = new IdRonda();
+			var idRonda = new Id();
 			idRonda.idVigia = docId.getString("idVigia");
 			idRonda.data = docId.getDate("data");
 
@@ -58,7 +58,7 @@ public class RondaRepository {
 		});
 	}
 
-	public Mono<Boolean> contemRonda(IdRonda id) {
+	public Mono<Boolean> contemRonda(Id id) {
 		var match = new Document("$match", toIdDoc(id));
 		var fields = new Document("_id", 1);
 		var project = new Document("$project", fields);

@@ -6,7 +6,7 @@ import java.util.List;
 import br.com.ovigia.businessrule.BusinessRule;
 import br.com.ovigia.businessrule.Response;
 import br.com.ovigia.businessrule.util.DataUtil;
-import br.com.ovigia.model.IdRonda;
+import br.com.ovigia.model.Id;
 import br.com.ovigia.model.Localizacao;
 import br.com.ovigia.model.calculadora.CalculadoraDistancia;
 import br.com.ovigia.model.repository.ClienteRepository;
@@ -73,12 +73,12 @@ public class CalcularFrequenciaRondasRule
 	private Mono<List<CalcularFrequenciaRondaResponse>> processarRotasPorId(List<String> idsVigias, Date data,
 			Localizacao localizacao) {
 		return Flux.fromIterable(idsVigias).flatMap(idVigia -> {
-			return calcularFrequenciaRonda(new IdRonda(idVigia, data), localizacao);
+			return calcularFrequenciaRonda(new Id(idVigia, data), localizacao);
 		}).collectList();
 
 	}
 
-	private Mono<CalcularFrequenciaRondaResponse> calcularFrequenciaRonda(IdRonda idRonda, Localizacao localizacao) {
+	private Mono<CalcularFrequenciaRondaResponse> calcularFrequenciaRonda(Id idRonda, Localizacao localizacao) {
 		return rotaRepository.obterRondaPorId(idRonda).map(rota -> {
 			var frequenciaRonda = new CalcularFrequenciaRondaResponse();
 			var totalRondas = calcularNumeroRodas(localizacao, rota.localizacoes);
