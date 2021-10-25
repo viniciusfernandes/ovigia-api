@@ -12,6 +12,7 @@ import com.mongodb.reactivestreams.client.MongoCollection;
 import com.mongodb.reactivestreams.client.MongoDatabase;
 
 import br.com.ovigia.model.Chamado;
+import br.com.ovigia.model.enumeration.TipoSituacaoChamado;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -28,9 +29,13 @@ public class ChamadoRepository {
 		return Mono.from(collection.insertOne(doc)).thenReturn(chamado.id);
 	}
 
+	public Mono<Void> atualizarSituacao(String idChamado, TipoSituacaoChamado situacaoChamado) {
+		var update = new Document("$set", new Document("situacao", situacaoChamado.toString()));
+		return Mono.from(collection.updateOne(new Document("_id", idChamado), update)).then();
+	}
+
 	public Mono<List<Chamado>> obterChamadosAbertosByVigia(String idVigia) {
-		//var filter = new Document("idVigia", idVigia).append("situacao", TipoSituacaoChamado.ABERTO.toString());
-		var filter = new Document("idVigia", idVigia) ;
+		var filter = new Document("idVigia", idVigia).append("situacao", TipoSituacaoChamado.ABERTO.toString());
 		return Flux.from(collection.find(filter)).collectList().map(docs -> fromDoc(docs));
 	}
 

@@ -30,13 +30,16 @@ public class ObterChamadosAtivosVigiaRule
 			Localizacao localizacao = null;
 			for (Chamado chamado : chamados) {
 				chamadoVigia = new ObterChamadosVigiaResponse();
+
 				dataHora = DataUtil.gerarDataHora(chamado.data);
 				chamadoVigia.data = dataHora.data;
+				chamadoVigia.id = chamado.id;
 				chamadoVigia.hora = dataHora.hora;
 				chamadoVigia.idCliente = chamado.idCliente;
 				chamadoVigia.nomeCliente = chamado.nomeCliente;
 				chamadoVigia.logradouro = chamado.logradouro;
-				
+				chamadoVigia.situacao = chamado.situacao.toString();
+
 				localizacao = chamado.localizacao;
 				chamadoVigia.latitude = localizacao.latitude;
 				chamadoVigia.longitude = localizacao.longitude;
