@@ -22,8 +22,8 @@ public class ObterChamadosAtivosVigiaRule
 
 	@Override
 	public Mono<Response<List<ObterChamadosVigiaResponse>>> apply(ObterChamadosAtivosRequest request) {
-		return chamadoRepository.obterChamadosAbertosByVigia(request.idVigia).map(chamados -> {
-			var chamadosVigia = new ArrayList<ObterChamadosVigiaResponse>();
+		return chamadoRepository.obterChamadosAtivoyVigia(request.idVigia).map(chamados -> {
+			var response = new ArrayList<ObterChamadosVigiaResponse>();
 
 			ObterChamadosVigiaResponse chamadoVigia = null;
 			DataHora dataHora = null;
@@ -44,9 +44,9 @@ public class ObterChamadosAtivosVigiaRule
 				chamadoVigia.latitude = localizacao.latitude;
 				chamadoVigia.longitude = localizacao.longitude;
 
-				chamadosVigia.add(chamadoVigia);
+				response.add(chamadoVigia);
 			}
-			return Response.ok(chamadosVigia);
+			return Response.ok(response);
 		});
 	}
 

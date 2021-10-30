@@ -38,10 +38,14 @@ public class ChamadoParser {
 		chamado.nomeCliente = doc.getString("nomeCliente");
 		chamado.logradouro = doc.getString("logradouro");
 
-		chamado.situacao = TipoSituacaoChamado.valueOf(doc.getString("situacao"));
+		var docSituacao = doc.getString("situacao");
+		if (docSituacao != null) {
+			chamado.situacao = TipoSituacaoChamado.valueOf(docSituacao);
+		}
 		var docLocal = doc.get("localizacao", Document.class);
-
-		chamado.localizacao = new Localizacao(docLocal.getDouble("latitude"), docLocal.getDouble("longitude"));
+		if (docLocal != null) {
+			chamado.localizacao = new Localizacao(docLocal.getDouble("latitude"), docLocal.getDouble("longitude"));
+		}
 		return chamado;
 	}
 

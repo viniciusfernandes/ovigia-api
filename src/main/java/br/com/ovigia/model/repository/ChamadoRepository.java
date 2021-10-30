@@ -3,6 +3,7 @@ package br.com.ovigia.model.repository;
 import static br.com.ovigia.repository.parser.ChamadoParser.fromDoc;
 import static br.com.ovigia.repository.parser.ChamadoParser.toDoc;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,9 +35,17 @@ public class ChamadoRepository {
 		return Mono.from(collection.updateOne(new Document("_id", idChamado), update)).then();
 	}
 
-	public Mono<List<Chamado>> obterChamadosAbertosByVigia(String idVigia) {
-		var filter = new Document("idVigia", idVigia).append("situacao", TipoSituacaoChamado.ABERTO.toString());
+	public Mono<List<Chamado>> obterChamadosAtivoyVigia(String idVigia) {
+		var filter = new Document("idVigia", idVigia).append("situacao", TipoSituacaoChamado.ATIVO.toString());
 		return Flux.from(collection.find(filter)).collectList().map(docs -> fromDoc(docs));
+	}
+
+	public Mono<Chamado> obterChamadosAtivoByIdCliente(String idCliente) {
+		var match = new Document("$match",
+				new Document("idCliente", idCliente).append("situacao", TipoSituacaoChamado.ATIVO.toString()));
+
+		var project = new Document("$project", new Document("_id", 1).append("data", 1));
+		return Mono.from(collection.aggregate(Arrays.asList(match, project))).map(docs -> fromDoc(docs));
 	}
 
 }

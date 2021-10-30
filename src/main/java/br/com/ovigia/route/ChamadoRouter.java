@@ -8,6 +8,9 @@ import br.com.ovigia.businessrule.chamado.cancelar.CancelarChamadoRequest;
 import br.com.ovigia.businessrule.chamado.cancelar.CancelarChamadoRule;
 import br.com.ovigia.businessrule.chamado.criar.CriarChamadoRequest;
 import br.com.ovigia.businessrule.chamado.criar.CriarChamadoRule;
+import br.com.ovigia.businessrule.chamado.obter.ObterChamadoAtivoClienteRequest;
+import br.com.ovigia.businessrule.chamado.obter.ObterChamadoAtivoClienteResponse;
+import br.com.ovigia.businessrule.chamado.obter.ObterChamadoAtivoClienteRule;
 import br.com.ovigia.businessrule.chamado.obter.ObterChamadosAtivosRequest;
 import br.com.ovigia.businessrule.chamado.obter.ObterChamadosAtivosVigiaRule;
 import br.com.ovigia.businessrule.chamado.obter.ObterChamadosVigiaResponse;
@@ -25,10 +28,18 @@ public class ChamadoRouter extends Router {
 		}).requestClass(CriarChamadoRequest.class).rule(new CriarChamadoRule(chamadoRepository));
 
 		var obterChamadosAtivosVigia = Route.<ObterChamadosAtivosRequest, List<ObterChamadosVigiaResponse>>get();
-		obterChamadosAtivosVigia.url("/ovigia/vigias/{idVigia}/chamadosativos").extractFromPath((mapa, request) -> {
+		obterChamadosAtivosVigia.url("/ovigia/vigias/{idVigia}/chamados/ativos").extractFromPath((mapa, request) -> {
 			request.idVigia = mapa.get("idVigia");
 			return request;
 		}).requestClass(ObterChamadosAtivosRequest.class).rule(new ObterChamadosAtivosVigiaRule(chamadoRepository));
+
+		var obterChamadoAtivoCliente = Route.<ObterChamadoAtivoClienteRequest, ObterChamadoAtivoClienteResponse>get();
+		obterChamadoAtivoCliente.url("/ovigia/clientes/{idCliente}/chamados/ativos")
+				.extractFromPath((mapa, request) -> {
+					request.idCliente = mapa.get("idCliente");
+					return request;
+				}).requestClass(ObterChamadoAtivoClienteRequest.class)
+				.rule(new ObterChamadoAtivoClienteRule(chamadoRepository));
 
 		var aceitarChamado = Route.<AceitarChamadoRequest, Void>put();
 		aceitarChamado.url("/ovigia/vigias/{idChamado}/chamados/aceite").extractFromPath((mapa, request) -> {
@@ -44,6 +55,7 @@ public class ChamadoRouter extends Router {
 
 		addRoute(criarChamado);
 		addRoute(obterChamadosAtivosVigia);
+		addRoute(obterChamadoAtivoCliente);
 		addRoute(aceitarChamado);
 		addRoute(cancelarChamado);
 

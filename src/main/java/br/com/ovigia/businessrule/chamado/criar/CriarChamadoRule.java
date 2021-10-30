@@ -27,7 +27,7 @@ public class CriarChamadoRule implements BusinessRule<CriarChamadoRequest, IdInf
 		chamado.nomeCliente = request.nomeCliente;
 		chamado.logradouro = request.logradouro;
 		chamado.localizacao = new Localizacao(request.localizacao.latitude, request.localizacao.longitude);
-		chamado.situacao = TipoSituacaoChamado.ABERTO;
+		chamado.situacao = TipoSituacaoChamado.ATIVO;
 		return chamadoRepository.criar(chamado).map(id -> Response.ok(new IdInfo(id)));
 	}
 
