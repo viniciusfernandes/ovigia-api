@@ -4,10 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import br.com.ovigia.model.enumeration.TipoSituacaoRonda;
+
 public class Ronda {
 	public Id id;
 	public Date inicio;
 	public Date fim;
+	public double distancia;
+	public TipoSituacaoRonda situacao;
 	public List<Localizacao> localizacoes = new ArrayList<>();
 
 	public Ronda() {

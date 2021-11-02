@@ -1,11 +1,11 @@
+
 package br.com.ovigia.model.repository;
 
-import static br.com.ovigia.repository.parser.RondaParser.*;
+import static br.com.ovigia.repository.parser.RondaParser.toDoc;
 import static br.com.ovigia.repository.parser.RondaParser.toIdDoc;
 
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 import org.bson.Document;
 
@@ -16,6 +16,7 @@ import br.com.ovigia.model.Id;
 import br.com.ovigia.model.Localizacao;
 import br.com.ovigia.model.Ronda;
 import br.com.ovigia.repository.parser.LocalizacaoParser;
+import br.com.ovigia.repository.parser.RondaParser;
 import reactor.core.publisher.Mono;
 
 public class RondaRepository {
@@ -34,43 +35,43 @@ public class RondaRepository {
 		return Mono.from(collection.updateMany(idRota, adicionarLocalizacao)).then();
 	}
 
-	public Mono<Void> criar(Ronda ronda) {
+	public Mono<Void> criarRonda(Ronda ronda) {
 		var docRota = toDoc(ronda);
 		return Mono.from(collection.insertOne(docRota)).then();
 	}
 
 	public Mono<Ronda> obterRondaPorId(Id id) {
-		return Mono.from(collection.find(toIdDoc(id))).map(docRonda -> {
-			var docId = docRonda.get("_id", Document.class);
+		return Mono.from(collection.find(toIdDoc(id))).map(docRonda -> RondaParser.fromDoc(docRonda));
+	}
 
-			var idRonda = new Id();
-			idRonda.idVigia = docId.getString("idVigia");
-			idRonda.data = docId.getDate("data");
+	public Mono<Double> obterDistanciaRonda(Id id) {
+		var match = new Document("$match", toIdDoc(id));
+		var project = new Document("$project", new Document("distancia", 1));
+		var pipeline = Arrays.asList(match, project);
 
-			var ronda = new Ronda(idRonda);
-
-			@SuppressWarnings("unchecked")
-			var localizacoes = (List<Document>) docRonda.get("localizacoes");
-			for (Document docLoc : localizacoes) {
-				ronda.add(LocalizacaoParser.fromNestedDoc(docLoc));
+		return Mono.from(collection.aggregate(pipeline)).flatMap(doc -> {
+			var distancia = doc.getDouble("distancia");
+			if (distancia == null) {
+				return Mono.empty();
 			}
-			return ronda;
+			return Mono.just(distancia);
 		});
 	}
 
-	public Mono<Boolean> contemRonda(Id id) {
-		var match = new Document("$match", toIdDoc(id));
-		var fields = new Document("_id", 1);
-		var project = new Document("$project", fields);
-
-		var list = Arrays.asList(match, project);
-		return Mono.from(collection.aggregate(list)).map(ronda -> true).switchIfEmpty(Mono.just(false));
-	}
-
-	public Mono<Void> atualizarLocalizacoes(Ronda ronda) {
+	public Mono<Void> concatenarRonda(Ronda ronda) {
 		var each = new Document("$each", LocalizacaoParser.toDoc(ronda.localizacoes));
 		var docLocalizacoes = new Document("localizacoes", each);
-		var update = new Document("$push", docLocalizacoes).append("$set", new Document("fim", ronda.fim));
+		var fields = new Document("fim", ronda.fim).append("distancia", ronda.distancia);
+		var update = new Document("$push", docLocalizacoes).append("$set", fields);
 		return Mono.from(collection.updateOne(toIdDoc(ronda.id), update)).then();
 	}
+
+	public Mono<Ronda> obterUltimaDataRonda(String idvigia) {
+		var match = new Document("$match", new Document("_id.idVigia", idvigia));
+		var fields = new Document("_id.data", 1).append("inicio", 1).append("fim", 1);
+		var project = new Document("$project", fields);
+		var pipeline = Arrays.asList(match, project);
+		return Mono.from(collection.aggregate(pipeline)).map(docRonda -> new Ronda());
+	}
+
 }

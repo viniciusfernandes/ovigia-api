@@ -19,5 +19,4 @@ public class AceitarChamadoRule implements BusinessRule<AceitarChamadoRequest, V
 				.thenReturn(Response.nonResult());
 	}
 
-	
 }
