@@ -2,7 +2,7 @@ package br.com.ovigia.model.calculadora;
 
 import br.com.ovigia.model.Localizacao;
 
-class CalculadoraDistanciaEsferica extends CalculadoraDistancia {
+class CalculadoraDistanciaEsferica extends CalculadoraRonda {
 	private final char unidade = 'K';
 
 	@Override

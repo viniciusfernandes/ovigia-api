@@ -1,11 +1,9 @@
 package br.com.ovigia.repository.parser;
 
-import java.util.Date;
 import java.util.List;
 
 import org.bson.Document;
 
-import br.com.ovigia.model.Id;
 import br.com.ovigia.model.Ronda;
 import br.com.ovigia.model.enumeration.TipoSituacaoRonda;
 
@@ -14,21 +12,17 @@ public class RondaParser {
 	}
 
 	public static Document toDoc(Ronda ronda) {
-		var doc = toIdDoc(ronda.id);
+		var doc = IdRondaParser.toDoc(ronda.id);
 		doc.append("inicio", ronda.inicio);
 		doc.append("fim", ronda.fim);
 		doc.append("situacao", ronda.situacao.toString());
-		doc.append("distancia", ronda.distancia);
 		doc.append("localizacoes", LocalizacaoParser.toDoc(ronda.localizacoes));
 		return doc;
 	}
 
 	public static Ronda fromDoc(Document doc) {
-		var docId = doc.get("_id", Document.class);
 
-		var id = new Id();
-		id.idVigia = docId.getString("idVigia");
-		id.data = docId.getDate("data");
+		var id = IdRondaParser.fromDoc(doc);
 
 		var ronda = new Ronda(id);
 		var situacao = doc.getString("situacao");
@@ -48,12 +42,4 @@ public class RondaParser {
 		return ronda;
 	}
 
-	public static Document toIdDoc(Id id) {
-		return toIdDoc(id.idVigia, id.data);
-	}
-
-	public static Document toIdDoc(String idVigia, Date data) {
-		var value = new Document().append("idVigia", idVigia).append("data", data);
-		return new Document("_id", value);
-	}
 }

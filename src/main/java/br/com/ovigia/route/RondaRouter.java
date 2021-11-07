@@ -1,39 +1,34 @@
 package br.com.ovigia.route;
 
-import br.com.ovigia.businessrule.exception.DataMalFormatadaException;
 import br.com.ovigia.businessrule.ronda.criar.CriarRondaRequest;
-import br.com.ovigia.businessrule.ronda.criar.CriarRondaResponse;
 import br.com.ovigia.businessrule.ronda.criar.CriarRondaRule;
-import br.com.ovigia.businessrule.ronda.obter.ObterRondaRule;
-import br.com.ovigia.businessrule.util.DataUtil;
-import br.com.ovigia.model.Id;
-import br.com.ovigia.model.Ronda;
+import br.com.ovigia.businessrule.ronda.resumo.obter.ObterResumoRondaRequest;
+import br.com.ovigia.businessrule.ronda.resumo.obter.ObterResumoRondaResponse;
+import br.com.ovigia.businessrule.ronda.resumo.obter.ObterResumoRondaRule;
+import br.com.ovigia.model.repository.ChamadoRepository;
+import br.com.ovigia.model.repository.ResumoRondaRepository;
 import br.com.ovigia.model.repository.RondaRepository;
 
 public class RondaRouter extends Router {
 
-	public RondaRouter(RondaRepository repository) {
-		var criarRonda = Route.<CriarRondaRequest, CriarRondaResponse>post();
+	public RondaRouter(RondaRepository rondaRepository, ResumoRondaRepository resumoRepository,
+			ChamadoRepository chamadoRepository) {
+		var criarRonda = Route.<CriarRondaRequest, Void>post();
 		criarRonda.url("/ovigia/vigias/{idVigia}/rondas").contemBody().requestClass(CriarRondaRequest.class)
 				.extractFromPath((mapa, request) -> {
 					request.idVigia = mapa.get("idVigia");
 					return request;
-				}).rule(new CriarRondaRule(repository));
+				}).rule(new CriarRondaRule(rondaRepository, resumoRepository));
 
-		var obterRonda = Route.<Id, Ronda>get();
-		obterRonda.url("ovigia/vigias/{idVigia}/rondas/{data}").requestClass(Id.class)
+		var obterResumoRonda = Route.<ObterResumoRondaRequest, ObterResumoRondaResponse>get();
+		obterResumoRonda.url("ovigia/vigias/{idVigia}/rondas/resumo").requestClass(ObterResumoRondaRequest.class)
 				.extractFromPath((mapa, request) -> {
-					try {
-						request.data = DataUtil.parseToDataRota(mapa.get("data"));
-						request.idVigia = mapa.get("idVigia");
-					} catch (DataMalFormatadaException e) {
-						e.printStackTrace();
-					}
+					request.idVigia = mapa.get("idVigia");
 					return request;
-				}).rule(new ObterRondaRule(repository));
+				}).rule(new ObterResumoRondaRule(resumoRepository));
 
 		addRoute(criarRonda);
-		addRoute(obterRonda);
+		addRoute(obterResumoRonda);
 	}
 
 }

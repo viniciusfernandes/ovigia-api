@@ -28,7 +28,7 @@ public class ClienteRouter extends Router {
 				.rule(new CalcularFrequenciaRondasRule(clienteRepository, rotaRepository))
 				.extractFromPath((mapa, request) -> {
 					try {
-						request.setDataRonda(DataUtil.parseToDataRota(mapa.get("data")));
+						request.setDataRonda(DataUtil.parse(mapa.get("data")));
 						request.setIdCliente(mapa.get("idCliente"));
 					} catch (DataMalFormatadaException e) {
 						throw new IllegalArgumentException(e);

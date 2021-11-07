@@ -9,7 +9,7 @@ public class Chamado {
 	public Date data;
 	public String idCliente;
 	public String nomeCliente;
-	public String idVigia;
+	public IdRonda idRonda;
 	public String logradouro;
 	public Localizacao localizacao;
 	public TipoSituacaoChamado situacao;

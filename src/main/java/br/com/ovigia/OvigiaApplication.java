@@ -24,6 +24,7 @@ import br.com.ovigia.auth.security.PBKDF2Encoder;
 import br.com.ovigia.auth.security.WebSecurityConfig;
 import br.com.ovigia.model.repository.ChamadoRepository;
 import br.com.ovigia.model.repository.ClienteRepository;
+import br.com.ovigia.model.repository.ResumoRondaRepository;
 import br.com.ovigia.model.repository.RondaRepository;
 import br.com.ovigia.model.repository.VigiaRepository;
 import br.com.ovigia.route.ChamadoRouter;
@@ -59,6 +60,7 @@ public class OvigiaApplication {
 		context.registerBean(VigiaRepository.class, () -> new VigiaRepository(mongodb));
 		context.registerBean(ClienteRepository.class, () -> new ClienteRepository(mongodb));
 		context.registerBean(RondaRepository.class, () -> new RondaRepository(mongodb));
+		context.registerBean(ResumoRondaRepository.class, () -> new ResumoRondaRepository(mongodb));
 		context.registerBean(UsuarioRepository.class, () -> new UsuarioRepository(mongodb));
 		context.registerBean(ChamadoRepository.class, () -> new ChamadoRepository(mongodb));
 	}
@@ -87,7 +89,8 @@ public class OvigiaApplication {
 		routesBuilder.addRouter(new ChamadoRouter(getBean(ChamadoRepository.class)));
 		routesBuilder.addRouter(new VigiaRouter(getBean(VigiaRepository.class), getBean(ClienteRepository.class)));
 		routesBuilder.addRouter(new ClienteRouter(getBean(ClienteRepository.class), getBean(RondaRepository.class)));
-		routesBuilder.addRouter(new RondaRouter(getBean(RondaRepository.class)));
+		routesBuilder.addRouter(new RondaRouter(getBean(RondaRepository.class), getBean(ResumoRondaRepository.class),
+				getBean(ChamadoRepository.class)));
 		routesBuilder.addRouter(
 				new AuthRouter(getBean(UsuarioRepository.class), getBean(PBKDF2Encoder.class), getBean(JwtUtil.class)));
 

@@ -30,15 +30,13 @@ public class DataUtil {
 		return ajustarData(new Date());
 	}
 
-	public static Date parseToDataRota(String data) throws DataMalFormatadaException {
-		Date dataRota;
+	public static Date parse(String data) throws DataMalFormatadaException {
 		try {
-			dataRota = DATA_FORMATTER.parse(data);
+			return DATA_FORMATTER.parse(data);
 		} catch (ParseException e) {
 			throw new DataAccessResourceFailureException(
 					String.format("Data %s mal formatada. Ela deve estar no padrao %s", data, DATA_PATTERN), e);
 		}
-		return ajustarData(dataRota);
 	}
 
 	public static DataHora gerarDataHora(Date date) {

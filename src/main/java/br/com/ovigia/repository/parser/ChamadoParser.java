@@ -6,6 +6,7 @@ import java.util.List;
 import org.bson.Document;
 
 import br.com.ovigia.model.Chamado;
+import br.com.ovigia.model.IdRonda;
 import br.com.ovigia.model.Localizacao;
 import br.com.ovigia.model.enumeration.TipoSituacaoChamado;
 
@@ -17,7 +18,11 @@ public class ChamadoParser {
 		var doc = new Document("_id", chamado.id);
 		doc.append("idCliente", chamado.idCliente);
 		doc.append("data", chamado.data);
-		doc.append("idVigia", chamado.idVigia);
+
+		var idRonda = chamado.idRonda;
+		var docId = new Document("idVigia", idRonda.idVigia).append("dataRonda", idRonda.data);
+		doc.append("idRonda", docId);
+
 		doc.append("nomeCliente", chamado.nomeCliente);
 		doc.append("logradouro", chamado.logradouro);
 		doc.append("situacao", chamado.situacao.toString());
@@ -34,7 +39,7 @@ public class ChamadoParser {
 		chamado.id = doc.getString("_id");
 		chamado.idCliente = doc.getString("idCliente");
 		chamado.data = doc.getDate("data");
-		chamado.idVigia = doc.getString("idVigia");
+		chamado.idRonda = doc.get("idRonda", IdRonda.class);
 		chamado.nomeCliente = doc.getString("nomeCliente");
 		chamado.logradouro = doc.getString("logradouro");
 

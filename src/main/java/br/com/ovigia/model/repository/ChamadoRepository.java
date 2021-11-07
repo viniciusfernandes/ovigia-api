@@ -13,6 +13,7 @@ import com.mongodb.reactivestreams.client.MongoCollection;
 import com.mongodb.reactivestreams.client.MongoDatabase;
 
 import br.com.ovigia.model.Chamado;
+import br.com.ovigia.model.IdRonda;
 import br.com.ovigia.model.enumeration.TipoSituacaoChamado;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -24,7 +25,7 @@ public class ChamadoRepository {
 		collection = database.getCollection("chamado");
 	}
 
-	public Mono<String> criar(Chamado chamado) {
+	public Mono<String> criarChamado(Chamado chamado) {
 		chamado.id = UUID.randomUUID().toString();
 		var doc = toDoc(chamado);
 		return Mono.from(collection.insertOne(doc)).thenReturn(chamado.id);
@@ -46,6 +47,11 @@ public class ChamadoRepository {
 
 		var project = new Document("$project", new Document("_id", 1).append("data", 1));
 		return Mono.from(collection.aggregate(Arrays.asList(match, project))).map(docs -> fromDoc(docs));
+	}
+
+	public Mono<Long> obterTotalChamadoByIdRonda(IdRonda id) {
+		return Mono.from(
+				collection.countDocuments(new Document("idRonda.idVigia", id.idVigia).append("idRonda.data", id.data)));
 	}
 
 }
