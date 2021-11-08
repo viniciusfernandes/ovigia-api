@@ -1,6 +1,6 @@
 package br.com.ovigia.businessrule.ronda.criar;
 
-import static br.com.ovigia.businessrule.util.DataUtil.gerarData;
+import static br.com.ovigia.businessrule.util.DataUtil.ajustarData;
 
 import br.com.ovigia.businessrule.BusinessRule;
 import br.com.ovigia.businessrule.Response;
@@ -28,19 +28,17 @@ public class CriarRondaRule implements BusinessRule<CriarRondaRequest, Void> {
 	@Override
 	public Mono<Response<Void>> apply(CriarRondaRequest request) {
 		final var ronda = new Ronda();
-		ronda.id = new IdRonda(request.idVigia, gerarData());
+		ronda.id = new IdRonda(request.idVigia, ajustarData());
 		ronda.localizacoes = request.localizacoes;
 		ronda.fim = request.fim;
 		ronda.inicio = request.inicio;
 		ronda.situacao = TipoSituacaoRonda.ATIVO;
-		return resumoRepository.obterResumoRondaByIdVigia(ronda.id.idVigia)
-				.flatMap(resumo -> {
-					if(resumo.idVigia!=null) {
-						return concatenaRondaEResumo(ronda, resumo);
-					}
-					return criarRondaEResumo(ronda) ;
-				}) 
-				.thenReturn(Response.nonResult());
+		return resumoRepository.obterResumoRondaByIdVigia(ronda.id.idVigia).flatMap(resumo -> {
+			if (resumo.idVigia != null) {
+				return concatenaRondaEResumo(ronda, resumo);
+			}
+			return criarRondaEResumo(ronda);
+		}).thenReturn(Response.nonResult());
 	}
 
 	private Mono<Void> concatenaRondaEResumo(Ronda ronda, ResumoRonda resumo) {
@@ -75,32 +73,4 @@ public class CriarRondaRule implements BusinessRule<CriarRondaRequest, Void> {
 		return resumo;
 	}
 
-	public static void main(String[] args) {
-		obter().flatMap(r -> {
-			if (r.idVigia != null) {
-				return concantenar();
-			}
-			return criar();
-		}).subscribe();
-//		var mono2 = obter().flatMap(r -> {
-//			return concantenar();
-//		}).switchIfEmpty(criar()) 	mono2.subscribe();
-	}
-
-	public static Mono<ResumoRonda> obter() {
-		var value = Math.random() > 0.5;
-		// System.out.println("Obtendo: " + value);
-		return value ? Mono.just(new ResumoRonda("obteve: " + value, value)) : Mono.<ResumoRonda>empty();
-	}
-
-	public static Mono<ResumoRonda> concantenar() {
-//		System.out.println("concatenando");
-		return Mono.just(new ResumoRonda("concatenou"));
-
-	}
-
-	public static Mono<ResumoRonda> criar() {
-//		System.out.println("Criando");
-		return Mono.just(new ResumoRonda("criou"));
-	}
 }

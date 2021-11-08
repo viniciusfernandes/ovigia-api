@@ -5,6 +5,7 @@ import java.util.Date;
 import br.com.ovigia.businessrule.BusinessRule;
 import br.com.ovigia.businessrule.Response;
 import br.com.ovigia.businessrule.common.info.IdInfo;
+import br.com.ovigia.businessrule.util.DataUtil;
 import br.com.ovigia.model.Chamado;
 import br.com.ovigia.model.IdRonda;
 import br.com.ovigia.model.Localizacao;
@@ -24,7 +25,7 @@ public class CriarChamadoRule implements BusinessRule<CriarChamadoRequest, IdInf
 		var chamado = new Chamado();
 		chamado.data = new Date();
 		chamado.idCliente = request.idCliente;
-		chamado.idRonda = new IdRonda(request.idVigia, chamado.data);
+		chamado.idRonda = new IdRonda(request.idVigia, DataUtil.ajustarData());
 		chamado.nomeCliente = request.nomeCliente;
 		chamado.logradouro = request.logradouro;
 		chamado.localizacao = new Localizacao(request.localizacao.latitude, request.localizacao.longitude);

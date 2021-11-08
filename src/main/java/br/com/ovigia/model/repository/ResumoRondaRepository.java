@@ -37,7 +37,7 @@ public class ResumoRondaRepository {
 	public Mono<ResumoRonda> obterResumoRondaByIdVigia(String idVigia) {
 		var id = new Document("_id", idVigia);
 		return Mono.from(collection.find(id)).map(doc -> ResumoRondaParser.fromDoc(doc))
-				.switchIfEmpty(Mono.just(new ResumoRonda()));
+				.switchIfEmpty(Mono.just(new ResumoRonda().init()));
 	}
 
 }

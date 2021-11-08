@@ -22,7 +22,7 @@ public class ObterChamadosAtivosVigiaRule
 
 	@Override
 	public Mono<Response<List<ObterChamadosVigiaResponse>>> apply(ObterChamadosAtivosRequest request) {
-		return chamadoRepository.obterChamadosAtivoyVigia(request.idVigia).map(chamados -> {
+		return chamadoRepository.obterChamadosAtivoByIdVigia(request.idVigia).map(chamados -> {
 			var response = new ArrayList<ObterChamadosVigiaResponse>();
 
 			ObterChamadosVigiaResponse chamadoVigia = null;

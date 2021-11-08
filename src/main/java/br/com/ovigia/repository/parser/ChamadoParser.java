@@ -20,7 +20,7 @@ public class ChamadoParser {
 		doc.append("data", chamado.data);
 
 		var idRonda = chamado.idRonda;
-		var docId = new Document("idVigia", idRonda.idVigia).append("dataRonda", idRonda.data);
+		var docId = new Document("idVigia", idRonda.idVigia).append("data", idRonda.data);
 		doc.append("idRonda", docId);
 
 		doc.append("nomeCliente", chamado.nomeCliente);
@@ -39,7 +39,8 @@ public class ChamadoParser {
 		chamado.id = doc.getString("_id");
 		chamado.idCliente = doc.getString("idCliente");
 		chamado.data = doc.getDate("data");
-		chamado.idRonda = doc.get("idRonda", IdRonda.class);
+		var docIdronda = doc.get("idRonda", Document.class);
+		chamado.idRonda = new IdRonda(docIdronda.getString("idVigia"), docIdronda.getDate("data"));
 		chamado.nomeCliente = doc.getString("nomeCliente");
 		chamado.logradouro = doc.getString("logradouro");
 

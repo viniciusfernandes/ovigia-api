@@ -25,7 +25,7 @@ public class RondaRouter extends Router {
 				.extractFromPath((mapa, request) -> {
 					request.idVigia = mapa.get("idVigia");
 					return request;
-				}).rule(new ObterResumoRondaRule(resumoRepository));
+				}).rule(new ObterResumoRondaRule(resumoRepository, chamadoRepository));
 
 		addRoute(criarRonda);
 		addRoute(obterResumoRonda);

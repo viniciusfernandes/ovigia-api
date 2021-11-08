@@ -26,7 +26,7 @@ public class DataUtil {
 		return cal.getTime();
 	}
 
-	public static Date gerarData() {
+	public static Date ajustarData() {
 		return ajustarData(new Date());
 	}
 

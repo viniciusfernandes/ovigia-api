@@ -2,6 +2,8 @@ package br.com.ovigia.model;
 
 import java.util.Date;
 
+import br.com.ovigia.businessrule.util.DataUtil;
+
 public class ResumoRonda {
 	public String idVigia;
 	public Date data;
@@ -13,12 +15,11 @@ public class ResumoRonda {
 	public ResumoRonda() {
 	}
 
-	public ResumoRonda(String mensagem) {
-		System.out.println(mensagem);
-	}
-
-	public ResumoRonda(String mensagem, boolean ok) {
-		System.out.println(mensagem);
-		this.idVigia = "TESTES";
+	public ResumoRonda init() {
+		distancia = 0d;
+		totalChamados = 0l;
+		tempo = 0d;
+		data = DataUtil.ajustarData();
+		return this;
 	}
 }
