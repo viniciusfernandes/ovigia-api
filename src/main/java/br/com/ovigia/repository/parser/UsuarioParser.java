@@ -27,6 +27,7 @@ public class UsuarioParser {
 			var docLocalizacao = LocalizacaoParser.toDoc(localizacao);
 			doc.append("localizacao", docLocalizacao);
 		}
+		doc.append("dataInicio", usuario.dataInicio);
 
 		return doc;
 	}
@@ -41,6 +42,7 @@ public class UsuarioParser {
 		if (tipo != null) {
 			usuario.tipoUsuario = TipoUsuario.valueOf(tipo);
 		}
+		usuario.dataInicio = doc.getDate("dataInicio");
 		usuario.localizacao = LocalizacaoParser.fromNestedDoc(doc);
 		return usuario;
 	}

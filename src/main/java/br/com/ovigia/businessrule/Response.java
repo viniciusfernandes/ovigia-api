@@ -8,7 +8,7 @@ public class Response<V> {
 	private final V value;
 
 	private Response() {
-		status = ResponseStatus.NO_RESULT;
+		status = ResponseStatus.NO_CONTENT;
 		value = null;
 	}
 
@@ -33,8 +33,8 @@ public class Response<V> {
 	}
 
 	@JsonIgnore
-	public boolean isNoResult() {
-		return ResponseStatus.NO_RESULT == status;
+	public boolean isNoContent() {
+		return ResponseStatus.NO_CONTENT == status;
 	}
 
 	@JsonIgnore
@@ -103,5 +103,5 @@ public class Response<V> {
 }
 
 enum ResponseStatus {
-	OK, NO_RESULT, BAD_REQUEST, INTERNAL_SERVER_ERROR, UNPROCESSABLE_ENTITY, UNAUTHORIZED, ACCEPTED
+	OK, NO_CONTENT, BAD_REQUEST, INTERNAL_SERVER_ERROR, UNPROCESSABLE_ENTITY, UNAUTHORIZED, ACCEPTED
 }

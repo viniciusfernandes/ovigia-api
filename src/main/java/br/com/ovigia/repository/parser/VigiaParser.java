@@ -9,15 +9,14 @@ public class VigiaParser {
 	}
 
 	public static Document toDoc(Vigia vigia) {
-
-		var docvigia = new Document("_id", vigia.email);
-		docvigia.append("nome", vigia.nome);
-		docvigia.append("telefone", vigia.telefone);
-		docvigia.append("localizacao", LocalizacaoParser.toDoc(vigia.localizacao));
-		return docvigia;
+		var doc = UsuarioParser.toDoc(vigia);
+		doc.append("avaliacao", vigia.avaliacao);
+		return doc;
 	}
 
 	public static Vigia fromDoc(Document doc) {
-		return UsuarioParser.fromDoc(new Vigia(), doc);
+		var vigia = UsuarioParser.fromDoc(new Vigia(), doc);
+		vigia.avaliacao = doc.getDouble("avaliacao");
+		return vigia;
 	}
 }

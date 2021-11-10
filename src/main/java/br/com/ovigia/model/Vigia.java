@@ -8,6 +8,8 @@ import br.com.ovigia.model.enumeration.TipoUsuario;
 
 public class Vigia extends Usuario {
 
+	public Double avaliacao;
+
 	@JsonIgnore
 	private List<Cliente> clientes;
 

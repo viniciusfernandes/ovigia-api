@@ -1,5 +1,6 @@
 package br.com.ovigia.route;
 
+import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 
@@ -12,7 +13,7 @@ public class Route<T, V> {
 	private boolean bodyEnviado;
 	private BusinessRule<T, V> rule;
 	private BiFunction<Map<String, String>, T, T> extractFromPath;
-	private BiFunction<Map<String, String>, T, T> extractFromParameters;
+	private BiFunction<Map<String, List<String>>, T, T> extractFromParameters;
 
 	private Route(TipoRequest tipoRequest) {
 		this.tipoRequest = tipoRequest;
@@ -51,8 +52,8 @@ public class Route<T, V> {
 		this.extractFromPath = extractFromPath;
 		return this;
 	}
-	
-	public Route<T, V> extractFromParameters(BiFunction<Map<String, String>, T, T> extractFromParameters) {
+
+	public Route<T, V> extractFromParameters(BiFunction<Map<String, List<String>>, T, T> extractFromParameters) {
 		this.extractFromParameters = extractFromParameters;
 		return this;
 	}
@@ -101,7 +102,7 @@ public class Route<T, V> {
 		return extractFromPath;
 	}
 
-	public BiFunction<Map<String, String>, T, T> getExtractFromParameters() {
+	public BiFunction<Map<String, List<String>>, T, T> getExtractFromParameters() {
 		return extractFromParameters;
 	}
 

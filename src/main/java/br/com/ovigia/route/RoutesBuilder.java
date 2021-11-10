@@ -115,16 +115,17 @@ public class RoutesBuilder {
 	}
 
 	private static <T> T extractFromParamaters(ServerRequest request,
-			BiFunction<Map<String, String>, T, T> fillFromParameters, T entity) {
+			BiFunction<Map<String, List<String>>, T, T> fillFromParameters, T entity) {
 		if (fillFromParameters == null) {
 			return entity;
 		}
-		var pathVariables = request.pathVariables();
-		return fillFromParameters.apply(pathVariables, entity);
+
+		var mapa = request.queryParams();
+		return fillFromParameters.apply(mapa, entity);
 	}
 
 	private <V> Mono<ServerResponse> handleResponse(Response<V> response) {
-		if (response.isNoResult()) {
+		if (response.isNoContent()) {
 			return noContent().build();
 		}
 

@@ -6,6 +6,7 @@ import br.com.ovigia.model.Vigia;
 import br.com.ovigia.model.repository.VigiaRepository;
 import reactor.core.publisher.Mono;
 
+@Deprecated
 public class CriarVigiaRule implements BusinessRule<Vigia, Void> {
 
 	private VigiaRepository repository;

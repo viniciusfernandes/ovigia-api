@@ -6,10 +6,6 @@ public class ObterVigiasProximosResponse {
 
 	public List<VigiaProximoResponse> vigias;
 
-	public ObterVigiasProximosResponse() {
-
-	}
-
 	public ObterVigiasProximosResponse(List<VigiaProximoResponse> vigias) {
 		this.vigias = vigias;
 	}

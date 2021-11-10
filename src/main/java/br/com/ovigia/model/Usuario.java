@@ -1,5 +1,7 @@
 package br.com.ovigia.model;
 
+import java.util.Date;
+
 import br.com.ovigia.model.enumeration.TipoUsuario;
 
 public class Usuario {
@@ -11,6 +13,7 @@ public class Usuario {
 	public TipoUsuario tipoUsuario;
 	public Localizacao localizacao;
 	public String password;
+	public Date dataInicio;
 
 	public Usuario() {
 

@@ -13,7 +13,10 @@ import br.com.ovigia.businessrule.exception.DataMalFormatadaException;
 
 public class DataUtil {
 	private static final String DATA_PATTERN = "dd-MM-yyyy";
+	private static final String DATA_PATTERN_SLASH = "dd/MM/yyyy";
 	private static final DateFormat DATA_FORMATTER = new SimpleDateFormat(DATA_PATTERN);
+	private static final DateFormat DATA_FORMATTER_SLASH = new SimpleDateFormat(DATA_PATTERN_SLASH);
+
 	private static final DateFormat DATA_HORA_FORMATTER = new SimpleDateFormat("dd/MM/yyyyHH:mm");
 
 	public static Date ajustarData(Date data) {
@@ -28,6 +31,13 @@ public class DataUtil {
 
 	public static Date ajustarData() {
 		return ajustarData(new Date());
+	}
+
+	public static String formatarData(Date data) {
+		if (data == null) {
+			return null;
+		}
+		return DATA_FORMATTER_SLASH.format(data);
 	}
 
 	public static Date parse(String data) throws DataMalFormatadaException {

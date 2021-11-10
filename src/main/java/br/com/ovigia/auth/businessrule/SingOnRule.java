@@ -1,5 +1,7 @@
 package br.com.ovigia.auth.businessrule;
 
+import java.util.Date;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import br.com.ovigia.auth.api.AuthResponse;
@@ -32,7 +34,7 @@ public class SingOnRule implements BusinessRule<SignOnRequest, AuthResponse> {
 		usuario.telefone = request.telefone;
 		usuario.tipoUsuario = request.tipoUsuario;
 		usuario.password = passwordEncoder.encode(request.password);
-
+		usuario.dataInicio = new Date();
 		return repository.criarUsuario(usuario)
 				.thenReturn(Response.ok(new AuthResponse(usuario, jwtUtil.generateToken(request.email))));
 	}
