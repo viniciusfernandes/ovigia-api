@@ -52,10 +52,15 @@ public abstract class CalculadoraRonda {
 
 	public abstract double distanciaOf(Localizacao loc1, Localizacao loc2);
 
+	public boolean isDistanciaInferior(Localizacao loc1, Localizacao loc2, double limite) {
+		return distanciaOf(loc1, loc2) < limite;
+	}
+
 	public boolean isDistanciaOk(Localizacao loc1, Localizacao loc2, double distanciaMaxima) {
 		return distanciaOf(loc1, loc2) <= distanciaMaxima;
 	}
 
+	@Deprecated
 	public static CalculadoraRonda calculadoraEuclidiana() {
 		return new CalculadoraDistanciaEuclidiana();
 	}

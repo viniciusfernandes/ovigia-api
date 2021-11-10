@@ -13,15 +13,14 @@ public class RondaRouter extends Router {
 
 	public RondaRouter(RondaRepository rondaRepository, ResumoRondaRepository resumoRepository,
 			ChamadoRepository chamadoRepository) {
-		var criarRonda = Route.<CriarRondaRequest, Void>post();
-		criarRonda.url("/ovigia/vigias/{idVigia}/rondas").contemBody().requestClass(CriarRondaRequest.class)
-				.extractFromPath((mapa, request) -> {
+		var criarRonda = Route.<CriarRondaRequest, Void>post().url("/ovigia/vigias/{idVigia}/rondas").contemBody()
+				.requestClass(CriarRondaRequest.class).extractFromPath((mapa, request) -> {
 					request.idVigia = mapa.get("idVigia");
 					return request;
 				}).rule(new CriarRondaRule(rondaRepository, resumoRepository));
 
-		var obterResumoRonda = Route.<ObterResumoRondaRequest, ObterResumoRondaResponse>get();
-		obterResumoRonda.url("ovigia/vigias/{idVigia}/rondas/resumo").requestClass(ObterResumoRondaRequest.class)
+		var obterResumoRonda = Route.<ObterResumoRondaRequest, ObterResumoRondaResponse>get()
+				.url("ovigia/vigias/{idVigia}/rondas/resumo").requestClass(ObterResumoRondaRequest.class)
 				.extractFromPath((mapa, request) -> {
 					request.idVigia = mapa.get("idVigia");
 					return request;

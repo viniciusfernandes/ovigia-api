@@ -20,5 +20,4 @@ public class VigiaParser {
 	public static Vigia fromDoc(Document doc) {
 		return UsuarioParser.fromDoc(new Vigia(), doc);
 	}
-
 }

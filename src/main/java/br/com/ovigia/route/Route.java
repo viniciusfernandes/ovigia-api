@@ -12,6 +12,7 @@ public class Route<T, V> {
 	private boolean bodyEnviado;
 	private BusinessRule<T, V> rule;
 	private BiFunction<Map<String, String>, T, T> extractFromPath;
+	private BiFunction<Map<String, String>, T, T> extractFromParameters;
 
 	private Route(TipoRequest tipoRequest) {
 		this.tipoRequest = tipoRequest;
@@ -50,6 +51,11 @@ public class Route<T, V> {
 		this.extractFromPath = extractFromPath;
 		return this;
 	}
+	
+	public Route<T, V> extractFromParameters(BiFunction<Map<String, String>, T, T> extractFromParameters) {
+		this.extractFromParameters = extractFromParameters;
+		return this;
+	}
 
 	public static <T, V> Route<T, V> post() {
 		return new Route<>(TipoRequest.POST);
@@ -83,7 +89,7 @@ public class Route<T, V> {
 		return requestClazz;
 	}
 
-	public boolean isBodyEnviado() {
+	public boolean hasBody() {
 		return bodyEnviado;
 	}
 
@@ -95,8 +101,16 @@ public class Route<T, V> {
 		return extractFromPath;
 	}
 
+	public BiFunction<Map<String, String>, T, T> getExtractFromParameters() {
+		return extractFromParameters;
+	}
+
 	public boolean hasPathVariable() {
 		return extractFromPath != null;
+	}
+
+	public boolean hasParameters() {
+		return extractFromParameters != null;
 	}
 
 	public String toString() {

@@ -18,12 +18,11 @@ public class ClienteRouter extends Router {
 
 	public ClienteRouter(ClienteRepository clienteRepository, RondaRepository rotaRepository) {
 
-		var criarCliente = Route.<Cliente, Void>post();
-		criarCliente.url("/ovigia/clientes").contemBody().requestClass(Cliente.class)
+		var criarCliente = Route.<Cliente, Void>post().url("/ovigia/clientes").contemBody().requestClass(Cliente.class)
 				.rule(new CriarClienteRule(clienteRepository));
 
-		var calcularFreq = Route.<CalcularFrequenciaRondaRequest, List<CalcularFrequenciaRondaResponse>>get();
-		calcularFreq.url("ovigia/clientes/{idCliente}/frequencia-rondas/{data}")
+		var calcularFreq = Route.<CalcularFrequenciaRondaRequest, List<CalcularFrequenciaRondaResponse>>get()
+				.url("ovigia/clientes/{idCliente}/frequencia-rondas/{data}")
 				.requestClass(CalcularFrequenciaRondaRequest.class)
 				.rule(new CalcularFrequenciaRondasRule(clienteRepository, rotaRepository))
 				.extractFromPath((mapa, request) -> {
@@ -36,8 +35,8 @@ public class ClienteRouter extends Router {
 					return request;
 				});
 
-		var alterarLocalizacao = Route.<AtualizarClienteLocalizacaoRequest, Void>patch();
-		alterarLocalizacao.url("ovigia/clientes/{idCliente}/localizacao").contemBody()
+		var alterarLocalizacao = Route.<AtualizarClienteLocalizacaoRequest, Void>patch()
+				.url("ovigia/clientes/{idCliente}/localizacao").contemBody()
 				.requestClass(AtualizarClienteLocalizacaoRequest.class).extractFromPath((mapa, request) -> {
 					request.idCliente = mapa.get("idCliente");
 					return request;

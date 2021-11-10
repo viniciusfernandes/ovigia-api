@@ -36,20 +36,12 @@ public class ClienteRepository {
 		return Mono.from(collection.updateOne(docIdCliente, adicionarVigia)).then();
 	}
 
-	public Mono<Cliente> obterVigiasELocalizacao(String idCliente) {
+	public Mono<Localizacao> obterLocalizacaoCliente(String idCliente) {
 		var match = new Document("$match", new Document("_id", idCliente));
-		var fields = new Document("vigias", 1).append("localizacao", 1);
-		var project = new Document("$project", fields);
+		var project = new Document("$project", new Document("localizacao", 1));
 
 		var pipeline = Arrays.asList(match, project);
-
-		return Mono.from(collection.find(new Document("_id", idCliente))).map(doc -> {
-			return ClienteParser.fromDoc(doc);
-		});
-		/*
-		 * return Mono.from(collection.aggregate(pipeline)).map(document -> { return
-		 * document.get("vigias", Cliente.class); });
-		 */
+		return Mono.from(collection.aggregate(pipeline)).map(doc -> LocalizacaoParser.fromDoc(doc));
 	}
 
 	public Mono<Void> atualizarLocalizacaoPorId(String idCliente, Localizacao localizacao) {

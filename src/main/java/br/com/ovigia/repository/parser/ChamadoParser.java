@@ -40,7 +40,9 @@ public class ChamadoParser {
 		chamado.idCliente = doc.getString("idCliente");
 		chamado.data = doc.getDate("data");
 		var docIdronda = doc.get("idRonda", Document.class);
-		chamado.idRonda = new IdRonda(docIdronda.getString("idVigia"), docIdronda.getDate("data"));
+
+		chamado.idRonda = docIdronda != null ? new IdRonda(docIdronda.getString("idVigia"), docIdronda.getDate("data"))
+				: null;
 		chamado.nomeCliente = doc.getString("nomeCliente");
 		chamado.logradouro = doc.getString("logradouro");
 

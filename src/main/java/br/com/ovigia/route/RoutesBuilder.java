@@ -59,26 +59,28 @@ public class RoutesBuilder {
 	}
 
 	public <T, V> void addRoute(Route<T, V> route) {
-
 		var verboHTTP = definirVerboHTTP(route.getTipoRequest(), route.getUrl());
-
 		var routerFunction = route(verboHTTP, request -> {
-			if (route.isBodyEnviado() && !route.hasPathVariable()) {
-				return fromBody(request, route.getRequestClazz())
-						.flatMap(entidade -> toResponse(route.getRule().apply(entidade)));
-			} else if (route.isBodyEnviado() && route.hasPathVariable()) {
-				return fromBody(request, route.getRequestClazz()).flatMap(entidade -> {
-					extractFromPath(request, route.getExtractFromPath(), entidade);
-					return toResponse(route.getRule().apply(entidade));
-
-				});
-			} else if (!route.isBodyEnviado() && route.hasPathVariable()) {
-				T entidade = route.newInstanceRequest();
-				extractFromPath(request, route.getExtractFromPath(), entidade);
-				return toResponse(route.getRule().apply(entidade));
+			Mono<T> mono = null;
+			if (route.hasBody()) {
+				mono = fromBody(request, route.getRequestClazz());
+			} else {
+				mono = Mono.just(route.newInstanceRequest());
 			}
 
-			return null;
+			if (route.hasPathVariable()) {
+				mono = mono
+						.map(businessRequest -> extractFromPath(request, route.getExtractFromPath(), businessRequest));
+			}
+
+			if (route.hasParameters()) {
+				mono = mono.map(businessRequest -> extractFromParamaters(request, route.getExtractFromParameters(),
+						businessRequest));
+			}
+
+			return mono.flatMap(businessRequest -> route.getRule().apply(businessRequest))
+					.flatMap(this::handleResponse);
+
 		});
 		routerFunctions.add(routerFunction);
 	}
@@ -112,27 +114,32 @@ public class RoutesBuilder {
 		return fillFromPAth.apply(pathVariables, entity);
 	}
 
-	private <V> Mono<ServerResponse> toResponse(Mono<Response<V>> mResponse) {
-		return mResponse.flatMap(response -> {
+	private static <T> T extractFromParamaters(ServerRequest request,
+			BiFunction<Map<String, String>, T, T> fillFromParameters, T entity) {
+		if (fillFromParameters == null) {
+			return entity;
+		}
+		var pathVariables = request.pathVariables();
+		return fillFromParameters.apply(pathVariables, entity);
+	}
 
-			if (response.isNoResult()) {
-				return noContent().build();
-			}
+	private <V> Mono<ServerResponse> handleResponse(Response<V> response) {
+		if (response.isNoResult()) {
+			return noContent().build();
+		}
 
-			BodyBuilder bodyBuilder = null;
-			if (response.isOk()) {
-				bodyBuilder = ok();
-			} else if (response.isBadRequest()) {
-				bodyBuilder = badRequest();
-			} else if (response.isUnprocessable()) {
-				bodyBuilder = unprocessableEntity();
-			} else if (response.isUnauthorized()) {
-				bodyBuilder = status(HttpStatus.UNAUTHORIZED);
-			}
+		BodyBuilder bodyBuilder = null;
+		if (response.isOk()) {
+			bodyBuilder = ok();
+		} else if (response.isBadRequest()) {
+			bodyBuilder = badRequest();
+		} else if (response.isUnprocessable()) {
+			bodyBuilder = unprocessableEntity();
+		} else if (response.isUnauthorized()) {
+			bodyBuilder = status(HttpStatus.UNAUTHORIZED);
+		}
 
-			return bodyBuilder.bodyValue(response);
-		});
-
+		return bodyBuilder.bodyValue(response);
 	}
 
 }

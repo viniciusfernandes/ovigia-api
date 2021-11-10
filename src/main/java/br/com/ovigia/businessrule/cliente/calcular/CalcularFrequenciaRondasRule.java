@@ -37,9 +37,10 @@ public class CalcularFrequenciaRondasRule
 			CalcularFrequenciaRondaRequest calculoFrequencia) {
 		var data = DataUtil.ajustarData(calculoFrequencia.getDataRonda());
 
-		return clienteRepository.obterVigiasELocalizacao(calculoFrequencia.getIdCliente())
-				.flatMap(cliente -> processarRotasPorId(cliente.vigias, data, cliente.localizacao))
-				.map(frequencias -> Response.ok(frequencias));
+//		return clienteRepository.obterLocalizacaoCliente(calculoFrequencia.getIdCliente())
+//				.flatMap(cliente -> processarRotasPorId(cliente.vigias, data, cliente.localizacao))
+//				.map(frequencias -> Response.ok(frequencias));
+		return null;
 	}
 
 	private int calcularNumeroRodas(Localizacao localizacaoCliente, List<Localizacao> localizacoesVigia) {
