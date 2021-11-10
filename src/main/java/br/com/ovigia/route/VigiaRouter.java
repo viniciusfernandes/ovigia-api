@@ -29,7 +29,7 @@ public class VigiaRouter extends Router {
 				}).rule(new ObterVigiaRule(vigiaRepository));
 
 		var obterVigiasProximos = Route.<ObterVigiasProximosRequest, ObterVigiasProximosResponse>get()
-				.url("/ovigia/vigias/proximosccc").requestClass(ObterVigiasProximosRequest.class)
+				.url("/ovigia/vigias/proximos").requestClass(ObterVigiasProximosRequest.class)
 				.extractFromParameters((mapa, request) -> {
 					request.latitude = Double.parseDouble(mapa.get("latitude"));
 					request.longitude = Double.parseDouble(mapa.get("longitude"));

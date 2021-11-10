@@ -142,4 +142,7 @@ public class RoutesBuilder {
 		return bodyBuilder.bodyValue(response);
 	}
 
+	public void printRoutes() {
+		routerFunctions.forEach(r -> System.out.println(r));
+	}
 }
