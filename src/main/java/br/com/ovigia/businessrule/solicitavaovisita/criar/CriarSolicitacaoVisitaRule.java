@@ -24,7 +24,8 @@ public class CriarSolicitacaoVisitaRule implements BusinessRule<CriarSolicitacao
 		solicitacao.localizacaoCliente = request.localizacaoCliente;
 		solicitacao.nomeCliente = request.nomeCliente;
 		solicitacao.telefoneCliente = request.telefoneCliente;
-		return solicitacaoRepository.criarSolicitacao(solicitacao).thenReturn(Response.noContent());
+		return solicitacaoRepository.removerSolicitacao(request.idCliente)
+				.and(solicitacaoRepository.criarSolicitacao(solicitacao)).thenReturn(Response.noContent());
 	}
 
 }

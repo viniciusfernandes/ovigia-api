@@ -33,6 +33,13 @@ public class SolicitacaoVisitaRepository {
 		return Flux.from(collection.aggregate(pipeline)).map(doc -> fromDoc(doc));
 	}
 
+	public Mono<String> obterIdVigiaSolicitado(String idCliente) {
+		var match = new Document("$match", new Document("_id", idCliente));
+		var project = new Document("$project", new Document("idVigia", 1));
+		var pipeline = Arrays.asList(match, project);
+		return Mono.from(collection.aggregate(pipeline)).map(doc -> doc.getString("idVigia"));
+	}
+
 	public Mono<Void> removerSolicitacao(String idCliente) {
 		return Mono.from(collection.deleteOne(new Document("_id", idCliente))).then();
 	}
