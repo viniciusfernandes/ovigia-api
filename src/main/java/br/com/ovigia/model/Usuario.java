@@ -24,4 +24,18 @@ public class Usuario {
 		this.nome = nome;
 	}
 
+	public String formatarTelefone() {
+		if (telefone == null) {
+			return null;
+		}
+		if (telefone.length() > 11) {
+			var tel = telefone.replaceAll("\\D", "");
+			if (tel.length() <= 11) {
+				return tel;
+			}
+			var index = tel.length() - 11;
+			return tel.substring(index);
+		}
+		return telefone;
+	}
 }

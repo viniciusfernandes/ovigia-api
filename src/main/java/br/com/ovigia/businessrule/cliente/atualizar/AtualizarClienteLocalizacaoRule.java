@@ -20,6 +20,6 @@ public class AtualizarClienteLocalizacaoRule implements BusinessRule<AtualizarCl
 		var localizacao = new Localizacao(new Date().getTime(), clienteLocalizacao.latitude,
 				clienteLocalizacao.longitude);
 		return repository.atualizarLocalizacaoPorId(clienteLocalizacao.idCliente, localizacao)
-				.map(id -> Response.nonResult());
+				.map(id -> Response.noContent());
 	}
 }

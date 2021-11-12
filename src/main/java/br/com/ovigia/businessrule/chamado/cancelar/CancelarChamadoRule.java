@@ -16,7 +16,7 @@ public class CancelarChamadoRule implements BusinessRule<CancelarChamadoRequest,
 	@Override
 	public Mono<Response<Void>> apply(CancelarChamadoRequest request) {
 		return chamadoRepository.atualizarSituacao(request.idChamado, TipoSituacaoChamado.CANCELADO_CLIENTE)
-				.thenReturn(Response.nonResult());
+				.thenReturn(Response.noContent());
 	}
 
 }

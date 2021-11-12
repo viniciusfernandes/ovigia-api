@@ -26,11 +26,13 @@ import br.com.ovigia.model.repository.ChamadoRepository;
 import br.com.ovigia.model.repository.ClienteRepository;
 import br.com.ovigia.model.repository.ResumoRondaRepository;
 import br.com.ovigia.model.repository.RondaRepository;
+import br.com.ovigia.model.repository.SolicitacaoVisitaRepository;
 import br.com.ovigia.model.repository.VigiaRepository;
 import br.com.ovigia.route.ChamadoRouter;
 import br.com.ovigia.route.ClienteRouter;
 import br.com.ovigia.route.RondaRouter;
 import br.com.ovigia.route.RoutesBuilder;
+import br.com.ovigia.route.SolicitacaoVistiaRouter;
 import br.com.ovigia.route.VigiaRouter;
 
 @SpringBootApplication
@@ -57,6 +59,7 @@ public class OvigiaApplication {
 		var mongodb = MongoClients.create().getDatabase("ovigia");
 		context.registerBean(MongoDatabase.class, () -> mongodb);
 
+		context.registerBean(SolicitacaoVisitaRepository.class, () -> new SolicitacaoVisitaRepository(mongodb));
 		context.registerBean(VigiaRepository.class, () -> new VigiaRepository(mongodb));
 		context.registerBean(ClienteRepository.class, () -> new ClienteRepository(mongodb));
 		context.registerBean(RondaRepository.class, () -> new RondaRepository(mongodb));
@@ -86,6 +89,7 @@ public class OvigiaApplication {
 
 	private void registerRoutes(GenericApplicationContext context) {
 		var routesBuilder = RoutesBuilder.getInstance();
+		routesBuilder.addRouter(new SolicitacaoVistiaRouter(getBean(SolicitacaoVisitaRepository.class)));
 		routesBuilder.addRouter(new ChamadoRouter(getBean(ChamadoRepository.class)));
 		routesBuilder.addRouter(new VigiaRouter(getBean(VigiaRepository.class), getBean(ClienteRepository.class)));
 		routesBuilder.addRouter(new ClienteRouter(getBean(ClienteRepository.class), getBean(RondaRepository.class)));

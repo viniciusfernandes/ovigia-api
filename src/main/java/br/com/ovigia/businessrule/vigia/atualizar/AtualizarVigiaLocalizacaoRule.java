@@ -21,6 +21,6 @@ public class AtualizarVigiaLocalizacaoRule implements BusinessRule<AtualizarVigi
 		localizacao.data = new Date();
 		localizacao.latitude = request.latitude;
 		localizacao.longitude = request.longitude;
-		return repository.atualizarLocalizacaoPorId(request.email, localizacao).map(id -> Response.nonResult());
+		return repository.atualizarLocalizacaoPorId(request.email, localizacao).map(id -> Response.noContent());
 	}
 }

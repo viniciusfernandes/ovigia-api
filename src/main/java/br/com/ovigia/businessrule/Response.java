@@ -68,7 +68,7 @@ public class Response<V> {
 		return new Response<>(value);
 	}
 
-	public static <T> Response<T> nonResult() {
+	public static <T> Response<T> noContent() {
 		return new Response<>();
 	}
 

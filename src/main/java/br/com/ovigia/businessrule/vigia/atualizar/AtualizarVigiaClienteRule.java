@@ -21,6 +21,6 @@ public class AtualizarVigiaClienteRule implements BusinessRule<Cliente, Void> {
 	public Mono<Response<Void>> apply(Cliente cliente) {
 		return vigiaRepository.atualizarCliente(cliente.email, cliente)
 				.and(clienteRepository.atualizarVigia(cliente.email, cliente.email))
-				.thenReturn(Response.nonResult());
+				.thenReturn(Response.noContent());
 	}
 }

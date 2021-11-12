@@ -38,7 +38,7 @@ public class CriarRondaRule implements BusinessRule<CriarRondaRequest, Void> {
 				return concatenaRondaEResumo(ronda, resumo);
 			}
 			return criarRondaEResumo(ronda);
-		}).thenReturn(Response.nonResult());
+		}).thenReturn(Response.noContent());
 	}
 
 	private Mono<Void> concatenaRondaEResumo(Ronda ronda, ResumoRonda resumo) {
