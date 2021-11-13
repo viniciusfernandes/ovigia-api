@@ -26,7 +26,8 @@ public class ObterVigiasProximosRule implements BusinessRule<ObterVigiasProximos
 		final var localizacao = new Localizacao(request.latitude, request.longitude);
 		return vigiaRepository.obterLocalizacaoVigias()
 				.filter(vigia -> isDistanciaInferior(localizacao, vigia.localizacao))
-				.sort((v1, v2) -> distanciaOf(v1, v2, localizacao)).map(vigia -> {
+				.sort((v1, v2) -> distanciaOf(v1, v2, localizacao))
+				.flatMap(vigia -> vigiaRepository.obterVigiaPorId(vigia.id)).map(vigia -> {
 					var response = new VigiaProximoResponse();
 					response.id = vigia.id;
 					response.nome = vigia.nome;

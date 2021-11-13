@@ -16,6 +16,6 @@ public class ObterVigiaRule implements BusinessRule<ObterVigiaRequest, Vigia> {
 
 	@Override
 	public Mono<Response<Vigia>> apply(ObterVigiaRequest request) {
-		return repository.obterPorId(request.email).map(vigia -> Response.ok(vigia));
+		return repository.obterVigiaPorId(request.email).map(vigia -> Response.ok(vigia));
 	}
 }
