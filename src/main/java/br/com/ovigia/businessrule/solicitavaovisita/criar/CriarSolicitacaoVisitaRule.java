@@ -17,7 +17,7 @@ public class CriarSolicitacaoVisitaRule implements BusinessRule<CriarSolicitacao
 
 	@Override
 	public Mono<Response<Void>> apply(CriarSolicitacaoVisitaRequest request) {
-		var solicitacao = new SolicitacaoVisita();
+		final var solicitacao = new SolicitacaoVisita();
 		solicitacao.data = new Date();
 		solicitacao.idCliente = request.idCliente;
 		solicitacao.idVigia = request.idVigia;

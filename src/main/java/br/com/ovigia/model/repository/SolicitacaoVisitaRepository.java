@@ -21,9 +21,9 @@ public class SolicitacaoVisitaRepository {
 		collection = database.getCollection("solicitacaoVisita");
 	}
 
-	public Mono<Void> criarSolicitacao(SolicitacaoVisita solicitacao) {
+	public Mono<SolicitacaoVisita> criarSolicitacao(SolicitacaoVisita solicitacao) {
 		var doc = toDoc(solicitacao);
-		return Mono.from(collection.insertOne(doc)).then();
+		return Mono.from(collection.insertOne(doc)).map(Result -> solicitacao);
 	}
 
 	public Flux<SolicitacaoVisita> obterSolicitacaoByIdVigia(String idvigia) {
@@ -40,8 +40,8 @@ public class SolicitacaoVisitaRepository {
 		return Mono.from(collection.aggregate(pipeline)).map(doc -> doc.getString("idVigia"));
 	}
 
-	public Mono<Void> removerSolicitacao(String idCliente) {
-		return Mono.from(collection.deleteOne(new Document("_id", idCliente))).then();
+	public Mono<Long> removerSolicitacao(String idCliente) {
+		return Mono.from(collection.deleteOne(new Document("_id", idCliente))).map(result -> result.getDeletedCount());
 	}
 
 }
