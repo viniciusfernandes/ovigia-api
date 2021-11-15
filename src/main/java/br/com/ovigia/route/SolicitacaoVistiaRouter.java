@@ -10,6 +10,8 @@ import br.com.ovigia.businessrule.solicitavaovisita.obter.ObterIdVigiaSolicitado
 import br.com.ovigia.businessrule.solicitavaovisita.obter.ObterSolicitacaoVisitaRequest;
 import br.com.ovigia.businessrule.solicitavaovisita.obter.ObterSolicitacaoVisitaResponse;
 import br.com.ovigia.businessrule.solicitavaovisita.obter.ObterSolicitacaoVisitaRule;
+import br.com.ovigia.businessrule.solicitavaovisita.remover.RemoverSolicitacaoVisitaClienteRule;
+import br.com.ovigia.businessrule.solicitavaovisita.remover.RemoverSolicitacaoVisitaRequest;
 import br.com.ovigia.model.repository.SolicitacaoVisitaRepository;
 
 public class SolicitacaoVistiaRouter extends Router {
@@ -37,9 +39,17 @@ public class SolicitacaoVistiaRouter extends Router {
 					return request;
 				}).rule(new ObterSolicitacaoVisitaRule(solicitacaoVisitaRepository));
 
+		var removerSolicitacaoVisita = Route.<RemoverSolicitacaoVisitaRequest, Void>delete()
+				.url("/ovigia/solicitacoes/clientes/{idCliente}").requestClass(RemoverSolicitacaoVisitaRequest.class)
+				.extractFromPath((mapa, request) -> {
+					request.idCliente = mapa.get("idCliente");
+					return request;
+				}).rule(new RemoverSolicitacaoVisitaClienteRule(solicitacaoVisitaRepository));
+
 		addRoute(criarSolicitacao);
 		addRoute(obterIdVigiaSolicitado);
 		addRoute(obterSolicitacaoVisita);
+		addRoute(removerSolicitacaoVisita);
 	}
 
 }

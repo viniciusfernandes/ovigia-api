@@ -24,12 +24,14 @@ import br.com.ovigia.auth.security.PBKDF2Encoder;
 import br.com.ovigia.auth.security.WebSecurityConfig;
 import br.com.ovigia.model.repository.ChamadoRepository;
 import br.com.ovigia.model.repository.ClienteRepository;
+import br.com.ovigia.model.repository.ContratoRepository;
 import br.com.ovigia.model.repository.ResumoRondaRepository;
 import br.com.ovigia.model.repository.RondaRepository;
 import br.com.ovigia.model.repository.SolicitacaoVisitaRepository;
 import br.com.ovigia.model.repository.VigiaRepository;
 import br.com.ovigia.route.ChamadoRouter;
 import br.com.ovigia.route.ClienteRouter;
+import br.com.ovigia.route.ContratoRouter;
 import br.com.ovigia.route.RondaRouter;
 import br.com.ovigia.route.RoutesBuilder;
 import br.com.ovigia.route.SolicitacaoVistiaRouter;
@@ -66,6 +68,8 @@ public class OvigiaApplication {
 		context.registerBean(ResumoRondaRepository.class, () -> new ResumoRondaRepository(mongodb));
 		context.registerBean(UsuarioRepository.class, () -> new UsuarioRepository(mongodb));
 		context.registerBean(ChamadoRepository.class, () -> new ChamadoRepository(mongodb));
+		context.registerBean(ContratoRepository.class, () -> new ContratoRepository(mongodb));
+
 	}
 
 	private void registerSecurityWebFilterChain(GenericApplicationContext context) {
@@ -89,6 +93,7 @@ public class OvigiaApplication {
 
 	private void registerRoutes(GenericApplicationContext context) {
 		var routesBuilder = RoutesBuilder.getInstance();
+		routesBuilder.addRouter(new ContratoRouter(getBean(ContratoRepository.class)));
 		routesBuilder.addRouter(new SolicitacaoVistiaRouter(getBean(SolicitacaoVisitaRepository.class)));
 		routesBuilder.addRouter(new ChamadoRouter(getBean(ChamadoRepository.class)));
 		routesBuilder.addRouter(new VigiaRouter(getBean(VigiaRepository.class), getBean(ClienteRepository.class)));
