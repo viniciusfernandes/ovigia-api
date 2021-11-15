@@ -21,9 +21,10 @@ public class CriarSolicitacaoVisitaRule implements BusinessRule<CriarSolicitacao
 		solicitacao.data = new Date();
 		solicitacao.idCliente = request.idCliente;
 		solicitacao.idVigia = request.idVigia;
-		solicitacao.localizacaoCliente = request.localizacaoCliente;
+		solicitacao.idVigia = request.idVigia;
 		solicitacao.nomeCliente = request.nomeCliente;
 		solicitacao.telefoneCliente = request.telefoneCliente;
+		solicitacao.localizacaoCliente = request.localizacaoCliente;
 		return solicitacaoRepository.removerSolicitacao(request.idCliente)
 				.and(solicitacaoRepository.criarSolicitacao(solicitacao)).thenReturn(Response.noContent());
 	}

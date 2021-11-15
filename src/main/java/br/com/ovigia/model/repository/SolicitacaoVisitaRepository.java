@@ -26,11 +26,8 @@ public class SolicitacaoVisitaRepository {
 		return Mono.from(collection.insertOne(doc)).map(Result -> solicitacao);
 	}
 
-	public Flux<SolicitacaoVisita> obterSolicitacaoByIdVigia(String idvigia) {
-		var match = new Document("$match", new Document("idVigia", idvigia));
-		var project = new Document("idVigia", 0);
-		var pipeline = Arrays.asList(match, project);
-		return Flux.from(collection.aggregate(pipeline)).map(doc -> fromDoc(doc));
+	public Flux<SolicitacaoVisita> obterSolicitacaoByIdVigia(String idVigia) {
+		return Flux.from(collection.find(new Document("idVigia", idVigia))).map(doc -> fromDoc(doc));
 	}
 
 	public Mono<String> obterIdVigiaSolicitado(String idCliente) {

@@ -1,12 +1,12 @@
 package br.com.ovigia.businessrule.solicitavaovisita.obter;
 
-import java.util.ArrayList;
-import java.util.List;
+import br.com.ovigia.model.Localizacao;
 
 public class ObterSolicitacaoVisitaResponse {
-	public List<SolicitacaoVisitaResponse> solicitacoes = new ArrayList<>();
-
-	public void add(SolicitacaoVisitaResponse reponse) {
-		solicitacoes.add(reponse);
-	}
+	public String idCliente;
+	public String nomeCliente;
+	public String telefoneCliente;
+	public Localizacao localizacaoCliente;
+	public String data;
+	public String hora;
 }

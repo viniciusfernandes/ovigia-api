@@ -24,9 +24,17 @@ public class UsuarioRepository {
 		var filtro = new Document("email", email).append("password", password);
 		var match = new Document("$match", filtro);
 		var fields = new Document("tipoUsuario", 1).append("_id", 1).append("email", 1).append("nome", 1)
-				.append("localizacao", 1);
+				.append("telefone", 1).append("localizacao", 1);
 		var project = new Document("$project", fields);
 
+		var list = Arrays.asList(match, project);
+		return Mono.from(collection.aggregate(list)).map(docUsuario -> UsuarioParser.fromDoc(docUsuario));
+	}
+
+	public Mono<Usuario> obterNomeETelefoneUsuario(String idUsuario) {
+		var match = new Document("$match", new Document("_id", idUsuario));
+		var fields = new Document("nome", 1).append("telefone", 1);
+		var project = new Document("$project", fields);
 		var list = Arrays.asList(match, project);
 		return Mono.from(collection.aggregate(list)).map(docUsuario -> UsuarioParser.fromDoc(docUsuario));
 	}

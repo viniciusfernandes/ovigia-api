@@ -9,11 +9,13 @@ public class SolicitacaoVistiaParser {
 	}
 
 	public static Document toDoc(SolicitacaoVisita solicitacao) {
-		return new Document("_id", solicitacao.idCliente).append("idVigia", solicitacao.idVigia)
+		var doc = new Document("_id", solicitacao.idCliente).append("idVigia", solicitacao.idVigia)
 				.append("data", solicitacao.data).append("nomeCliente", solicitacao.nomeCliente)
-				.append("telefoneCliente", solicitacao.telefoneCliente)
-				.append("localizacaoCliente", LocalizacaoParser.toDoc(solicitacao.localizacaoCliente));
-
+				.append("telefoneCliente", solicitacao.telefoneCliente);
+		if (solicitacao.localizacaoCliente != null) {
+			doc.append("localizacaoCliente", LocalizacaoParser.toDoc(solicitacao.localizacaoCliente));
+		}
+		return doc;
 	}
 
 	public static SolicitacaoVisita fromDoc(Document doc) {
