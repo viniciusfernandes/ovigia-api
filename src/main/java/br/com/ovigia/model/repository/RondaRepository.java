@@ -47,7 +47,7 @@ public class RondaRepository {
 	}
 
 	public Mono<Ronda> obterRondaPorId(IdRonda id) {
-		return Mono.from(collection.find(toDoc(id))).map(docRonda -> RondaParser.fromDoc(docRonda));
+		return Mono.from(collection.find(toDoc(id))).map(RondaParser::fromDoc);
 	}
 
 	public Mono<Void> concatenarRonda(Ronda ronda) {
@@ -58,12 +58,12 @@ public class RondaRepository {
 		return Mono.from(collection.updateOne(toDoc(ronda.id), update)).then();
 	}
 
-	public Mono<Ronda> obterUltimaDataRonda(String idvigia) {
+	public Mono<Ronda> obterUltimaRondaByIdVigia(String idvigia) {
 		var match = new Document("$match", new Document("_id.idVigia", idvigia));
-		var fields = new Document("_id.data", 1).append("inicio", 1).append("fim", 1);
+		var fields = new Document("_id.data", 1).append("inicio", 1).append("fim", 1).append("localizacoes", 1);
 		var project = new Document("$project", fields);
 		var pipeline = Arrays.asList(match, project);
-		return Mono.from(collection.aggregate(pipeline)).map(docRonda -> new Ronda());
+		return Mono.from(collection.aggregate(pipeline)).map(RondaParser::fromDoc);
 	}
 
 }

@@ -1,7 +1,5 @@
 package br.com.ovigia.repository.parser;
 
-import java.util.List;
-
 import org.bson.Document;
 
 import br.com.ovigia.model.Ronda;
@@ -21,7 +19,6 @@ public class RondaParser {
 	}
 
 	public static Ronda fromDoc(Document doc) {
-
 		var id = IdRondaParser.fromDoc(doc);
 
 		var ronda = new Ronda(id);
@@ -32,13 +29,8 @@ public class RondaParser {
 		ronda.inicio = doc.getDate("inicio");
 		ronda.fim = doc.getDate("fim");
 
-		@SuppressWarnings("unchecked")
-		var localizacoes = (List<Document>) doc.get("localizacoes");
-		if (localizacoes != null) {
-			for (Document docLoc : localizacoes) {
-				ronda.add(LocalizacaoParser.fromNestedDoc(docLoc));
-			}
-		}
+		var docsLocal = doc.getList("localizacoes", Document.class);
+		ronda.add(LocalizacaoParser.fromDoc(docsLocal));
 		return ronda;
 	}
 

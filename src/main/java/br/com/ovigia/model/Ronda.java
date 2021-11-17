@@ -24,6 +24,10 @@ public class Ronda {
 		localizacoes.add(localizacao);
 	}
 
+	public void add(List<Localizacao> localizacoes) {
+		this.localizacoes.addAll(localizacoes);
+	}
+
 	public String obterIdVigia() {
 		if (id == null) {
 			return null;

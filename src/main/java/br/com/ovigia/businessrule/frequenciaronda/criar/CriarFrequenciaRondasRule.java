@@ -41,18 +41,15 @@ public class CriarFrequenciaRondasRule
 	@Override
 	public Mono<Response<CriarFrequenciaRondaResponse>> apply(CriarFrequenciaRondaRequest request) {
 		var obterIdVigia = contratoRepository.obterIdVigiaByIdCliente(request.idCliente);
-		obterIdVigia.subscribe(r -> System.out.println("idvigia: "+r) );
 		var obterLocalizacaoCliente = clienteRepository.obterLocalizacaoCliente(request.idCliente);
-		obterLocalizacaoCliente .subscribe(r -> System.out.println("obterLocalizacaoCliente : "+r) );
-
 		return Mono.zip(obterIdVigia, obterLocalizacaoCliente).flatMap(tuple -> {
 			var idVigia = tuple.getT1();
 			var localCliente = tuple.getT2();
-			return rondaRepository.obterUltimaDataRonda(idVigia).map(ronda -> {
+			return rondaRepository.obterUltimaRondaByIdVigia(idVigia).map(ronda -> {
 				var frequecia = new FrequenciaRonda();
 				frequecia.id = new IdFrequenciaRonda(request.idCliente, ronda.obterData());
 				frequecia.idVigia = idVigia;
-				frequecia.totalRonda = calcularNumeroRodas(localCliente, ronda.localizacoes);
+				frequecia.totalRonda = calcularNumeroRondas(localCliente, ronda.localizacoes);
 				return frequecia;
 			});
 
@@ -66,7 +63,7 @@ public class CriarFrequenciaRondasRule
 				});
 	}
 
-	private int calcularNumeroRodas(Localizacao localizacaoCliente, List<Localizacao> localizacoesVigia) {
+	private int calcularNumeroRondas(Localizacao localizacaoCliente, List<Localizacao> localizacoesVigia) {
 		if (localizacoesVigia == null || localizacoesVigia.isEmpty()) {
 			return 0;
 		}

@@ -43,7 +43,7 @@ public class UsuarioParser {
 			usuario.tipoUsuario = TipoUsuario.valueOf(tipo);
 		}
 		usuario.dataInicio = doc.getDate("dataInicio");
-		usuario.localizacao = LocalizacaoParser.fromNestedDoc(doc);
+		usuario.localizacao = LocalizacaoParser.fromDoc(doc.get("localizacao", Document.class));
 		return usuario;
 	}
 

@@ -20,6 +20,9 @@ public class DataUtil {
 	private static final DateFormat DATA_HORA_FORMATTER = new SimpleDateFormat("dd/MM/yyyyHH:mm");
 
 	public static Date ajustarData(Date data) {
+		if (data == null) {
+			return null;
+		}
 		var cal = Calendar.getInstance(TimeZone.getTimeZone("America/Sao_Paulo"));
 		cal.setTime(data);
 		cal.set(Calendar.HOUR_OF_DAY, 0);

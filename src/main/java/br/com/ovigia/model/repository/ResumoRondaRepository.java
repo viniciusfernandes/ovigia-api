@@ -30,7 +30,6 @@ public class ResumoRondaRepository {
 
 	public Mono<Void> removerResumoRonda(String idVigia) {
 		var filter = new Document("_id", idVigia);
-		Mono.from(collection.deleteOne(filter)).subscribe(r -> System.out.println("Removeu o resumo: " + r));
 		return Mono.from(collection.deleteOne(filter)).then();
 	}
 

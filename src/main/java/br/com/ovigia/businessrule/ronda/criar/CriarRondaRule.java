@@ -42,7 +42,6 @@ public class CriarRondaRule implements BusinessRule<CriarRondaRequest, Void> {
 	}
 
 	private Mono<Void> concatenaRondaEResumo(Ronda ronda, ResumoRonda resumo) {
-		System.out.println("Concatenou ronda");
 		var tempoEscala = calculadora.calcularTempo(ronda);
 		resumo.escalaTempo = tempoEscala.escala;
 		resumo.tempo += tempoEscala.tempo;
@@ -54,7 +53,6 @@ public class CriarRondaRule implements BusinessRule<CriarRondaRequest, Void> {
 	}
 
 	private Mono<Void> criarRondaEResumo(Ronda ronda) {
-		System.out.println("Criando a ronda");
 		var resumo = gerarResumo(ronda);
 		return rondaRepository.criarRonda(ronda).and(resumoRepository.removerResumoRonda(ronda.id.idVigia))
 				.and(resumoRepository.criarResumoRonda(resumo));

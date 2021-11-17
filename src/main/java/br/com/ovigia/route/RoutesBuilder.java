@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.server.RequestPredicate;
 import org.springframework.web.reactive.function.server.RouterFunction;
@@ -30,6 +32,7 @@ import reactor.core.publisher.Mono;
 public class RoutesBuilder {
 	private static List<RouterFunction<ServerResponse>> routerFunctions = new ArrayList<>();
 	private static final RoutesBuilder register;
+	private final Logger logger = LoggerFactory.getLogger(getClass());
 	static {
 		register = new RoutesBuilder();
 	}
@@ -144,6 +147,6 @@ public class RoutesBuilder {
 	}
 
 	public void printRoutes() {
-		routerFunctions.forEach(r -> System.out.println(r));
+		routerFunctions.forEach(route -> logger.info(String.valueOf(route)));
 	}
 }

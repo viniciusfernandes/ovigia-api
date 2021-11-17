@@ -41,7 +41,10 @@ public class ClienteRepository {
 		var match = new Document("$match", new Document("_id", idCliente));
 		var project = new Document("$project", new Document("localizacao", 1));
 		var pipeline = Arrays.asList(match, project);
-		return Mono.from(collection.aggregate(pipeline)).map(doc -> LocalizacaoParser.fromDoc(doc));
+		return Mono.from(collection.aggregate(pipeline)).map(doc -> {
+			var localz = doc.get("localizacao", Document.class);
+			return LocalizacaoParser.fromDoc(localz);
+		});
 	}
 
 	public Mono<Void> atualizarLocalizacaoPorId(String idCliente, Localizacao localizacao) {
