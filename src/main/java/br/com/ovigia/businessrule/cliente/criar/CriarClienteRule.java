@@ -15,6 +15,6 @@ public class CriarClienteRule implements BusinessRule<Cliente, Void> {
 
 	@Override
 	public Mono<Response<Void>> apply(Cliente cliente) {
-		return repository.criar(cliente).then(Mono.just(Response.accepted()));
+		return repository.criarCliente(cliente).then(Mono.just(Response.accepted()));
 	}
 }

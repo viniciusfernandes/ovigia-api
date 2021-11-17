@@ -19,15 +19,15 @@ public class ClienteRepository {
 	private final MongoCollection<Document> collection;
 
 	public ClienteRepository(MongoDatabase database) {
-		collection = database.getCollection("cliente");
+		collection = database.getCollection("usuario");
 	}
 
-	public Mono<Void> criar(Cliente cliente) {
+	public Mono<Void> criarCliente(Cliente cliente) {
 		var doc = ClienteParser.toDoc(cliente);
 		return Mono.from(collection.insertOne(doc)).then();
 	}
 
-	public Mono<Cliente> obterPorId(String idCliente) {
+	public Mono<Cliente> obterClientePorId(String idCliente) {
 		return Mono.from(collection.find(new Document("_id", idCliente))).map(doc -> ClienteParser.fromDoc(doc));
 	}
 

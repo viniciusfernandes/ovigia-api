@@ -41,7 +41,10 @@ public class CriarFrequenciaRondasRule
 	@Override
 	public Mono<Response<CriarFrequenciaRondaResponse>> apply(CriarFrequenciaRondaRequest request) {
 		var obterIdVigia = contratoRepository.obterIdVigiaByIdCliente(request.idCliente);
+		obterIdVigia.subscribe(r -> System.out.println("idvigia: "+r) );
 		var obterLocalizacaoCliente = clienteRepository.obterLocalizacaoCliente(request.idCliente);
+		obterLocalizacaoCliente .subscribe(r -> System.out.println("obterLocalizacaoCliente : "+r) );
+
 		return Mono.zip(obterIdVigia, obterLocalizacaoCliente).flatMap(tuple -> {
 			var idVigia = tuple.getT1();
 			var localCliente = tuple.getT2();
