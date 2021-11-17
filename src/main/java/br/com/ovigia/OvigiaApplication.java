@@ -96,10 +96,7 @@ public class OvigiaApplication {
 
 	private void registerRoutes(GenericApplicationContext context) {
 		var routesBuilder = RoutesBuilder.getInstance();
-		routesBuilder
-				.addRouter(new FrequenciaRondaRouter(getBean(ClienteRepository.class), getBean(RondaRepository.class),
-						getBean(FrequenciaRondaRepository.class), getBean(ContratoRepository.class)));
-
+	
 		routesBuilder.addRouter(
 				new ContratoRouter(getBean(ContratoRepository.class), getBean(SolicitacaoVisitaRepository.class)));
 		routesBuilder.addRouter(new SolicitacaoVistiaRouter(getBean(SolicitacaoVisitaRepository.class)));
@@ -111,6 +108,11 @@ public class OvigiaApplication {
 		routesBuilder.addRouter(
 				new AuthRouter(getBean(UsuarioRepository.class), getBean(PBKDF2Encoder.class), getBean(JwtUtil.class)));
 
+		routesBuilder
+		.addRouter(new FrequenciaRondaRouter(getBean(ClienteRepository.class), getBean(RondaRepository.class),
+				getBean(FrequenciaRondaRepository.class), getBean(ContratoRepository.class)));
+
+		
 		context.registerBean(RouterFunction.class, () -> routesBuilder.build());
 	}
 
