@@ -53,8 +53,8 @@ public class CriarFrequenciaRondasRule
 				return frequecia;
 			});
 
-		}).doOnNext(frequencia -> clienteRepository.atualizarFrequenciaRonda(frequencia))
-				.doOnNext(frequencia -> frequenciaRepository.criarFrequenciaRonda(frequencia)).map(frequencia -> {
+		}).flatMap(frequencia -> clienteRepository.atualizarFrequenciaRonda(frequencia))
+				.flatMap(frequencia -> frequenciaRepository.criarFrequenciaRonda(frequencia)).map(frequencia -> {
 					var response = new CriarFrequenciaRondaResponse();
 					response.data = DataUtil.formatarData(frequencia.id.data);
 					response.idVigia = frequencia.idVigia;

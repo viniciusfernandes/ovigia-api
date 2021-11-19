@@ -11,17 +11,18 @@ public class ContratoParser {
 	public static Document toDoc(Contrato contrato) {
 		return new Document("_id", contrato.idCliente).append("idVigia", contrato.idVigia)
 				.append("dataInicio", contrato.dataInicio).append("dataFim", contrato.dataFim)
-				.append("valor", contrato.valor);
+				.append("valor", contrato.valor).append("diaVencimento", contrato.diaVencimento);
 	}
 
 	public static Contrato fromDoc(Document doc) {
-		var solicitacao = new Contrato();
-		solicitacao.idCliente = doc.getString("_id");
-		solicitacao.dataInicio = doc.getDate("dataInicio");
-		solicitacao.dataFim = doc.getDate("dataFim");
-		solicitacao.idVigia = doc.getString("idVigia");
-		solicitacao.valor = doc.getDouble("valor");
-		return solicitacao;
+		var contrato = new Contrato();
+		contrato.idCliente = doc.getString("_id");
+		contrato.dataInicio = doc.getDate("dataInicio");
+		contrato.dataFim = doc.getDate("dataFim");
+		contrato.idVigia = doc.getString("idVigia");
+		contrato.valor = doc.getDouble("valor");
+		contrato.diaVencimento = doc.getInteger("diaVencimento");
+		return contrato;
 	}
 
 }

@@ -18,9 +18,9 @@ public class FrequenciaRondaRepository {
 		collection = database.getCollection("frequenciaRonda");
 	}
 
-	public Mono<Void> criarFrequenciaRonda(FrequenciaRonda frequenciaRonda) {
-		var doc = toDoc(frequenciaRonda);
-		return Mono.from(collection.insertOne(doc)).then();
+	public Mono<FrequenciaRonda> criarFrequenciaRonda(FrequenciaRonda frequencia) {
+		var doc = toDoc(frequencia);
+		return Mono.from(collection.insertOne(doc)).thenReturn(frequencia);
 	}
 
 }

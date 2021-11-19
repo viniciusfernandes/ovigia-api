@@ -31,6 +31,16 @@ public class ClienteRepository {
 		return Mono.from(collection.find(new Document("_id", idCliente))).map(doc -> ClienteParser.fromDoc(doc));
 	}
 
+	public Mono<FrequenciaRonda> obterFrequenciaRondaPorIdCliente(String idCliente) {
+		var match = new Document("$match", new Document("_id", idCliente));
+		var project = new Document("$project", new Document("frequenciaRonda", 1));
+		var pipeline = Arrays.asList(match, project);
+		return Mono.from(collection.aggregate(pipeline)).map(doc -> {
+			var frequencia = doc.get("frequenciaRonda", Document.class);
+			return FrequenciaRondaParser.fromDoc(frequencia);
+		});
+	}
+
 	public Mono<Void> atualizarVigia(String idVigia, String idCliente) {
 		var filter = new Document("_id", idCliente);
 		var update = new Document("$set", new Document("idVigia", idVigia));
@@ -53,10 +63,11 @@ public class ClienteRepository {
 		return Mono.from(collection.updateOne(new Document("_id", idCliente), update)).then();
 	}
 
-	public Mono<Void> atualizarFrequenciaRonda(FrequenciaRonda frequencia) {
+	public Mono<FrequenciaRonda> atualizarFrequenciaRonda(FrequenciaRonda frequencia) {
 		var doc = FrequenciaRondaParser.toDocFlat(frequencia);
 		var update = new Document("$set", new Document("frequenciaRonda", doc));
-		return Mono.from(collection.updateOne(new Document("_id", frequencia.id.idCliente), update)).then();
+		return Mono.from(collection.updateOne(new Document("_id", frequencia.id.idCliente), update))
+				.thenReturn(frequencia);
 	}
 
 }

@@ -4,6 +4,7 @@ import java.util.Date;
 
 import br.com.ovigia.businessrule.BusinessRule;
 import br.com.ovigia.businessrule.Response;
+import br.com.ovigia.businessrule.util.DataUtil;
 import br.com.ovigia.model.Contrato;
 import br.com.ovigia.model.repository.ContratoRepository;
 import br.com.ovigia.model.repository.SolicitacaoVisitaRepository;
@@ -23,6 +24,7 @@ public class CriarContratoRule implements BusinessRule<CriarContratoRequest, Voi
 	public Mono<Response<Void>> apply(CriarContratoRequest request) {
 		var contrato = new Contrato();
 		contrato.dataInicio = new Date();
+		contrato.diaVencimento = DataUtil.obterDiaMes(contrato.dataInicio);
 		contrato.idCliente = request.idCliente;
 		contrato.idVigia = request.idVigia;
 		contrato.valor = request.valor;
@@ -30,4 +32,5 @@ public class CriarContratoRule implements BusinessRule<CriarContratoRequest, Voi
 				.and(solicitacaoVisitaRepository.removerSolicitacao(request.idCliente))
 				.thenReturn(Response.noContent());
 	}
+
 }

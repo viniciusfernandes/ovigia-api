@@ -5,6 +5,6 @@ import reactor.core.publisher.Mono;
 @FunctionalInterface
 public interface BusinessRule<T, V> {
 
-	Mono<Response<V>> apply(T t);
+	Mono<Response<V>> apply(T request);
 
 }

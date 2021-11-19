@@ -18,12 +18,13 @@ public class DataUtil {
 	private static final DateFormat DATA_FORMATTER_SLASH = new SimpleDateFormat(DATA_PATTERN_SLASH);
 
 	private static final DateFormat DATA_HORA_FORMATTER = new SimpleDateFormat("dd/MM/yyyyHH:mm");
+	private static final TimeZone TIME_ZONE = TimeZone.getTimeZone("America/Sao_Paulo");
 
 	public static Date ajustarData(Date data) {
 		if (data == null) {
 			return null;
 		}
-		var cal = Calendar.getInstance(TimeZone.getTimeZone("America/Sao_Paulo"));
+		var cal = Calendar.getInstance(TIME_ZONE);
 		cal.setTime(data);
 		cal.set(Calendar.HOUR_OF_DAY, 0);
 		cal.set(Calendar.MINUTE, 0);
@@ -57,5 +58,26 @@ public class DataUtil {
 		var data = dataHora.substring(0, 10);
 		var hora = dataHora.substring(10);
 		return new DataHora(data, hora);
+	}
+
+	public static Integer obterDiaMes(Date data) {
+		var cal = Calendar.getInstance(TIME_ZONE);
+		cal.setTime(data);
+		return cal.get(Calendar.DAY_OF_MONTH);
+	}
+
+	public static Integer obterDiaMes() {
+		return obterDiaMes(new Date());
+	}
+
+	public static String formatarDataByDia(Integer diaMes) {
+		return formatarData(gerarDataByDia(diaMes));
+	}
+
+	public static Date gerarDataByDia(Integer diaMes) {
+		var cal = Calendar.getInstance(TIME_ZONE);
+		cal.setTime(new Date());
+		cal.set(Calendar.DAY_OF_MONTH, diaMes);
+		return cal.getTime();
 	}
 }

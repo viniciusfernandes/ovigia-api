@@ -26,6 +26,9 @@ public class FrequenciaRondaParser {
 
 	public static FrequenciaRonda fromDoc(Document doc) {
 		var frequencia = new FrequenciaRonda();
+		if (doc == null) {
+			return frequencia;
+		}
 		var id = doc.get("_id", Document.class);
 		frequencia.id = new IdFrequenciaRonda(id.getString("idCliente"), id.getDate("data"));
 		frequencia.idVigia = doc.getString("idVigia");
