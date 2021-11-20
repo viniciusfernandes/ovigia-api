@@ -53,20 +53,20 @@ public class DataUtil {
 		}
 	}
 
-	public static DataHora gerarDataHora(Date date) {
+	public static DataHora obterDataHora(Date date) {
 		var dataHora = DATA_HORA_FORMATTER.format(date);
 		var data = dataHora.substring(0, 10);
 		var hora = dataHora.substring(10);
 		return new DataHora(data, hora);
 	}
 
-	public static Integer obterDiaMes(Date data) {
+	public static DiaMes obterDiaMes(Date data) {
 		var cal = Calendar.getInstance(TIME_ZONE);
 		cal.setTime(data);
-		return cal.get(Calendar.DAY_OF_MONTH);
+		return new DiaMes(cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH) + 1);
 	}
 
-	public static Integer obterDiaMes() {
+	public static DiaMes obterDiaMes() {
 		return obterDiaMes(new Date());
 	}
 

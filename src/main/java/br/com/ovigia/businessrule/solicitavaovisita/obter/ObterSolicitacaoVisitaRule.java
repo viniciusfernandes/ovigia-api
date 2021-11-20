@@ -28,7 +28,7 @@ public class ObterSolicitacaoVisitaRule
 					DataHora dataHora = null;
 					for (var sol : solicitacoes) {
 						solResponse = new ObterSolicitacaoVisitaResponse();
-						dataHora = DataUtil.gerarDataHora(sol.data);
+						dataHora = DataUtil.obterDataHora(sol.data);
 						solResponse.data = dataHora.data;
 						solResponse.hora = dataHora.hora;
 						solResponse.idCliente = sol.idCliente;

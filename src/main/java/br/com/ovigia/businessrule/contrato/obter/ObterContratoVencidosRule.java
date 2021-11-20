@@ -18,13 +18,15 @@ public class ObterContratoVencidosRule
 
 	@Override
 	public Mono<Response<List<ObterContratoVencidosResponse>>> apply(ObterContratoVencidosrRequest request) {
-		int diaMes = DataUtil.obterDiaMes();
-		return contratoRepository.obterContratosDiaVencimentoInferiorByIdVigia(request.idVigia, diaMes)
+		var diaMes = DataUtil.obterDiaMes();
+		return contratoRepository.obterContratosDiaVencimentoInferiorByIdVigia(request.idVigia, diaMes.dia, diaMes.mes)
 				.map(contrato -> {
 					var response = new ObterContratoVencidosResponse();
-					response.dataVenciamento = DataUtil.formatarDataByDia(contrato.diaVencimento);
+					response.dataVencimento = DataUtil.formatarDataByDia(contrato.diaVencimento);
 					response.idCliente = contrato.idCliente;
 					response.valor = contrato.valor;
+					response.nomeCliente = contrato.nomeCliente;
+					response.telefoneCliente = contrato.telefoneCliente;
 					return response;
 				}).collectList().map(responses -> Response.ok(responses));
 	}

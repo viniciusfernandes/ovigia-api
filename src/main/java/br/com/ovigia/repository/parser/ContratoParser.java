@@ -11,7 +11,9 @@ public class ContratoParser {
 	public static Document toDoc(Contrato contrato) {
 		return new Document("_id", contrato.idCliente).append("idVigia", contrato.idVigia)
 				.append("dataInicio", contrato.dataInicio).append("dataFim", contrato.dataFim)
-				.append("valor", contrato.valor).append("diaVencimento", contrato.diaVencimento);
+				.append("valor", contrato.valor).append("diaVencimento", contrato.diaVencimento)
+				.append("mesVencimento", contrato.mesVencimento).append("nomeCliente", contrato.nomeCliente)
+				.append("telefoneCliente", contrato.telefoneCliente);
 	}
 
 	public static Contrato fromDoc(Document doc) {
@@ -22,6 +24,9 @@ public class ContratoParser {
 		contrato.idVigia = doc.getString("idVigia");
 		contrato.valor = doc.getDouble("valor");
 		contrato.diaVencimento = doc.getInteger("diaVencimento");
+		contrato.mesVencimento = doc.getInteger("mesVencimento");
+		contrato.nomeCliente = doc.getString("nomeCliente");
+		contrato.telefoneCliente = doc.getString("telefoneCliente");
 		return contrato;
 	}
 

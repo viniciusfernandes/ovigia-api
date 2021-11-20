@@ -33,7 +33,7 @@ public class ObterResumoRondaRule implements BusinessRule<ObterResumoRondaReques
 			response.tempo = resumo.tempo;
 			response.totalChamados = resumo.totalChamados;
 
-			var dataHora = DataUtil.gerarDataHora(resumo.data);
+			var dataHora = DataUtil.obterDataHora(resumo.data);
 			response.data = dataHora.data;
 			response.hora = dataHora.hora;
 			return Response.ok(response);

@@ -18,7 +18,7 @@ public class ObterChamadoAtivoClienteRule
 	public Mono<Response<ObterChamadoAtivoClienteResponse>> apply(ObterChamadoAtivoClienteRequest request) {
 		return chamadoRepository.obterChamadosAtivoByIdCliente(request.idCliente).map(chamado -> {
 			var response = new ObterChamadoAtivoClienteResponse();
-			var dataHora = DataUtil.gerarDataHora(chamado.data);
+			var dataHora = DataUtil.obterDataHora(chamado.data);
 			response.id = chamado.id;
 			response.data = dataHora.data;
 			response.hora = dataHora.hora;

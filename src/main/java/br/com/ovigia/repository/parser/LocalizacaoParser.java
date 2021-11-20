@@ -26,6 +26,9 @@ public class LocalizacaoParser {
 	}
 
 	public static Localizacao fromDoc(Document doc) {
+		if (doc == null) {
+			return null;
+		}
 		var localizacao = new Localizacao();
 		localizacao.latitude = doc.getDouble("latitude");
 		localizacao.longitude = doc.getDouble("longitude");

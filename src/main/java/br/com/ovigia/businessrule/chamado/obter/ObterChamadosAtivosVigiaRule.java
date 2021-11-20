@@ -31,7 +31,7 @@ public class ObterChamadosAtivosVigiaRule
 			for (Chamado chamado : chamados) {
 				chamadoVigia = new ObterChamadosVigiaResponse();
 
-				dataHora = DataUtil.gerarDataHora(chamado.data);
+				dataHora = DataUtil.obterDataHora(chamado.data);
 				chamadoVigia.data = dataHora.data;
 				chamadoVigia.id = chamado.id;
 				chamadoVigia.hora = dataHora.hora;
