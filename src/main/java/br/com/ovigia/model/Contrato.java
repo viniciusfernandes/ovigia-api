@@ -5,6 +5,7 @@ import java.util.Date;
 import br.com.ovigia.model.enumeration.TipoSituacaoContrato;
 
 public class Contrato {
+	public String id;
 	public Date dataInicio;
 	public Integer diaVencimento;
 	public Integer mesVencimento;

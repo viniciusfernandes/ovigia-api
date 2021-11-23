@@ -21,34 +21,34 @@ public class ChamadoRouter extends Router {
 
 	public ChamadoRouter(ChamadoRepository chamadoRepository) {
 
-		var criarChamado = Route.<CriarChamadoRequest, IdInfo>post().url("/ovigia/clientes/{idCliente}/chamados")
+		var criarChamado = Route.<CriarChamadoRequest, IdInfo>post().path("/ovigia/clientes/{idCliente}/chamados")
 				.contemBody().extractFromPath((mapa, request) -> {
 					request.idCliente = mapa.get("idCliente");
 					return request;
 				}).requestClass(CriarChamadoRequest.class).rule(new CriarChamadoRule(chamadoRepository));
 
 		var obterChamadosAtivosVigia = Route.<ObterChamadosAtivosRequest, List<ObterChamadosVigiaResponse>>get()
-				.url("/ovigia/vigias/{idVigia}/chamados/ativos").extractFromPath((mapa, request) -> {
+				.path("/ovigia/vigias/{idVigia}/chamados/ativos").extractFromPath((mapa, request) -> {
 					request.idVigia = mapa.get("idVigia");
 					return request;
 				}).requestClass(ObterChamadosAtivosRequest.class)
 				.rule(new ObterChamadosAtivosVigiaRule(chamadoRepository));
 
 		var obterChamadoAtivoCliente = Route.<ObterChamadoAtivoClienteRequest, ObterChamadoAtivoClienteResponse>get()
-				.url("/ovigia/clientes/{idCliente}/chamados/ativos").extractFromPath((mapa, request) -> {
+				.path("/ovigia/clientes/{idCliente}/chamados/ativos").extractFromPath((mapa, request) -> {
 					request.idCliente = mapa.get("idCliente");
 					return request;
 				}).requestClass(ObterChamadoAtivoClienteRequest.class)
 				.rule(new ObterChamadoAtivoClienteRule(chamadoRepository));
 
-		var aceitarChamado = Route.<AceitarChamadoRequest, Void>put().url("/ovigia/vigias/{idChamado}/chamados/aceite")
+		var aceitarChamado = Route.<AceitarChamadoRequest, Void>put().path("/ovigia/vigias/{idChamado}/chamados/aceite")
 				.extractFromPath((mapa, request) -> {
 					request.idChamado = mapa.get("idChamado");
 					return request;
 				}).requestClass(AceitarChamadoRequest.class).rule(new AceitarChamadoRule(chamadoRepository));
 
 		var cancelarChamado = Route.<CancelarChamadoRequest, Void>put()
-				.url("/ovigia/clientes/{idChamado}/chamados/cancelamento").extractFromPath((mapa, request) -> {
+				.path("/ovigia/clientes/{idChamado}/chamados/cancelamento").extractFromPath((mapa, request) -> {
 					request.idChamado = mapa.get("idChamado");
 					return request;
 				}).requestClass(CancelarChamadoRequest.class).rule(new CancelarChamadoRule(chamadoRepository));

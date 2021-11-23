@@ -97,8 +97,8 @@ public class OvigiaApplication {
 	private void registerRoutes(GenericApplicationContext context) {
 		var routesBuilder = RoutesBuilder.getInstance();
 
-		routesBuilder.addRouter(new ContratoRouter(getBean(ClienteRepository.class), getBean(ContratoRepository.class),
-				getBean(SolicitacaoVisitaRepository.class)));
+		routesBuilder.addRouter(
+				new ContratoRouter(getBean(ContratoRepository.class), getBean(SolicitacaoVisitaRepository.class)));
 		routesBuilder.addRouter(new SolicitacaoVistiaRouter(getBean(SolicitacaoVisitaRepository.class)));
 		routesBuilder.addRouter(new ChamadoRouter(getBean(ChamadoRepository.class)));
 		routesBuilder.addRouter(new VigiaRouter(getBean(VigiaRepository.class), getBean(ClienteRepository.class)));

@@ -6,25 +6,22 @@ import br.com.ovigia.businessrule.BusinessRule;
 import br.com.ovigia.businessrule.Response;
 import br.com.ovigia.businessrule.util.DataUtil;
 import br.com.ovigia.model.Contrato;
-import br.com.ovigia.model.repository.ClienteRepository;
 import br.com.ovigia.model.repository.ContratoRepository;
 import br.com.ovigia.model.repository.SolicitacaoVisitaRepository;
 import reactor.core.publisher.Mono;
 
-public class CriarContratoRule implements BusinessRule<CriarContratoRequest, Void> {
+public class CriarContratoRule implements BusinessRule<CriarContratoRequest, CriarContratoResponse> {
 	private ContratoRepository contratoRepository;
 	private SolicitacaoVisitaRepository solicitacaoVisitaRepository;
-	private ClienteRepository clienteRepository;
 
-	public CriarContratoRule(ClienteRepository clienteRepository, ContratoRepository contratoRepository,
+	public CriarContratoRule(ContratoRepository contratoRepository,
 			SolicitacaoVisitaRepository solicitacaoVisitaRepository) {
-		this.clienteRepository = clienteRepository;
 		this.contratoRepository = contratoRepository;
 		this.solicitacaoVisitaRepository = solicitacaoVisitaRepository;
 	}
 
 	@Override
-	public Mono<Response<Void>> apply(CriarContratoRequest request) {
+	public Mono<Response<CriarContratoResponse>> apply(CriarContratoRequest request) {
 		var contrato = new Contrato();
 		contrato.dataInicio = new Date();
 		var diaMes = DataUtil.obterDiaMes(contrato.dataInicio);
@@ -35,9 +32,9 @@ public class CriarContratoRule implements BusinessRule<CriarContratoRequest, Voi
 		contrato.valor = request.valor;
 		contrato.nomeCliente = request.nomeCliente;
 		contrato.telefoneCliente = request.telefoneCliente;
-		return contratoRepository.criarContrato(contrato)
-				.and(solicitacaoVisitaRepository.removerSolicitacao(request.idCliente))
-				.thenReturn(Response.noContent());
+
+		return contratoRepository.criarContrato(contrato).flatMap(idContrato -> solicitacaoVisitaRepository
+				.removerSolicitacao(contrato.idCliente).thenReturn(Response.ok(new CriarContratoResponse(idContrato))));
 	}
 
 }

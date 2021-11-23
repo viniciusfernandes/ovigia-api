@@ -16,10 +16,10 @@ public class AuthRouter extends Router {
 
 	public AuthRouter(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
 
-		var siginRoute = Route.<AuthRequest, AuthResponse>post().url("/ovigia/auth/signin").contemBody()
+		var siginRoute = Route.<AuthRequest, AuthResponse>post().path("/ovigia/auth/signin").contemBody()
 				.requestClass(AuthRequest.class).rule(new SingInRule(usuarioRepository, passwordEncoder, jwtUtil));
 
-		var sigonRoute = Route.<SignOnRequest, AuthResponse>post().url("/ovigia/auth/signon").contemBody()
+		var sigonRoute = Route.<SignOnRequest, AuthResponse>post().path("/ovigia/auth/signon").contemBody()
 				.requestClass(SignOnRequest.class).rule(new SingOnRule(usuarioRepository, passwordEncoder, jwtUtil));
 
 		addRoute(siginRoute);

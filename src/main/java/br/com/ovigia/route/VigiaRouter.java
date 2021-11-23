@@ -19,31 +19,31 @@ public class VigiaRouter extends Router {
 	private final CalculadoraRonda calculadora = CalculadoraRonda.calculadoraEsferica();
 
 	public VigiaRouter(VigiaRepository vigiaRepository, ClienteRepository clienteRepository) {
-		var criarCliente = Route.<Vigia, Void>post().url("/ovigia/vigias").contemBody().requestClass(Vigia.class)
+		var criarCliente = Route.<Vigia, Void>post().path("/ovigia/vigias").contemBody().requestClass(Vigia.class)
 				.rule(new CriarVigiaRule(vigiaRepository));
 
-		var obterVigia = Route.<ObterVigiaRequest, Vigia>get().url("/ovigia/vigias/{idVigia}")
+		var obterVigia = Route.<ObterVigiaRequest, Vigia>get().path("/ovigia/vigias/{idVigia}")
 				.requestClass(ObterVigiaRequest.class).extractFromPath((mapa, request) -> {
 					request.email = mapa.get("idVigia");
 					return request;
 				}).rule(new ObterVigiaRule(vigiaRepository));
 
 		var obterVigiasProximos = Route.<ObterVigiasProximosRequest, ObterVigiasProximosResponse>get()
-				.url("/ovigia/vigias/localizacoes/proximos").requestClass(ObterVigiasProximosRequest.class)
+				.path("/ovigia/vigias/localizacoes/proximos").requestClass(ObterVigiasProximosRequest.class)
 				.extractFromParameters((mapa, request) -> {
 					request.latitude = Double.parseDouble(mapa.get("latitude").get(0));
 					request.longitude = Double.parseDouble(mapa.get("longitude").get(0));
 					return request;
 				}).rule(new ObterVigiasProximosRule(vigiaRepository, calculadora));
 
-		var atualizarVigiaCliente = Route.<Cliente, Void>patch().url("/ovigia/vigias/{idVigia}/clientes").contemBody()
+		var atualizarVigiaCliente = Route.<Cliente, Void>patch().path("/ovigia/vigias/{idVigia}/clientes").contemBody()
 				.requestClass(Cliente.class).extractFromPath((mapa, request) -> {
 					request.email = mapa.get("idVigia");
 					return request;
 				}).rule(new AtualizarVigiaClienteRule(vigiaRepository, clienteRepository));
 
 		var atualizarVigiaLoc = Route.<AtualizarVigiaLocalizacaoRequest, Void>patch()
-				.url("ovigia/vigias/{idVigia}/localizacao").contemBody()
+				.path("ovigia/vigias/{idVigia}/localizacao").contemBody()
 				.requestClass(AtualizarVigiaLocalizacaoRequest.class).extractFromPath((mapa, request) -> {
 					request.email = mapa.get("idVigia");
 					return request;

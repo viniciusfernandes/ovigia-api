@@ -14,7 +14,7 @@ public class FrequenciaRondaRouter extends Router {
 			FrequenciaRondaRepository frequenciaRondaRepository, ContratoRepository contratoRepository) {
 
 		var criarFrequencia = Route.<CriarFrequenciaRondaRequest, CriarFrequenciaRondaResponse>post()
-				.url("/ovigia/frequenciaronda/clientes").contemBody().requestClass(CriarFrequenciaRondaRequest.class)
+				.path("/ovigia/frequenciaronda/clientes").contemBody().requestClass(CriarFrequenciaRondaRequest.class)
 				.rule(new CriarFrequenciaRondasRule(clienteRepository, rotaRepository, frequenciaRondaRepository,
 						contratoRepository));
 

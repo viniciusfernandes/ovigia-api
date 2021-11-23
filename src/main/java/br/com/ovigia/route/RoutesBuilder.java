@@ -62,7 +62,7 @@ public class RoutesBuilder {
 	}
 
 	public <T, V> void addRoute(Route<T, V> route) {
-		var verboHTTP = definirVerboHTTP(route.getTipoRequest(), route.getUrl());
+		var verboHTTP = definirVerboHTTP(route.getTipoRequest(), route.getPath());
 		var routerFunction = route(verboHTTP, request -> {
 			Mono<T> mono = null;
 			if (route.hasBody()) {
@@ -108,13 +108,13 @@ public class RoutesBuilder {
 		return request.bodyToMono(bodyClazz);
 	}
 
-	private static <T> T extractFromPath(ServerRequest request, BiFunction<Map<String, String>, T, T> fillFromPAth,
-			T entity) {
-		if (fillFromPAth == null) {
-			return entity;
+	private static <T> T extractFromPath(ServerRequest serverRequest, BiFunction<Map<String, String>, T, T> fillFromPath,
+			T businessRequest) {
+		if (fillFromPath == null) {
+			return businessRequest;
 		}
-		var pathVariables = request.pathVariables();
-		return fillFromPAth.apply(pathVariables, entity);
+		var pathVariables = serverRequest.pathVariables();
+		return fillFromPath.apply(pathVariables, businessRequest);
 	}
 
 	private static <T> T extractFromParamaters(ServerRequest request,

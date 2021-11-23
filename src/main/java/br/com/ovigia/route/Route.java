@@ -7,7 +7,7 @@ import java.util.function.BiFunction;
 import br.com.ovigia.businessrule.BusinessRule;
 
 public class Route<T, V> {
-	private String url;
+	private String path;
 	private TipoRequest tipoRequest;
 	private Class<T> requestClazz;
 	private boolean bodyEnviado;
@@ -28,8 +28,8 @@ public class Route<T, V> {
 		}
 	}
 
-	public Route<T, V> url(String url) {
-		this.url = url;
+	public Route<T, V> path(String path) {
+		this.path = path;
 		return this;
 	}
 
@@ -78,8 +78,8 @@ public class Route<T, V> {
 		return new Route<>(TipoRequest.DELETE);
 	}
 
-	public String getUrl() {
-		return url;
+	public String getPath() {
+		return path;
 	}
 
 	public TipoRequest getTipoRequest() {
@@ -115,7 +115,7 @@ public class Route<T, V> {
 	}
 
 	public String toString() {
-		return tipoRequest + ":" + url;
+		return tipoRequest + ":" + path;
 	}
 }
 

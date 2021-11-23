@@ -18,7 +18,7 @@ public class SolicitacaoVistiaRouter extends Router {
 
 	public SolicitacaoVistiaRouter(SolicitacaoVisitaRepository solicitacaoVisitaRepository) {
 		var criarSolicitacao = Route.<CriarSolicitacaoVisitaRequest, Void>post()
-				.url("/ovigia/solicitacoes/vigias/{idVigia}/clientes/{idCliente}").contemBody()
+				.path("/ovigia/solicitacoes/vigias/{idVigia}/clientes/{idCliente}").contemBody()
 				.requestClass(CriarSolicitacaoVisitaRequest.class).extractFromPath((mapa, request) -> {
 					request.idCliente = mapa.get("idCliente");
 					request.idVigia = mapa.get("idVigia");
@@ -26,21 +26,21 @@ public class SolicitacaoVistiaRouter extends Router {
 				}).rule(new CriarSolicitacaoVisitaRule(solicitacaoVisitaRepository));
 
 		var obterIdVigiaSolicitado = Route.<ObterIdVigiaSolicitadoRequest, ObterIdVigiaSolicitadoResponse>get()
-				.url("/ovigia/solicitacoes/clientes/{idCliente}/vigiasolicitado")
+				.path("/ovigia/solicitacoes/clientes/{idCliente}/vigiasolicitado")
 				.requestClass(ObterIdVigiaSolicitadoRequest.class).extractFromPath((mapa, request) -> {
 					request.idCliente = mapa.get("idCliente");
 					return request;
 				}).rule(new ObterIdVigiaSolicitadoRule(solicitacaoVisitaRepository));
 
 		var obterSolicitacaoVisita = Route.<ObterSolicitacaoVisitaRequest, List<ObterSolicitacaoVisitaResponse>>get()
-				.url("/ovigia/solicitacoes/vigias/{idVigia}").requestClass(ObterSolicitacaoVisitaRequest.class)
+				.path("/ovigia/solicitacoes/vigias/{idVigia}").requestClass(ObterSolicitacaoVisitaRequest.class)
 				.extractFromPath((mapa, request) -> {
 					request.idVigia = mapa.get("idVigia");
 					return request;
 				}).rule(new ObterSolicitacaoVisitaRule(solicitacaoVisitaRepository));
 
 		var removerSolicitacaoVisita = Route.<RemoverSolicitacaoVisitaRequest, Void>delete()
-				.url("/ovigia/solicitacoes/clientes/{idCliente}").requestClass(RemoverSolicitacaoVisitaRequest.class)
+				.path("/ovigia/solicitacoes/clientes/{idCliente}").requestClass(RemoverSolicitacaoVisitaRequest.class)
 				.extractFromPath((mapa, request) -> {
 					request.idCliente = mapa.get("idCliente");
 					return request;
