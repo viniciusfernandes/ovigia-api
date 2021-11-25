@@ -7,14 +7,17 @@ import br.com.ovigia.model.enumeration.TipoSituacaoContrato;
 public class Contrato {
 	public String id;
 	public Date dataInicio;
-	public Integer diaVencimento;
-	public Integer mesVencimento;
 	public Date dataFim;
+	public Date dataVencimento;
 	public Double valor;
 	public String idVigia;
 	public String idCliente;
 	public String nomeCliente;
 	public String telefoneCliente;
-	public TipoSituacaoContrato situacaoContrato;
+	public TipoSituacaoContrato situacao;
+
+	public boolean isContratoVencido() {
+		return dataVencimento != null && !dataVencimento.after(new Date());
+	}
 
 }

@@ -3,6 +3,7 @@ package br.com.ovigia;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
@@ -41,7 +42,7 @@ import br.com.ovigia.route.VigiaRouter;
 
 @SpringBootApplication
 @ComponentScan(basePackages = "br.com.ovigia.error")
-public class OvigiaApplication {
+public class OvigiaApplication implements CommandLineRunner {
 	@Autowired
 	private GenericApplicationContext context;
 	private String secretKey = "ThisIsSecretForJWTHS512SignatureAlgorithmThatMUSTHave64ByteLength";
@@ -97,8 +98,8 @@ public class OvigiaApplication {
 	private void registerRoutes(GenericApplicationContext context) {
 		var routesBuilder = RoutesBuilder.getInstance();
 
-		routesBuilder.addRouter(
-				new ContratoRouter(getBean(ContratoRepository.class), getBean(SolicitacaoVisitaRepository.class)));
+		routesBuilder.addRouter(new ContratoRouter(getBean(ContratoRepository.class),
+				getBean(SolicitacaoVisitaRepository.class), getBean(VigiaRepository.class)));
 		routesBuilder.addRouter(new SolicitacaoVistiaRouter(getBean(SolicitacaoVisitaRepository.class)));
 		routesBuilder.addRouter(new ChamadoRouter(getBean(ChamadoRepository.class)));
 		routesBuilder.addRouter(new VigiaRouter(getBean(VigiaRepository.class), getBean(ClienteRepository.class)));
@@ -117,6 +118,11 @@ public class OvigiaApplication {
 
 	private <T> T getBean(Class<T> clazz) {
 		return context.getBean(clazz);
+	}
+
+	@Override
+	public void run(String... args) throws Exception {
+
 	}
 
 }

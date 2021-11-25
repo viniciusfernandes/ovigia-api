@@ -1,5 +1,5 @@
 package br.com.ovigia.businessrule.contrato.obter;
 
-public class ObterContratoVencidosrRequest {
+public class ObterContratoVencidosRequest {
 	public String idVigia;
 }

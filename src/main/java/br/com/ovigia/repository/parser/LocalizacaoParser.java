@@ -13,10 +13,11 @@ public class LocalizacaoParser {
 	}
 
 	public static Document toDoc(Localizacao localizacao) {
-		var docLocalizacao = new Document("latitude", localizacao.latitude);
-		docLocalizacao.append("longitude", localizacao.longitude);
-		docLocalizacao.append("timestamp", localizacao.timestamp);
-		return docLocalizacao;
+		var doc = new Document("latitude", localizacao.latitude);
+		doc.append("longitude", localizacao.longitude);
+		doc.append("timestamp", localizacao.timestamp);
+		doc.append("velocidade", localizacao.velocidade);
+		return doc;
 	}
 
 	public static List<Document> toDoc(List<Localizacao> localizacoes) {
@@ -34,6 +35,7 @@ public class LocalizacaoParser {
 		localizacao.longitude = doc.getDouble("longitude");
 		localizacao.data = doc.getDate("data");
 		localizacao.timestamp = doc.getLong("timestamp");
+		localizacao.velocidade = doc.getDouble("velocidade");
 		return localizacao;
 	}
 

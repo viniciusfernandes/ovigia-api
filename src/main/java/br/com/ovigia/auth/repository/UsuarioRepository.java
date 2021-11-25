@@ -31,17 +31,9 @@ public class UsuarioRepository {
 		return Mono.from(collection.aggregate(list)).map(docUsuario -> UsuarioParser.fromDoc(docUsuario));
 	}
 
-	public Mono<Usuario> obterNomeETelefoneUsuario(String idUsuario) {
-		var match = new Document("$match", new Document("_id", idUsuario));
-		var fields = new Document("nome", 1).append("telefone", 1);
-		var project = new Document("$project", fields);
-		var list = Arrays.asList(match, project);
-		return Mono.from(collection.aggregate(list)).map(docUsuario -> UsuarioParser.fromDoc(docUsuario));
-	}
-
 	public Mono<Void> criarUsuario(Usuario usuario) {
 		usuario.id = UUID.randomUUID().toString();
-		var doc = UsuarioParser.toDoc(usuario);
+		var doc =   UsuarioParser.toDoc(usuario);
 		return Mono.from(collection.insertOne(doc)).then();
 	}
 

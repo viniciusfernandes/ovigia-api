@@ -25,11 +25,7 @@ public class DataUtil {
 			return null;
 		}
 		var cal = Calendar.getInstance(TIME_ZONE);
-		cal.setTime(data);
-		cal.set(Calendar.HOUR_OF_DAY, 0);
-		cal.set(Calendar.MINUTE, 0);
-		cal.set(Calendar.SECOND, 0);
-		cal.set(Calendar.MILLISECOND, 0);
+		ajustarCaledar(cal);
 		return cal.getTime();
 	}
 
@@ -70,6 +66,18 @@ public class DataUtil {
 		return obterDiaMes(new Date());
 	}
 
+	public static Date ajustarDataProximoMes(Date data) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(data);
+		cal.add(Calendar.MONTH, 1);
+		ajustarCaledar(cal);
+		return cal.getTime();
+	}
+
+	public static Date ajustarDataProximoMes() {
+		return ajustarDataProximoMes(new Date());
+	}
+
 	public static String formatarDataByDia(Integer diaMes) {
 		return formatarData(gerarDataByDia(diaMes));
 	}
@@ -79,5 +87,12 @@ public class DataUtil {
 		cal.setTime(new Date());
 		cal.set(Calendar.DAY_OF_MONTH, diaMes);
 		return cal.getTime();
+	}
+
+	private static void ajustarCaledar(Calendar calendar) {
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
 	}
 }

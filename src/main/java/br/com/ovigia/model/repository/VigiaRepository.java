@@ -25,6 +25,14 @@ public class VigiaRepository {
 		collection = database.getCollection("usuario");
 	}
 
+	public Mono<Vigia> obterNomeETelefoneEAvaliacao(String idVigia) {
+		var match = new Document("$match", new Document("_id", idVigia));
+		var fields = new Document("nome", 1).append("telefone", 1).append("avaliacao", 1);
+		var project = new Document("$project", fields);
+		var list = Arrays.asList(match, project);
+		return Mono.from(collection.aggregate(list)).map(docUsuario -> VigiaParser.fromDoc(docUsuario));
+	}
+
 	@Deprecated
 	public Mono<Void> criar(Vigia vigia) {
 		var doc = VigiaParser.toDoc(vigia);

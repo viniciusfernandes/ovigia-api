@@ -9,7 +9,7 @@ import br.com.ovigia.model.repository.ContratoRepository;
 import reactor.core.publisher.Mono;
 
 public class ObterContratoVencidosRule
-		implements BusinessRule<ObterContratoVencidosrRequest, List<ObterContratoVencidosResponse>> {
+		implements BusinessRule<ObterContratoVencidosRequest, List<ObterContratoVencidosResponse>> {
 	private ContratoRepository contratoRepository;
 
 	public ObterContratoVencidosRule(ContratoRepository contratoRepository) {
@@ -17,12 +17,13 @@ public class ObterContratoVencidosRule
 	}
 
 	@Override
-	public Mono<Response<List<ObterContratoVencidosResponse>>> apply(ObterContratoVencidosrRequest request) {
-		var diaMes = DataUtil.obterDiaMes();
-		return contratoRepository.obterContratosDiaVencimentoInferiorByIdVigia(request.idVigia, diaMes.dia, diaMes.mes)
+	public Mono<Response<List<ObterContratoVencidosResponse>>> apply(ObterContratoVencidosRequest request) {
+		var dataAtual = DataUtil.ajustarData();
+		return contratoRepository.obterContratosDataVencimentoInferiorByIdVigia(request.idVigia, dataAtual)
 				.map(contrato -> {
 					var response = new ObterContratoVencidosResponse();
-					response.dataVencimento = DataUtil.formatarDataByDia(contrato.diaVencimento);
+					response.id = contrato.id;
+					response.dataVencimento = DataUtil.formatarData(contrato.dataVencimento);
 					response.idCliente = contrato.idCliente;
 					response.valor = contrato.valor;
 					response.nomeCliente = contrato.nomeCliente;

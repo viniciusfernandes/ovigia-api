@@ -28,7 +28,6 @@ public class UsuarioParser {
 			doc.append("localizacao", docLocalizacao);
 		}
 		doc.append("dataInicio", usuario.dataInicio);
-
 		return doc;
 	}
 
@@ -44,6 +43,7 @@ public class UsuarioParser {
 		}
 		usuario.dataInicio = doc.getDate("dataInicio");
 		usuario.localizacao = LocalizacaoParser.fromDoc(doc.get("localizacao", Document.class));
+
 		return usuario;
 	}
 

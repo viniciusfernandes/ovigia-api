@@ -30,15 +30,15 @@ public class ContratoRepository {
 		return Mono.from(collection.insertOne(doc)).thenReturn(contrato.id);
 	}
 
-	public Flux<Contrato> obterContratosDiaVencimentoInferiorByIdVigia(String idVigia, Integer dia, Integer mes) {
-		var match = new Document("$match", new Document("idVigia", idVigia)
-				.append("diaVencimento", new Document("$lte", dia)).append("mesVencimento", new Document("$lt", mes)));
+	public Flux<Contrato> obterContratosDataVencimentoInferiorByIdVigia(String idVigia, Date dataReferencia) {
+		var match = new Document("$match",
+				new Document("idVigia", idVigia).append("dataVencimento", new Document("$lte", dataReferencia)));
 
 		var fields = new Document("valor", 1).append("_id", 1).append("idCliente", 1).append("nomeCliente", 1)
-				.append("telefoneCliente", 1).append("diaVencimento", 1).append("mesVencimento", 1);
+				.append("telefoneCliente", 1).append("dataVencimento", 1);
 		var project = new Document("$project", fields);
 
-		var sort = new Document("$sort", new Document("diaVencimento", 1));
+		var sort = new Document("$sort", new Document("dataVencimento", 1));
 
 		var pipeline = Arrays.asList(match, project, sort);
 		return Flux.from(collection.aggregate(pipeline)).map(doc -> fromDoc(doc));
@@ -46,6 +46,16 @@ public class ContratoRepository {
 
 	public Flux<Contrato> obterContratosByIdVigia(String idVigia) {
 		return Flux.from(collection.find(new Document("idVigia", idVigia))).map(doc -> fromDoc(doc));
+	}
+
+	public Mono<Contrato> obterContratoAtivoByIdCliente(String idCliente) {
+		var match = new Document("$match",
+				new Document("idCliente", idCliente).append("situacao", TipoSituacaoContrato.ATIVO.toString()));
+		var fields = new Document("idVigia", 1).append("valor", 1).append("dataVencimento", 1).append("dataInicio", 1)
+				.append("_id", 1);
+		var project = new Document("$project", fields);
+		var pipeline = Arrays.asList(match, project);
+		return Mono.from(collection.aggregate(pipeline)).map(doc -> fromDoc(doc));
 	}
 
 	public Mono<Long> atualizarDataFimContrato(String idContrato, Date dataFim) {

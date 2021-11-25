@@ -38,4 +38,8 @@ public class Usuario {
 		}
 		return telefone;
 	}
+
+	public boolean isVigia() {
+		return tipoUsuario != null && tipoUsuario == TipoUsuario.VIGIA;
+	}
 }
