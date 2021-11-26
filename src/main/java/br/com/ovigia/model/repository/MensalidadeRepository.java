@@ -1,6 +1,7 @@
 
 package br.com.ovigia.model.repository;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.UUID;
 
@@ -31,6 +32,18 @@ public class MensalidadeRepository {
 		var filter = new Document("idContrato", idContrato).append("dataVencimento", new Document("$lte", new Date()))
 				.append("dataPagamento", null);
 		return Flux.from(collection.find(filter)).map(MensalidadeParser::fromDoc);
+	}
+
+	public Flux<Mensalidade> obterMensalidadesVencidasByIdVigia(String idVigia) {
+		var filter = new Document("idVigia", idVigia).append("dataVencimento", new Document("$lte", new Date()))
+				.append("dataPagamento", null);
+
+		var match = new Document("$match", filter);
+		var project = new Document("$project", new Document("_id", 1).append("dataVencimento", 1)
+				.append("dataVencimento", 1).append("valor", 1).append("telefoneCliente", 1).append("nomeCliente", 1));
+		var sort = new Document("$sort", new Document("dataVencimento", -1));
+		var pipeline = Arrays.asList(match, project, sort);
+		return Flux.from(collection.aggregate(pipeline)).map(MensalidadeParser::fromDoc);
 	}
 
 }

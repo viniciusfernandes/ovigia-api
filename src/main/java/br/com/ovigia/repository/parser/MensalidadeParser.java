@@ -11,6 +11,7 @@ public class MensalidadeParser {
 	public static Document toDoc(Mensalidade mensalidade) {
 		var doc = new Document("_id", mensalidade.id);
 		doc.append("idContrato", mensalidade.idContrato);
+		doc.append("idVigia", mensalidade.idVigia);
 		doc.append("dataVencimento", mensalidade.dataVencimento);
 		doc.append("nomeCliente", mensalidade.nomeCliente);
 		doc.append("telefoneCliente", mensalidade.telefoneCliente);
@@ -22,6 +23,7 @@ public class MensalidadeParser {
 		var mensalidade = new Mensalidade();
 		mensalidade.dataVencimento = doc.getDate("dataVencimento");
 		mensalidade.id = doc.getString("id");
+		mensalidade.idVigia = doc.getString("idVigia");
 		mensalidade.idContrato = doc.getString("idContrato");
 		mensalidade.nomeCliente = doc.getString("nomeCliente");
 		mensalidade.telefoneCliente = doc.getString("telefoneCliente");

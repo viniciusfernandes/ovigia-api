@@ -37,6 +37,7 @@ import br.com.ovigia.route.ChamadoRouter;
 import br.com.ovigia.route.ClienteRouter;
 import br.com.ovigia.route.ContratoRouter;
 import br.com.ovigia.route.FrequenciaRondaRouter;
+import br.com.ovigia.route.MensalidadeRouter;
 import br.com.ovigia.route.RondaRouter;
 import br.com.ovigia.route.RoutesBuilder;
 import br.com.ovigia.route.SolicitacaoVistiaRouter;
@@ -115,6 +116,7 @@ public class OvigiaApplication implements CommandLineRunner {
 		routesBuilder
 				.addRouter(new FrequenciaRondaRouter(getBean(ClienteRepository.class), getBean(RondaRepository.class),
 						getBean(FrequenciaRondaRepository.class), getBean(ContratoRepository.class)));
+		routesBuilder.addRouter(new MensalidadeRouter(getBean(MensalidadeRepository.class)));
 
 		context.registerBean(RouterFunction.class, () -> routesBuilder.build());
 	}
