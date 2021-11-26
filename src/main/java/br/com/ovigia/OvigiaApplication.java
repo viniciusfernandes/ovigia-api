@@ -23,10 +23,12 @@ import br.com.ovigia.auth.security.JwtAuthenticationManager;
 import br.com.ovigia.auth.security.JwtUtil;
 import br.com.ovigia.auth.security.PBKDF2Encoder;
 import br.com.ovigia.auth.security.WebSecurityConfig;
+import br.com.ovigia.businessrule.CriarMensalidadesTask;
 import br.com.ovigia.model.repository.ChamadoRepository;
 import br.com.ovigia.model.repository.ClienteRepository;
 import br.com.ovigia.model.repository.ContratoRepository;
 import br.com.ovigia.model.repository.FrequenciaRondaRepository;
+import br.com.ovigia.model.repository.MensalidadeRepository;
 import br.com.ovigia.model.repository.ResumoRondaRepository;
 import br.com.ovigia.model.repository.RondaRepository;
 import br.com.ovigia.model.repository.SolicitacaoVisitaRepository;
@@ -73,6 +75,7 @@ public class OvigiaApplication implements CommandLineRunner {
 		context.registerBean(ChamadoRepository.class, () -> new ChamadoRepository(mongodb));
 		context.registerBean(ContratoRepository.class, () -> new ContratoRepository(mongodb));
 		context.registerBean(FrequenciaRondaRepository.class, () -> new FrequenciaRondaRepository(mongodb));
+		context.registerBean(MensalidadeRepository.class, () -> new MensalidadeRepository(mongodb));
 
 	}
 
@@ -122,7 +125,9 @@ public class OvigiaApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-
+		var criarMensalidadesTask = new CriarMensalidadesTask(getBean(ContratoRepository.class),
+				getBean(MensalidadeRepository.class));
+		criarMensalidadesTask.runTask();
 	}
 
 }

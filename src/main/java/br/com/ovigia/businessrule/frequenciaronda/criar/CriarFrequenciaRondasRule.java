@@ -43,7 +43,7 @@ public class CriarFrequenciaRondasRule
 		var obterIdVigia = contratoRepository.obterIdVigiaByIdContrato(request.idContrato);
 		var obterLocalizacaoCliente = clienteRepository.obterLocalizacaoCliente(request.idContrato);
 		return Mono.zip(obterIdVigia, obterLocalizacaoCliente).flatMap(tuple -> {
-			var idVigia = tuple.getT1();
+			var idVigia = tuple.getT1().idVigia;
 			var localCliente = tuple.getT2();
 			return rondaRepository.obterUltimaRondaByIdVigia(idVigia).map(ronda -> {
 				var frequecia = new FrequenciaRonda();

@@ -13,6 +13,7 @@ import com.mongodb.reactivestreams.client.MongoCollection;
 import com.mongodb.reactivestreams.client.MongoDatabase;
 
 import br.com.ovigia.model.Contrato;
+import br.com.ovigia.model.IdsContrato;
 import br.com.ovigia.model.enumeration.TipoSituacaoContrato;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -30,17 +31,16 @@ public class ContratoRepository {
 		return Mono.from(collection.insertOne(doc)).thenReturn(contrato.id);
 	}
 
-	public Flux<Contrato> obterContratosDataVencimentoInferiorByIdVigia(String idVigia, Date dataReferencia) {
-		var match = new Document("$match",
-				new Document("idVigia", idVigia).append("dataVencimento", new Document("$lte", dataReferencia)));
-
-		var fields = new Document("valor", 1).append("_id", 1).append("idCliente", 1).append("nomeCliente", 1)
-				.append("telefoneCliente", 1).append("dataVencimento", 1);
+	public Flux<Contrato> obterIdContratosVencidos() {
+		var dataReferencia = new Date();
+		var filter = new Document("dataVencimento", new Document("$lte", dataReferencia)).append("situacao",
+				TipoSituacaoContrato.ATIVO.toString());
+		var match = new Document("$match", filter);
+		var fields = new Document("_id", 1).append("dataVencimento", 1).append("nomeCliente", 1)
+				.append("telefoneCliente", 1).append("idVigia", 1).append("idCliente", 1).append("valor", 1);
 		var project = new Document("$project", fields);
 
-		var sort = new Document("$sort", new Document("dataVencimento", 1));
-
-		var pipeline = Arrays.asList(match, project, sort);
+		var pipeline = Arrays.asList(match, project);
 		return Flux.from(collection.aggregate(pipeline)).map(doc -> fromDoc(doc));
 	}
 
@@ -60,17 +60,24 @@ public class ContratoRepository {
 
 	public Mono<Long> atualizarDataFimContrato(String idContrato, Date dataFim) {
 		var filter = new Document("_id", idContrato);
-		var fields = new Document("dataFim", dataFim).append("situacao",
-				TipoSituacaoContrato.ENCERRADO_VIGIA.toString());
+		var fields = new Document("dataFim", dataFim).append("situacao", TipoSituacaoContrato.CANCELADO.toString());
 		var update = new Document("$set", fields);
 		return Mono.from(collection.updateOne(filter, update)).map(result -> result.getModifiedCount());
 	}
 
-	public Mono<String> obterIdVigiaByIdContrato(String idContrato) {
+	public Mono<Long> atualizarDataVencimentoContrato(String idContrato, Date dataVencimento) {
+		var filter = new Document("_id", idContrato);
+		var update = new Document("$set", new Document("dataVencimento", dataVencimento));
+		return Mono.from(collection.updateOne(filter, update)).map(result -> result.getModifiedCount());
+	}
+
+	public Mono<IdsContrato> obterIdVigiaByIdContrato(String idContrato) {
 		var match = new Document("$match", new Document("_id", idContrato));
-		var project = new Document("$project", new Document("idVigia", 1));
+		var project = new Document("$project", new Document("idVigia", 1).append("idCliente", 1));
 		var pipeline = Arrays.asList(match, project);
-		return Mono.from(collection.aggregate(pipeline)).map(doc -> doc.getString("idVigia"));
+		return Mono.from(collection.aggregate(pipeline))
+				.map(doc -> new IdsContrato(doc.getString("idVigia"), doc.getString("idCliente")));
 
 	}
+
 }
