@@ -7,7 +7,7 @@ import br.com.ovigia.businessrule.Response;
 import br.com.ovigia.model.IdRonda;
 import br.com.ovigia.model.ResumoRonda;
 import br.com.ovigia.model.Ronda;
-import br.com.ovigia.model.calculadora.CalculadoraRonda;
+import br.com.ovigia.model.calculadora.CalculadoraDistancia;
 import br.com.ovigia.model.enumeration.TipoSituacaoRonda;
 import br.com.ovigia.model.repository.ResumoRondaRepository;
 import br.com.ovigia.model.repository.RondaRepository;
@@ -18,7 +18,7 @@ public class CriarRondaRule implements BusinessRule<CriarRondaRequest, Void> {
 	private RondaRepository rondaRepository;
 	private ResumoRondaRepository resumoRepository;
 
-	private CalculadoraRonda calculadora = CalculadoraRonda.calculadoraEsferica();
+	private CalculadoraDistancia calculadora = CalculadoraDistancia.calculadoraEsferica();
 
 	public CriarRondaRule(RondaRepository rondaRepository, ResumoRondaRepository resumoRepository) {
 		this.rondaRepository = rondaRepository;

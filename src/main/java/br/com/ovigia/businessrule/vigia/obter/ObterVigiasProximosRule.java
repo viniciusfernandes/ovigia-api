@@ -6,17 +6,17 @@ import br.com.ovigia.businessrule.resquest.common.LocalizacaoResponse;
 import br.com.ovigia.businessrule.util.DataUtil;
 import br.com.ovigia.model.Localizacao;
 import br.com.ovigia.model.Vigia;
-import br.com.ovigia.model.calculadora.CalculadoraRonda;
+import br.com.ovigia.model.calculadora.CalculadoraDistancia;
 import br.com.ovigia.model.repository.VigiaRepository;
 import reactor.core.publisher.Mono;
 
 public class ObterVigiasProximosRule implements BusinessRule<ObterVigiasProximosRequest, ObterVigiasProximosResponse> {
 	private VigiaRepository vigiaRepository;
-	private CalculadoraRonda calculadora;
+	private CalculadoraDistancia calculadora;
 	// distancia em kilometros
 	private final double distanciaMaxima = 2d;
 
-	public ObterVigiasProximosRule(VigiaRepository vigiaRepository, CalculadoraRonda calculadora) {
+	public ObterVigiasProximosRule(VigiaRepository vigiaRepository, CalculadoraDistancia calculadora) {
 		this.vigiaRepository = vigiaRepository;
 		this.calculadora = calculadora;
 	}

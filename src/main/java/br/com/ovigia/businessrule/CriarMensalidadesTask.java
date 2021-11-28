@@ -43,18 +43,12 @@ public class CriarMensalidadesTask {
 			mensalidade.idVigia = contrato.idVigia;
 			return mensalidadeRepository.criarMensalidade(mensalidade);
 
-		}).map(mensalidade -> {
+		}).doOnNext(mensalidade -> {
 			var dataVencimento = DataUtil.ajustarDataProximoMes(mensalidade.dataVencimento);
-			return contratoRepository.atualizarDataVencimentoContrato(mensalidade.idContrato, dataVencimento);
+			contratoRepository.atualizarDataVencimentoContrato(mensalidade.idContrato, dataVencimento)
+					.doOnError(ex -> logger.error("Falha ao atualizar a data de vencimento=" + dataVencimento
+							+ " do contrato=" + mensalidade.idContrato))
+					.subscribe();
 		}).doOnError(ex -> logger.error("Falha ao criar as mensalidades")).subscribe();
 	}
-//	private void criarMensalidades() {
-//		contratoRepository.obterIdContratosVencidos().map(contrato -> {
-//
-//			var dataVencimento = DataUtil.ajustarDataProximoMes(contrato.dataVencimento);
-//			contrato.dataVencimento = dataVencimento;
-//			return contratoRepository.atualizarDataFimContrato(contrato.id, dataVencimento);
-//
-//		}).doOnError(ex -> logger.error("Falha ao criar as mensalidades")).blockFirst();
-//	}
 }

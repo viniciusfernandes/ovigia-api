@@ -18,7 +18,7 @@ public class ObterFrequenciaRondaRule
 	public Mono<Response<ObterFrequenciaRondaResponse>> apply(ObterFrequenciaRondaRequest request) {
 		return clienteRepository.obterFrequenciaRondaPorIdCliente(request.idCliente).map(frequencia -> {
 			var response = new ObterFrequenciaRondaResponse();
-			response.data = DataUtil.formatarData(frequencia.id.data);
+			response.dataRonda = DataUtil.formatarData(frequencia.id.dataRonda);
 			response.totalRonda = frequencia.totalRonda;
 			return Response.ok(response);
 		}).switchIfEmpty(Mono.just(Response.ok(new ObterFrequenciaRondaResponse())));

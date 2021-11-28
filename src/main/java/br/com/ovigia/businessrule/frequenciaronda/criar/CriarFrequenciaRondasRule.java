@@ -8,7 +8,7 @@ import br.com.ovigia.businessrule.util.DataUtil;
 import br.com.ovigia.model.FrequenciaRonda;
 import br.com.ovigia.model.IdFrequenciaRonda;
 import br.com.ovigia.model.Localizacao;
-import br.com.ovigia.model.calculadora.CalculadoraRonda;
+import br.com.ovigia.model.calculadora.CalculadoraDistancia;
 import br.com.ovigia.model.repository.ClienteRepository;
 import br.com.ovigia.model.repository.ContratoRepository;
 import br.com.ovigia.model.repository.FrequenciaRondaRepository;
@@ -25,7 +25,7 @@ public class CriarFrequenciaRondasRule
 	private final long tolerancia = 5 * 60 * 1000;
 	private ClienteRepository clienteRepository;
 
-	private CalculadoraRonda calculadoraDistancia = CalculadoraRonda.calculadoraEsferica();
+	private CalculadoraDistancia calculadoraDistancia = CalculadoraDistancia.calculadoraEsferica();
 	private ContratoRepository contratoRepository;
 	private RondaRepository rondaRepository;
 	private FrequenciaRondaRepository frequenciaRepository;
@@ -49,21 +49,21 @@ public class CriarFrequenciaRondasRule
 				var frequecia = new FrequenciaRonda();
 				frequecia.id = new IdFrequenciaRonda(request.idContrato, ronda.obterData());
 				frequecia.idVigia = idVigia;
-				frequecia.totalRonda = calcularNumeroRondas(localCliente, ronda.localizacoes);
+				frequecia.totalRonda = calcularTotalRondasCliente(localCliente, ronda.localizacoes);
 				return frequecia;
 			});
 
 		}).flatMap(frequencia -> clienteRepository.atualizarFrequenciaRonda(frequencia))
 				.flatMap(frequencia -> frequenciaRepository.criarFrequenciaRonda(frequencia)).map(frequencia -> {
 					var response = new CriarFrequenciaRondaResponse();
-					response.data = DataUtil.formatarData(frequencia.id.data);
+					response.data = DataUtil.formatarData(frequencia.id.dataRonda);
 					response.idVigia = frequencia.idVigia;
 					response.totalRonda = frequencia.totalRonda;
 					return Response.ok(response);
 				});
 	}
 
-	private int calcularNumeroRondas(Localizacao localizacaoCliente, List<Localizacao> localizacoesVigia) {
+	private int calcularTotalRondasCliente(Localizacao localizacaoCliente, List<Localizacao> localizacoesVigia) {
 		if (localizacoesVigia == null || localizacoesVigia.isEmpty()) {
 			return 0;
 		}

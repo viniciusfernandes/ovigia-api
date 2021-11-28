@@ -11,12 +11,12 @@ import br.com.ovigia.businessrule.vigia.obter.ObterVigiasProximosResponse;
 import br.com.ovigia.businessrule.vigia.obter.ObterVigiasProximosRule;
 import br.com.ovigia.model.Cliente;
 import br.com.ovigia.model.Vigia;
-import br.com.ovigia.model.calculadora.CalculadoraRonda;
+import br.com.ovigia.model.calculadora.CalculadoraDistancia;
 import br.com.ovigia.model.repository.ClienteRepository;
 import br.com.ovigia.model.repository.VigiaRepository;
 
 public class VigiaRouter extends Router {
-	private final CalculadoraRonda calculadora = CalculadoraRonda.calculadoraEsferica();
+	private final CalculadoraDistancia calculadora = CalculadoraDistancia.calculadoraEsferica();
 
 	public VigiaRouter(VigiaRepository vigiaRepository, ClienteRepository clienteRepository) {
 		var criarCliente = Route.<Vigia, Void>post().path("/ovigia/vigias").contemBody().requestClass(Vigia.class)

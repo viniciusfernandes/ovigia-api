@@ -32,7 +32,8 @@ public class ClienteRepository {
 	}
 
 	public Mono<FrequenciaRonda> obterFrequenciaRondaPorIdCliente(String idCliente) {
-		var match = new Document("$match", new Document("_id", idCliente));
+		var match = new Document("$match",
+				new Document("_id", idCliente).append("frequenciaRonda", new Document("$ne", null)));
 		var project = new Document("$project", new Document("frequenciaRonda", 1));
 		var pipeline = Arrays.asList(match, project);
 		return Mono.from(collection.aggregate(pipeline)).map(doc -> {

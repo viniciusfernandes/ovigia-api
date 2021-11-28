@@ -2,7 +2,7 @@ package br.com.ovigia.model.calculadora;
 
 import br.com.ovigia.model.Localizacao;
 
-  class CalculadoraDistanciaEuclidiana extends CalculadoraRonda{
+  class CalculadoraDistanciaEuclidiana extends CalculadoraDistancia{
 	
 
 	@Override

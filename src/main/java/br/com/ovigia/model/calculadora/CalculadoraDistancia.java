@@ -6,7 +6,7 @@ import java.math.RoundingMode;
 import br.com.ovigia.model.Localizacao;
 import br.com.ovigia.model.Ronda;
 
-public abstract class CalculadoraRonda {
+public abstract class CalculadoraDistancia {
 	public final static double MILISEGUNDOS_TO_HORAS_RATE = 1000.0 * 3600.d;
 
 	public double calcularDistancia(Ronda ronda) {
@@ -61,11 +61,11 @@ public abstract class CalculadoraRonda {
 	}
 
 	@Deprecated
-	public static CalculadoraRonda calculadoraEuclidiana() {
+	public static CalculadoraDistancia calculadoraEuclidiana() {
 		return new CalculadoraDistanciaEuclidiana();
 	}
 
-	public static CalculadoraRonda calculadoraEsferica() {
+	public static CalculadoraDistancia calculadoraEsferica() {
 		return new CalculadoraDistanciaEsferica();
 	}
 
