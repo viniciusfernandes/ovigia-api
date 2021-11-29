@@ -20,7 +20,7 @@ public class ChamadoParser {
 		doc.append("data", chamado.data);
 
 		var idRonda = chamado.idRonda;
-		var docId = new Document("idVigia", idRonda.idVigia).append("data", idRonda.data);
+		var docId = new Document("idVigia", idRonda.idVigia).append("data", idRonda.dataRonda);
 		doc.append("idRonda", docId);
 
 		doc.append("nomeCliente", chamado.nomeCliente);

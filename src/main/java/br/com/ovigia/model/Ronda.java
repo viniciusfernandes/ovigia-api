@@ -39,6 +39,6 @@ public class Ronda {
 		if (id == null) {
 			return null;
 		}
-		return id.data;
+		return id.dataRonda;
 	}
 }

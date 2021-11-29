@@ -56,6 +56,10 @@ public class DataUtil {
 		return new DataHora(data, hora);
 	}
 
+	public static DataHora obterDataHora() {
+		return obterDataHora(new Date());
+	}
+
 	public static DiaMes obterDiaMes(Date data) {
 		var cal = Calendar.getInstance(TIME_ZONE);
 		cal.setTime(data);

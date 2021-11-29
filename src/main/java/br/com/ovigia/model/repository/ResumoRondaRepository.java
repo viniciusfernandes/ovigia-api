@@ -6,7 +6,9 @@ import org.bson.Document;
 import com.mongodb.reactivestreams.client.MongoCollection;
 import com.mongodb.reactivestreams.client.MongoDatabase;
 
+import br.com.ovigia.model.IdRonda;
 import br.com.ovigia.model.ResumoRonda;
+import br.com.ovigia.repository.parser.IdRondaParser;
 import br.com.ovigia.repository.parser.ResumoRondaParser;
 import reactor.core.publisher.Mono;
 
@@ -23,20 +25,20 @@ public class ResumoRondaRepository {
 	}
 
 	public Mono<Void> atualizarResumoRonda(ResumoRonda resumoRonda) {
-		var filter = new Document("_id", resumoRonda.idVigia);
+		var filter = IdRondaParser.toDoc(resumoRonda.id);
 		var update = new Document("$set", ResumoRondaParser.toDocFields(resumoRonda));
 		return Mono.from(collection.updateOne(filter, update)).then();
 	}
 
-	public Mono<Void> removerResumoRonda(String idVigia) {
-		var filter = new Document("_id", idVigia);
+	public Mono<Void> removerResumoRonda(IdRonda id) {
+		var filter = new Document("_id", new Document("idVigia", id.idVigia).append("dataRonda", id.dataRonda));
 		return Mono.from(collection.deleteOne(filter)).then();
 	}
 
-	public Mono<ResumoRonda> obterResumoRondaByIdVigia(String idVigia) {
-		var id = new Document("_id", idVigia);
+	public Mono<ResumoRonda> obterResumoRondaById(IdRonda idRonda) {
+		var id = IdRondaParser.toDoc(idRonda);
 		return Mono.from(collection.find(id)).map(doc -> ResumoRondaParser.fromDoc(doc))
-				.switchIfEmpty(Mono.just(new ResumoRonda().init()));
+				.switchIfEmpty(Mono.just(new ResumoRonda()));
 	}
 
 }

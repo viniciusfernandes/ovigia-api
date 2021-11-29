@@ -50,7 +50,7 @@ public class ChamadoRepository {
 	}
 
 	public Mono<Long> obterTotalChamadoAceitoByIdRonda(IdRonda id) {
-		var filter = new Document("idRonda.idVigia", id.idVigia).append("idRonda.data", id.data).append("situacao",
+		var filter = new Document("idRonda.idVigia", id.idVigia).append("idRonda.data", id.dataRonda).append("situacao",
 				TipoSituacaoChamado.ACEITO.toString());
 		return Mono.from(collection.countDocuments(filter)).switchIfEmpty(Mono.just(0L));
 	}

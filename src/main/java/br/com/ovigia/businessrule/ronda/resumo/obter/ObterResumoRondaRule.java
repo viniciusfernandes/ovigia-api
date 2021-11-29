@@ -4,40 +4,48 @@ import br.com.ovigia.businessrule.BusinessRule;
 import br.com.ovigia.businessrule.Response;
 import br.com.ovigia.businessrule.util.DataUtil;
 import br.com.ovigia.model.IdRonda;
+import br.com.ovigia.model.calculadora.CalculadoraDistancia;
 import br.com.ovigia.model.repository.ChamadoRepository;
 import br.com.ovigia.model.repository.ResumoRondaRepository;
+import br.com.ovigia.model.repository.VigiaRepository;
 import reactor.core.publisher.Mono;
 
 public class ObterResumoRondaRule implements BusinessRule<ObterResumoRondaRequest, ObterResumoRondaResponse> {
 	private ResumoRondaRepository resumoRepository;
 	private ChamadoRepository chamadoRepository;
+	private VigiaRepository vigiaRepository;
 
-	public ObterResumoRondaRule(ResumoRondaRepository resumoRepository, ChamadoRepository chamadoRepository) {
+	public ObterResumoRondaRule(ResumoRondaRepository resumoRepository, ChamadoRepository chamadoRepository,
+			VigiaRepository vigiaRepository) {
 		this.resumoRepository = resumoRepository;
 		this.chamadoRepository = chamadoRepository;
+		this.vigiaRepository = vigiaRepository;
 	}
 
 	@Override
 	public Mono<Response<ObterResumoRondaResponse>> apply(ObterResumoRondaRequest request) {
+		return vigiaRepository.obterDataUltimaRonda(request.idVigia).flatMap(dataRonda -> {
+			var id = new IdRonda(request.idVigia, dataRonda);
+			return Mono.zip(resumoRepository.obterResumoRondaById(id),
+					chamadoRepository.obterTotalChamadoAceitoByIdRonda(id)).map(tuple -> {
+						var resumo = tuple.getT1();
+						var totalChamados = tuple.getT2();
+						var tempoEscala = CalculadoraDistancia.calcularTempoEscala(resumo.tempo);
 
-		return Mono.from(resumoRepository.obterResumoRondaByIdVigia(request.idVigia)).flatMap(resumo -> {
-			var idRonda = new IdRonda(resumo.idVigia, resumo.data);
-			return chamadoRepository.obterTotalChamadoAceitoByIdRonda(idRonda).map(totalChamados -> {
-				resumo.totalChamados = totalChamados;
-				return resumo;
-			});
-		}).map(resumo -> {
-			var response = new ObterResumoRondaResponse();
-			response.distancia = resumo.distancia;
-			response.escalaTempo = resumo.escalaTempo;
-			response.tempo = resumo.tempo;
-			response.totalChamados = resumo.totalChamados;
+						var response = new ObterResumoRondaResponse();
+						response.distancia = resumo.distancia;
+						response.escalaTempo = tempoEscala.escala;
+						response.tempo = tempoEscala.tempo;
+						response.totalChamados = totalChamados;
 
-			var dataHora = DataUtil.obterDataHora(resumo.data);
-			response.data = dataHora.data;
-			response.hora = dataHora.hora;
-			return Response.ok(response);
-		});
+						var dataHora = resumo.id == null ? DataUtil.obterDataHora()
+								: DataUtil.obterDataHora(resumo.id.dataRonda);
+						response.data = dataHora.data;
+						response.hora = dataHora.hora;
+						return Response.ok(response);
+					});
+		}).switchIfEmpty(Mono.just(Response.ok(new ObterResumoRondaResponse().inicializar())));
+
 	}
 
 }

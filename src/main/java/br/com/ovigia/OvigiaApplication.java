@@ -24,6 +24,7 @@ import br.com.ovigia.auth.security.JwtUtil;
 import br.com.ovigia.auth.security.PBKDF2Encoder;
 import br.com.ovigia.auth.security.WebSecurityConfig;
 import br.com.ovigia.businessrule.CriarMensalidadesTask;
+import br.com.ovigia.businessrule.frequenciaronda.commom.business.CriarFrequenciaRondasBusiness;
 import br.com.ovigia.model.repository.ChamadoRepository;
 import br.com.ovigia.model.repository.ClienteRepository;
 import br.com.ovigia.model.repository.ContratoRepository;
@@ -36,7 +37,6 @@ import br.com.ovigia.model.repository.VigiaRepository;
 import br.com.ovigia.route.ChamadoRouter;
 import br.com.ovigia.route.ClienteRouter;
 import br.com.ovigia.route.ContratoRouter;
-import br.com.ovigia.route.FrequenciaRondaRouter;
 import br.com.ovigia.route.MensalidadeRouter;
 import br.com.ovigia.route.RondaRouter;
 import br.com.ovigia.route.RoutesBuilder;
@@ -58,6 +58,7 @@ public class OvigiaApplication implements CommandLineRunner {
 	@PostConstruct
 	public void registerBeans() {
 		registerRepository(context);
+		registerCommomBusiness(context);
 		registerSecurityWebFilterChain(context);
 		registerCorsFilter(context);
 		registerRoutes(context);
@@ -78,6 +79,12 @@ public class OvigiaApplication implements CommandLineRunner {
 		context.registerBean(FrequenciaRondaRepository.class, () -> new FrequenciaRondaRepository(mongodb));
 		context.registerBean(MensalidadeRepository.class, () -> new MensalidadeRepository(mongodb));
 
+	}
+
+	private void registerCommomBusiness(GenericApplicationContext context) {
+		context.registerBean(CriarFrequenciaRondasBusiness.class,
+				() -> new CriarFrequenciaRondasBusiness(getBean(ClienteRepository.class),
+						getBean(RondaRepository.class), getBean(FrequenciaRondaRepository.class)));
 	}
 
 	private void registerSecurityWebFilterChain(GenericApplicationContext context) {
@@ -107,15 +114,13 @@ public class OvigiaApplication implements CommandLineRunner {
 		routesBuilder.addRouter(new SolicitacaoVistiaRouter(getBean(SolicitacaoVisitaRepository.class)));
 		routesBuilder.addRouter(new ChamadoRouter(getBean(ChamadoRepository.class)));
 		routesBuilder.addRouter(new VigiaRouter(getBean(VigiaRepository.class), getBean(ClienteRepository.class)));
-		routesBuilder.addRouter(new ClienteRouter(getBean(ClienteRepository.class), getBean(RondaRepository.class)));
+		routesBuilder.addRouter(
+				new ClienteRouter(getBean(ClienteRepository.class), getBean(CriarFrequenciaRondasBusiness.class)));
 		routesBuilder.addRouter(new RondaRouter(getBean(RondaRepository.class), getBean(ResumoRondaRepository.class),
-				getBean(ChamadoRepository.class)));
+				getBean(ChamadoRepository.class), getBean(VigiaRepository.class)));
 		routesBuilder.addRouter(
 				new AuthRouter(getBean(UsuarioRepository.class), getBean(PBKDF2Encoder.class), getBean(JwtUtil.class)));
 
-		routesBuilder
-				.addRouter(new FrequenciaRondaRouter(getBean(ClienteRepository.class), getBean(RondaRepository.class),
-						getBean(FrequenciaRondaRepository.class), getBean(ContratoRepository.class)));
 		routesBuilder.addRouter(new MensalidadeRouter(getBean(MensalidadeRepository.class)));
 
 		context.registerBean(RouterFunction.class, () -> routesBuilder.build());

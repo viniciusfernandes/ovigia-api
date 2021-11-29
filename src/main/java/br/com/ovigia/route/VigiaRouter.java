@@ -3,7 +3,6 @@ package br.com.ovigia.route;
 import br.com.ovigia.businessrule.vigia.atualizar.AtualizarVigiaClienteRule;
 import br.com.ovigia.businessrule.vigia.atualizar.AtualizarVigiaLocalizacaoRequest;
 import br.com.ovigia.businessrule.vigia.atualizar.AtualizarVigiaLocalizacaoRule;
-import br.com.ovigia.businessrule.vigia.criar.CriarVigiaRule;
 import br.com.ovigia.businessrule.vigia.obter.ObterVigiaRequest;
 import br.com.ovigia.businessrule.vigia.obter.ObterVigiaRule;
 import br.com.ovigia.businessrule.vigia.obter.ObterVigiasProximosRequest;
@@ -19,8 +18,6 @@ public class VigiaRouter extends Router {
 	private final CalculadoraDistancia calculadora = CalculadoraDistancia.calculadoraEsferica();
 
 	public VigiaRouter(VigiaRepository vigiaRepository, ClienteRepository clienteRepository) {
-		var criarCliente = Route.<Vigia, Void>post().path("/ovigia/vigias").contemBody().requestClass(Vigia.class)
-				.rule(new CriarVigiaRule(vigiaRepository));
 
 		var obterVigia = Route.<ObterVigiaRequest, Vigia>get().path("/ovigia/vigias/{idVigia}")
 				.requestClass(ObterVigiaRequest.class).extractFromPath((mapa, request) -> {
@@ -49,7 +46,6 @@ public class VigiaRouter extends Router {
 					return request;
 				}).rule(new AtualizarVigiaLocalizacaoRule(vigiaRepository));
 
-		addRoute(criarCliente);
 		addRoute(obterVigia);
 		addRoute(atualizarVigiaCliente);
 		addRoute(atualizarVigiaLoc);

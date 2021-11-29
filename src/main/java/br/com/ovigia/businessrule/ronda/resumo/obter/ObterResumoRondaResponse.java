@@ -1,10 +1,25 @@
 package br.com.ovigia.businessrule.ronda.resumo.obter;
 
+import java.util.Date;
+
+import br.com.ovigia.businessrule.util.DataUtil;
+
 public class ObterResumoRondaResponse {
-	public Double distancia;
-	public Long totalChamados;
-	public Double tempo;
-	public Character escalaTempo;
-	public String data;
-	public String hora;
+	public Double distancia = 0d;
+	public Long totalChamados = 0l;
+	public Double tempo = 0d;
+	public Character escalaTempo = 'h';
+	public String data = "";
+	public String hora = "";
+
+	public ObterResumoRondaResponse inicializar() {
+		distancia = 0d;
+		totalChamados = 0l;
+		tempo = 0d;
+		escalaTempo = 'h';
+		var datahora = DataUtil.obterDataHora(new Date());
+		data = datahora.data;
+		hora = datahora.hora;
+		return this;
+	}
 }

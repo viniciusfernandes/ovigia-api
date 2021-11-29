@@ -1,22 +1,17 @@
-package br.com.ovigia.businessrule.frequenciaronda.criar;
+package br.com.ovigia.businessrule.frequenciaronda.commom.business;
 
 import java.util.List;
 
-import br.com.ovigia.businessrule.BusinessRule;
-import br.com.ovigia.businessrule.Response;
-import br.com.ovigia.businessrule.util.DataUtil;
 import br.com.ovigia.model.FrequenciaRonda;
 import br.com.ovigia.model.IdFrequenciaRonda;
 import br.com.ovigia.model.Localizacao;
 import br.com.ovigia.model.calculadora.CalculadoraDistancia;
 import br.com.ovigia.model.repository.ClienteRepository;
-import br.com.ovigia.model.repository.ContratoRepository;
 import br.com.ovigia.model.repository.FrequenciaRondaRepository;
 import br.com.ovigia.model.repository.RondaRepository;
 import reactor.core.publisher.Mono;
 
-public class CriarFrequenciaRondasRule
-		implements BusinessRule<CriarFrequenciaRondaRequest, CriarFrequenciaRondaResponse> {
+public class CriarFrequenciaRondasBusiness {
 	// Distancia em metros
 	private final double distanciaMinima = 0.02d;
 	// INTERVALO DE TOLERANCIA EM MILISEGUNDOS PARA TERMINAR A FREQUENCIA DA RONDA E
@@ -26,41 +21,31 @@ public class CriarFrequenciaRondasRule
 	private ClienteRepository clienteRepository;
 
 	private CalculadoraDistancia calculadoraDistancia = CalculadoraDistancia.calculadoraEsferica();
-	private ContratoRepository contratoRepository;
 	private RondaRepository rondaRepository;
 	private FrequenciaRondaRepository frequenciaRepository;
 
-	public CriarFrequenciaRondasRule(ClienteRepository clienteRepository, RondaRepository rondaRepository,
-			FrequenciaRondaRepository frequenciaRepository, ContratoRepository contratoRepository) {
+	public CriarFrequenciaRondasBusiness(ClienteRepository clienteRepository, RondaRepository rondaRepository,
+			FrequenciaRondaRepository frequenciaRepository) {
 		this.clienteRepository = clienteRepository;
 		this.rondaRepository = rondaRepository;
 		this.frequenciaRepository = frequenciaRepository;
-		this.contratoRepository = contratoRepository;
+
 	}
 
-	@Override
-	public Mono<Response<CriarFrequenciaRondaResponse>> apply(CriarFrequenciaRondaRequest request) {
-		var obterIdVigia = contratoRepository.obterIdVigiaByIdContrato(request.idContrato);
-		var obterLocalizacaoCliente = clienteRepository.obterLocalizacaoCliente(request.idContrato);
-		return Mono.zip(obterIdVigia, obterLocalizacaoCliente).flatMap(tuple -> {
-			var idVigia = tuple.getT1().idVigia;
-			var localCliente = tuple.getT2();
+	public Mono<FrequenciaRonda> apply(String idCliente) {
+		return clienteRepository.obterIdVigiaELocalizacaoByIdCliente(idCliente).flatMap(cliente -> {
+			var idVigia = cliente.idVigia;
+			var localizacao = cliente.localizacao;
 			return rondaRepository.obterUltimaRondaByIdVigia(idVigia).map(ronda -> {
 				var frequecia = new FrequenciaRonda();
-				frequecia.id = new IdFrequenciaRonda(request.idContrato, ronda.obterData());
+				frequecia.id = new IdFrequenciaRonda(cliente.id, ronda.obterData());
 				frequecia.idVigia = idVigia;
-				frequecia.totalRonda = calcularTotalRondasCliente(localCliente, ronda.localizacoes);
+				frequecia.totalRonda = calcularTotalRondasCliente(localizacao, ronda.localizacoes);
 				return frequecia;
 			});
 
 		}).flatMap(frequencia -> clienteRepository.atualizarFrequenciaRonda(frequencia))
-				.flatMap(frequencia -> frequenciaRepository.criarFrequenciaRonda(frequencia)).map(frequencia -> {
-					var response = new CriarFrequenciaRondaResponse();
-					response.data = DataUtil.formatarData(frequencia.id.dataRonda);
-					response.idVigia = frequencia.idVigia;
-					response.totalRonda = frequencia.totalRonda;
-					return Response.ok(response);
-				});
+				.flatMap(frequencia -> frequenciaRepository.criarFrequenciaRonda(frequencia).thenReturn(frequencia));
 	}
 
 	private int calcularTotalRondasCliente(Localizacao localizacaoCliente, List<Localizacao> localizacoesVigia) {

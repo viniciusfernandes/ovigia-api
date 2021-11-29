@@ -1,0 +1,1 @@
+1) Ao criar uma ronda esta sendo duplicado o ID e da ronda, e ao tentar novamente o registro é removido

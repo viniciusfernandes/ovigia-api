@@ -28,8 +28,12 @@ public abstract class CalculadoraDistancia {
 		return round(totDist);
 	}
 
-	public TempoEscala calcularTempo(Ronda ronda) {
-		var intervalo = (ronda.fim.getTime() - ronda.inicio.getTime()) / MILISEGUNDOS_TO_HORAS_RATE;
+	public static Long calcularTempo(Ronda ronda) {
+		return ronda.fim.getTime() - ronda.inicio.getTime();
+	}
+
+	public static TempoEscala calcularTempoEscala(Long timestamp) {
+		var intervalo = timestamp / MILISEGUNDOS_TO_HORAS_RATE;
 
 		var escala = EscalaTemporal.HORAS;
 		if (intervalo < 0.09) {
@@ -69,7 +73,7 @@ public abstract class CalculadoraDistancia {
 		return new CalculadoraDistanciaEsferica();
 	}
 
-	public double round(double value) {
+	public static double round(double value) {
 		return new BigDecimal(value).setScale(1, RoundingMode.HALF_UP).doubleValue();
 	}
 }

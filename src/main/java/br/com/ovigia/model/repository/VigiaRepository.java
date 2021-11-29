@@ -1,6 +1,7 @@
 package br.com.ovigia.model.repository;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.bson.Document;
@@ -33,10 +34,12 @@ public class VigiaRepository {
 		return Mono.from(collection.aggregate(list)).map(docUsuario -> VigiaParser.fromDoc(docUsuario));
 	}
 
-	@Deprecated
-	public Mono<Void> criar(Vigia vigia) {
-		var doc = VigiaParser.toDoc(vigia);
-		return Mono.from(collection.insertOne(doc)).then();
+	public Mono<Date> obterDataUltimaRonda(String idVigia) {
+		var match = new Document("$match", new Document("_id", idVigia));
+		var fields = new Document("dataUltimaRonda", 1);
+		var project = new Document("$project", fields);
+		var list = Arrays.asList(match, project);
+		return Mono.from(collection.aggregate(list)).map(doc -> doc.getDate("dataUltimaRonda"));
 	}
 
 	public Mono<Vigia> obterVigiaPorId(String idVigia) {
@@ -59,6 +62,12 @@ public class VigiaRepository {
 		var project = new Document("$project", fields);
 		var pipeline = Arrays.asList(match, project);
 		return Flux.from(collection.aggregate(pipeline)).map(doc -> VigiaParser.fromDoc(doc));
+	}
+
+	public Mono<Long> atualizarDataUltimaRonda(String idVigia, Date dataUltimaRonda) {
+		var filter = new Document("_id", idVigia);
+		var update = new Document("$set", new Document("dataUltimaRonda", dataUltimaRonda));
+		return Mono.from(collection.updateOne(filter, update)).map(result -> result.getModifiedCount());
 	}
 
 	public Mono<Void> atualizarCliente(String idVigia, Cliente cliente) {

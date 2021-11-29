@@ -6,11 +6,11 @@ import br.com.ovigia.businessrule.util.DataUtil;
 
 public class IdRonda {
 	public final String idVigia;
-	public final Date data;
+	public final Date dataRonda;
 
 	public IdRonda(String idVigia, Date data) {
 		this.idVigia = idVigia;
-		this.data = DataUtil.ajustarData(data);
+		this.dataRonda = DataUtil.ajustarData(data);
 	}
 
 }

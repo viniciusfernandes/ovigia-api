@@ -9,15 +9,13 @@ public class ResumoRondaParser {
 	}
 
 	public static Document toDoc(ResumoRonda resumoRonda) {
-		var doc = new Document("_id", resumoRonda.idVigia);
+		var doc = IdRondaParser.toDoc(resumoRonda.id);
 		appendFields(resumoRonda, doc);
 		return doc;
 	}
 
 	public static void appendFields(ResumoRonda resumoRonda, Document doc) {
-		doc.append("data", resumoRonda.data);
 		doc.append("distancia", resumoRonda.distancia);
-		doc.append("escalaTempo", resumoRonda.escalaTempo);
 		doc.append("tempo", resumoRonda.tempo);
 		doc.append("totalChamados", resumoRonda.totalChamados);
 	}
@@ -30,12 +28,11 @@ public class ResumoRondaParser {
 
 	public static ResumoRonda fromDoc(Document doc) {
 		var resumo = new ResumoRonda();
-		resumo.idVigia = doc.getString("_id");
+		resumo.id = IdRondaParser.fromDoc(doc);
 		resumo.distancia = doc.getDouble("distancia");
-		resumo.escalaTempo = doc.getString("escalaTempo").charAt(0);
-		resumo.data = doc.getDate("data");
-		resumo.tempo = doc.getDouble("tempo");
+		resumo.tempo = doc.getLong("tempo");
 		resumo.totalChamados = doc.getLong("totalChamados");
 		return resumo;
 	}
+
 }
