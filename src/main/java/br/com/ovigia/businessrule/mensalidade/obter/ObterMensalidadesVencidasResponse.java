@@ -1,10 +1,8 @@
-package br.com.ovigia.businessrule.mensalidade;
-
-import java.util.Date;
+package br.com.ovigia.businessrule.mensalidade.obter;
 
 public class ObterMensalidadesVencidasResponse {
 	public String id;
-	public Date dataVencimento;
+	public String dataVencimento;
 	public Double valor;
 	public String nomeCliente;
 	public String telefoneCliente;

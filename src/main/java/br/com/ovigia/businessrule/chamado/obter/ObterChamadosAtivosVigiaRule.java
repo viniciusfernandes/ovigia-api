@@ -18,7 +18,7 @@ public class ObterChamadosAtivosVigiaRule
 
 	public ObterChamadosAtivosVigiaRule(ChamadoRepository chamadoRepository) {
 		this.chamadoRepository = chamadoRepository;
-	}
+	}	
 
 	@Override
 	public Mono<Response<List<ObterChamadosVigiaResponse>>> apply(ObterChamadosAtivosRequest request) {

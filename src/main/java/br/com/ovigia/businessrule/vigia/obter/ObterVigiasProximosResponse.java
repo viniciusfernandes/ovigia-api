@@ -1,12 +1,12 @@
 package br.com.ovigia.businessrule.vigia.obter;
 
-import java.util.List;
+import br.com.ovigia.businessrule.resquest.common.LocalizacaoResponse;
 
 public class ObterVigiasProximosResponse {
-
-	public List<VigiaProximoResponse> vigias;
-
-	public ObterVigiasProximosResponse(List<VigiaProximoResponse> vigias) {
-		this.vigias = vigias;
-	}
+	public String id;
+	public String nome;
+	public String dataInicio;
+	public String telefone;
+	public double avaliacao;
+	public LocalizacaoResponse localizacao;
 }

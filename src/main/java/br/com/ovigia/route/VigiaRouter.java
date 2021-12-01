@@ -1,5 +1,7 @@
 package br.com.ovigia.route;
 
+import java.util.List;
+
 import br.com.ovigia.businessrule.vigia.atualizar.AtualizarVigiaClienteRule;
 import br.com.ovigia.businessrule.vigia.atualizar.AtualizarVigiaLocalizacaoRequest;
 import br.com.ovigia.businessrule.vigia.atualizar.AtualizarVigiaLocalizacaoRule;
@@ -25,7 +27,7 @@ public class VigiaRouter extends Router {
 					return request;
 				}).rule(new ObterVigiaRule(vigiaRepository));
 
-		var obterVigiasProximos = Route.<ObterVigiasProximosRequest, ObterVigiasProximosResponse>get()
+		var obterVigiasProximos = Route.<ObterVigiasProximosRequest, List<ObterVigiasProximosResponse>>get()
 				.path("/ovigia/vigias/localizacoes/proximos").requestClass(ObterVigiasProximosRequest.class)
 				.extractFromParameters((mapa, request) -> {
 					request.latitude = Double.parseDouble(mapa.get("latitude").get(0));

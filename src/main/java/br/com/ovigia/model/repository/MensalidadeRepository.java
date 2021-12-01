@@ -11,6 +11,7 @@ import com.mongodb.reactivestreams.client.MongoCollection;
 import com.mongodb.reactivestreams.client.MongoDatabase;
 
 import br.com.ovigia.model.Mensalidade;
+import br.com.ovigia.model.enumeration.TipoSituacaoMensalidade;
 import br.com.ovigia.repository.parser.MensalidadeParser;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -28,15 +29,24 @@ public class MensalidadeRepository {
 		return Mono.from(collection.insertOne(doc)).map(x -> mensalidade);
 	}
 
+	public Mono<Long> atualizaDataPagamentoMensalidade(String idMensalidade, Date dataPagamento,
+			TipoSituacaoMensalidade situacao) {
+		var filter = new Document("_id", idMensalidade);
+		var fields = new Document("dataPagamento", dataPagamento).append("situacao", situacao.toString());
+		var update = new Document("$set", fields);
+		return Mono.from(collection.updateOne(filter, update)).map(result -> result.getModifiedCount());
+	}
+
 	public Flux<Mensalidade> obterMensalidadesVencidasByIdContrato(String idContrato) {
 		var filter = new Document("idContrato", idContrato).append("dataVencimento", new Document("$lte", new Date()))
 				.append("dataPagamento", null);
 		return Flux.from(collection.find(filter)).map(MensalidadeParser::fromDoc);
 	}
 
-	public Flux<Mensalidade> obterMensalidadesVencidasByIdVigia(String idVigia) {
-		var filter = new Document("idVigia", idVigia).append("dataVencimento", new Document("$lte", new Date()))
-				.append("dataPagamento", null);
+	public Flux<Mensalidade> obterMensalidadesDataVencimentoInferiorByIdVigia(String idVigia, Date dataLimite,
+			TipoSituacaoMensalidade situacao) {
+		var filter = new Document("idVigia", idVigia).append("dataVencimento", new Document("$lte", dataLimite))
+				.append("dataPagamento", null).append("situacao", situacao.toString());
 
 		var match = new Document("$match", filter);
 		var project = new Document("$project", new Document("_id", 1).append("dataVencimento", 1)

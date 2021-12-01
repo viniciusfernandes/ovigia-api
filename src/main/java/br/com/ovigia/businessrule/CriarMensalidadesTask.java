@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import br.com.ovigia.businessrule.util.DataUtil;
 import br.com.ovigia.model.Mensalidade;
+import br.com.ovigia.model.enumeration.TipoSituacaoMensalidade;
 import br.com.ovigia.model.repository.ContratoRepository;
 import br.com.ovigia.model.repository.MensalidadeRepository;
 
@@ -29,7 +30,7 @@ public class CriarMensalidadesTask {
 				criarMensalidades();
 			}
 		};
-		timer.schedule(task, delay, 20000);
+		timer.schedule(task, delay, 2000);
 	}
 
 	private void criarMensalidades() {
@@ -41,6 +42,7 @@ public class CriarMensalidadesTask {
 			mensalidade.telefoneCliente = contrato.telefoneCliente;
 			mensalidade.valor = contrato.valor;
 			mensalidade.idVigia = contrato.idVigia;
+			mensalidade.situacao = TipoSituacaoMensalidade.ABERTO;
 			return mensalidadeRepository.criarMensalidade(mensalidade);
 
 		}).doOnNext(mensalidade -> {

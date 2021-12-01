@@ -2,9 +2,11 @@ package br.com.ovigia.route;
 
 import java.util.List;
 
-import br.com.ovigia.businessrule.mensalidade.ObterMensalidadesVencidasRequest;
-import br.com.ovigia.businessrule.mensalidade.ObterMensalidadesVencidasResponse;
-import br.com.ovigia.businessrule.mensalidade.ObterMensalidadesVencidasRule;
+import br.com.ovigia.businessrule.mensalidade.obter.ObterMensalidadesVencidasRequest;
+import br.com.ovigia.businessrule.mensalidade.obter.ObterMensalidadesVencidasResponse;
+import br.com.ovigia.businessrule.mensalidade.obter.ObterMensalidadesVencidasRule;
+import br.com.ovigia.businessrule.mensalidade.pagar.PagarMensalidadeRequest;
+import br.com.ovigia.businessrule.mensalidade.pagar.PagarMensalidadeRule;
 import br.com.ovigia.model.repository.MensalidadeRepository;
 
 public class MensalidadeRouter extends Router {
@@ -19,8 +21,13 @@ public class MensalidadeRouter extends Router {
 				}).requestClass(ObterMensalidadesVencidasRequest.class)
 				.rule(new ObterMensalidadesVencidasRule(mensalidadeRepository));
 
+		var pagarMensalidade = Route.<PagarMensalidadeRequest, Void>patch()
+				.path("/ovigia/mensalidades/{idMensalidade}/pagamento").extractFromPath((mapa, request) -> {
+					request.idMensalidade = mapa.get("idMensalidade");
+					return request;
+				}).requestClass(PagarMensalidadeRequest.class).rule(new PagarMensalidadeRule(mensalidadeRepository));
 		addRoute(obterMensalidadesVencidas);
-
+		addRoute(pagarMensalidade);
 	}
 
 }

@@ -1,5 +1,7 @@
 package br.com.ovigia.businessrule.vigia.obter;
 
+import java.util.List;
+
 import br.com.ovigia.businessrule.BusinessRule;
 import br.com.ovigia.businessrule.Response;
 import br.com.ovigia.businessrule.resquest.common.LocalizacaoResponse;
@@ -10,7 +12,8 @@ import br.com.ovigia.model.calculadora.CalculadoraDistancia;
 import br.com.ovigia.model.repository.VigiaRepository;
 import reactor.core.publisher.Mono;
 
-public class ObterVigiasProximosRule implements BusinessRule<ObterVigiasProximosRequest, ObterVigiasProximosResponse> {
+public class ObterVigiasProximosRule
+		implements BusinessRule<ObterVigiasProximosRequest, List<ObterVigiasProximosResponse>> {
 	private VigiaRepository vigiaRepository;
 	private CalculadoraDistancia calculadora;
 	// distancia em kilometros
@@ -22,13 +25,13 @@ public class ObterVigiasProximosRule implements BusinessRule<ObterVigiasProximos
 	}
 
 	@Override
-	public Mono<Response<ObterVigiasProximosResponse>> apply(ObterVigiasProximosRequest request) {
+	public Mono<Response<List<ObterVigiasProximosResponse>>> apply(ObterVigiasProximosRequest request) {
 		final var localizacao = new Localizacao(request.latitude, request.longitude);
 		return vigiaRepository.obterLocalizacaoVigias()
 				.filter(vigia -> isDistanciaInferior(localizacao, vigia.localizacao))
 				.sort((v1, v2) -> distanciaOf(v1, v2, localizacao))
 				.flatMap(vigia -> vigiaRepository.obterVigiaPorId(vigia.id)).map(vigia -> {
-					var response = new VigiaProximoResponse();
+					var response = new ObterVigiasProximosResponse();
 					response.id = vigia.id;
 					response.nome = vigia.nome;
 					response.dataInicio = DataUtil.formatarData(vigia.dataInicio);
@@ -42,7 +45,7 @@ public class ObterVigiasProximosRule implements BusinessRule<ObterVigiasProximos
 					}
 					return response;
 				}).collectList().map(responses -> {
-					return Response.ok(new ObterVigiasProximosResponse(responses));
+					return Response.ok(responses);
 				});
 	}
 
