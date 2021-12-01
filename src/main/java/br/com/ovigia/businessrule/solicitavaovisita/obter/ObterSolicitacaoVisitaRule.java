@@ -35,8 +35,7 @@ public class ObterSolicitacaoVisitaRule
 						solResponse.localizacaoCliente = sol.localizacaoCliente;
 						solResponse.nomeCliente = sol.nomeCliente;
 						solResponse.telefoneCliente = sol.telefoneCliente;
-						response.add(solResponse);
-					}
+						}
 					return Response.ok(response);
 				});
 	}

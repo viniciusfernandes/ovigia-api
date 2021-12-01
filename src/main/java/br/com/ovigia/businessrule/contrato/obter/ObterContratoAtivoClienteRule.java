@@ -37,7 +37,7 @@ public class ObterContratoAtivoClienteRule
 				response.telefoneVigia = vigia.formatarTelefone();
 				return response;
 			});
-		}).map(Response::ok);
+		}).map(Response::ok).switchIfEmpty(Mono.just(Response.noContent()));
 	}
 
 }
