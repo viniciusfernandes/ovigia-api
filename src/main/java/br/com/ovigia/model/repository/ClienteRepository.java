@@ -38,7 +38,7 @@ public class ClienteRepository {
 		var pipeline = Arrays.asList(match, project);
 		return Mono.from(collection.aggregate(pipeline)).map(doc -> {
 			var frequencia = doc.get("frequenciaRonda", Document.class);
-			return FrequenciaRondaParser.fromDoc(frequencia);
+			return FrequenciaRondaParser.fromDocFlat(frequencia);
 		});
 	}
 
@@ -80,6 +80,7 @@ public class ClienteRepository {
 
 	public Mono<FrequenciaRonda> atualizarFrequenciaRonda(FrequenciaRonda frequencia) {
 		var doc = FrequenciaRondaParser.toDocFlat(frequencia);
+		doc.remove("idCliente");
 		var update = new Document("$set", new Document("frequenciaRonda", doc));
 		return Mono.from(collection.updateOne(new Document("_id", frequencia.id.idCliente), update))
 				.thenReturn(frequencia);

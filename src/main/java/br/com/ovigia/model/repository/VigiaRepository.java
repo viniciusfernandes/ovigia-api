@@ -39,7 +39,13 @@ public class VigiaRepository {
 		var fields = new Document("dataUltimaRonda", 1);
 		var project = new Document("$project", fields);
 		var list = Arrays.asList(match, project);
-		return Mono.from(collection.aggregate(list)).map(doc -> doc.getDate("dataUltimaRonda"));
+		return Mono.from(collection.aggregate(list)).flatMap(doc -> {
+			var data = doc.getDate("dataUltimaRonda");
+			if (data == null) {
+				return Mono.empty();
+			}
+			return Mono.just(data);
+		});
 	}
 
 	public Mono<Vigia> obterVigiaPorId(String idVigia) {

@@ -24,18 +24,19 @@ public class ObterSolicitacaoVisitaRule
 
 				.collectList().map(solicitacoes -> {
 					var response = new ArrayList<ObterSolicitacaoVisitaResponse>();
-					ObterSolicitacaoVisitaResponse solResponse = null;
+					ObterSolicitacaoVisitaResponse solicitacaoResponse = null;
 					DataHora dataHora = null;
 					for (var sol : solicitacoes) {
-						solResponse = new ObterSolicitacaoVisitaResponse();
+						solicitacaoResponse = new ObterSolicitacaoVisitaResponse();
 						dataHora = DataUtil.obterDataHora(sol.data);
-						solResponse.data = dataHora.data;
-						solResponse.hora = dataHora.hora;
-						solResponse.idCliente = sol.idCliente;
-						solResponse.localizacaoCliente = sol.localizacaoCliente;
-						solResponse.nomeCliente = sol.nomeCliente;
-						solResponse.telefoneCliente = sol.telefoneCliente;
-						}
+						solicitacaoResponse.data = dataHora.data;
+						solicitacaoResponse.hora = dataHora.hora;
+						solicitacaoResponse.idCliente = sol.idCliente;
+						solicitacaoResponse.localizacaoCliente = sol.localizacaoCliente;
+						solicitacaoResponse.nomeCliente = sol.nomeCliente;
+						solicitacaoResponse.telefoneCliente = sol.telefoneCliente;
+						response.add(solicitacaoResponse);
+					}
 					return Response.ok(response);
 				});
 	}
