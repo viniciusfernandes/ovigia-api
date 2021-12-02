@@ -5,10 +5,10 @@ import br.com.ovigia.businessrule.Response;
 import br.com.ovigia.model.repository.SolicitacaoVisitaRepository;
 import reactor.core.publisher.Mono;
 
-public class RemoverSolicitacaoVisitaClienteRule implements BusinessRule<RemoverSolicitacaoVisitaRequest, Void> {
+public class RemoverSolicitacaoVisitaRule implements BusinessRule<RemoverSolicitacaoVisitaRequest, Void> {
 	private SolicitacaoVisitaRepository solicitacaoRepository;
 
-	public RemoverSolicitacaoVisitaClienteRule(SolicitacaoVisitaRepository solicitacaoRepository) {
+	public RemoverSolicitacaoVisitaRule(SolicitacaoVisitaRepository solicitacaoRepository) {
 		this.solicitacaoRepository = solicitacaoRepository;
 	}
 
