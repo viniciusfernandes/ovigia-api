@@ -51,7 +51,7 @@ public class MensalidadeRepository {
 		var match = new Document("$match", filter);
 		var project = new Document("$project", new Document("_id", 1).append("dataVencimento", 1)
 				.append("dataVencimento", 1).append("valor", 1).append("telefoneCliente", 1).append("nomeCliente", 1));
-		var sort = new Document("$sort", new Document("dataVencimento", -1));
+		var sort = new Document("$sort", new Document("dataVencimento", 1));
 		var pipeline = Arrays.asList(match, project, sort);
 		return Flux.from(collection.aggregate(pipeline)).map(MensalidadeParser::fromDoc);
 	}
