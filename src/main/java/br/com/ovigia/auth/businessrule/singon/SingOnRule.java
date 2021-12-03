@@ -1,11 +1,10 @@
-package br.com.ovigia.auth.businessrule;
+package br.com.ovigia.auth.businessrule.singon;
 
 import java.util.Date;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import br.com.ovigia.auth.api.AuthResponse;
-import br.com.ovigia.auth.api.SignOnRequest;
+import br.com.ovigia.auth.businessrule.SingInResponse;
 import br.com.ovigia.auth.repository.UsuarioRepository;
 import br.com.ovigia.auth.security.JwtUtil;
 import br.com.ovigia.businessrule.BusinessRule;
@@ -13,7 +12,7 @@ import br.com.ovigia.businessrule.Response;
 import br.com.ovigia.model.Usuario;
 import reactor.core.publisher.Mono;
 
-public class SingOnRule implements BusinessRule<SignOnRequest, AuthResponse> {
+public class SingOnRule implements BusinessRule<SignOnRequest, SingInResponse> {
 	private UsuarioRepository repository;
 	private PasswordEncoder passwordEncoder;
 	private JwtUtil jwtUtil;
@@ -25,7 +24,7 @@ public class SingOnRule implements BusinessRule<SignOnRequest, AuthResponse> {
 	}
 
 	@Override
-	public Mono<Response<AuthResponse>> apply(SignOnRequest request) {
+	public Mono<Response<SingInResponse>> apply(SignOnRequest request) {
 
 		var usuario = new Usuario();
 		usuario.email = request.email;
@@ -36,7 +35,7 @@ public class SingOnRule implements BusinessRule<SignOnRequest, AuthResponse> {
 		usuario.password = passwordEncoder.encode(request.password);
 		usuario.dataInicio = new Date();
 		return repository.criarUsuario(usuario)
-				.thenReturn(Response.ok(new AuthResponse(usuario, jwtUtil.generateToken(request.email))));
+				.thenReturn(Response.ok(new SingInResponse(usuario, jwtUtil.generateToken(request.email))));
 	}
 
 }

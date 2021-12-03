@@ -1,10 +1,10 @@
-package br.com.ovigia.auth.api;
+package br.com.ovigia.auth.businessrule;
 
 import br.com.ovigia.model.Localizacao;
 import br.com.ovigia.model.Usuario;
 import br.com.ovigia.model.enumeration.TipoUsuario;
 
-public class AuthResponse {
+public class SingInResponse {
 	public String id;
 	public String token;
 	public String nome;
@@ -12,7 +12,7 @@ public class AuthResponse {
 	public TipoUsuario tipoUsuario;
 	public Localizacao localizacao;
 
-	public AuthResponse(Usuario usuario, String token) {
+	public SingInResponse(Usuario usuario, String token) {
 		id = usuario.id;
 		nome = usuario.nome;
 		telefone = usuario.formatarTelefone();

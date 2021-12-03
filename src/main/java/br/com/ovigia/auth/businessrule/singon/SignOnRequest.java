@@ -1,4 +1,4 @@
-package br.com.ovigia.auth.api;
+package br.com.ovigia.auth.businessrule.singon;
 
 import br.com.ovigia.model.Localizacao;
 import br.com.ovigia.model.enumeration.TipoUsuario;

@@ -28,7 +28,7 @@ public class ChamadoRouter extends Router {
 				}).requestClass(CriarChamadoRequest.class).rule(new CriarChamadoRule(chamadoRepository));
 
 		var obterChamadosAtivosVigia = Route.<ObterChamadosAtivosRequest, List<ObterChamadosVigiaResponse>>get()
-				.path("/ovigia/vigias/{idVigia}/chamados/ativos").extractFromPath((mapa, request) -> {
+				.path("/ovigia/vigias/{idVigia}/chamados-ativos").extractFromPath((mapa, request) -> {
 					request.idVigia = mapa.get("idVigia");
 					return request;
 				}).requestClass(ObterChamadosAtivosRequest.class)

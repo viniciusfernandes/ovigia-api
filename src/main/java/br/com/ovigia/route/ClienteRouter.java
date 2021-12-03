@@ -3,6 +3,9 @@ package br.com.ovigia.route;
 import br.com.ovigia.businessrule.cliente.atualizar.AtualizarClienteLocalizacaoRequest;
 import br.com.ovigia.businessrule.cliente.atualizar.AtualizarClienteLocalizacaoRule;
 import br.com.ovigia.businessrule.cliente.criar.CriarClienteRule;
+import br.com.ovigia.businessrule.cliente.obter.ObterIdVigiaClienteRequest;
+import br.com.ovigia.businessrule.cliente.obter.ObterIdVigiaClienteResponse;
+import br.com.ovigia.businessrule.cliente.obter.ObterIdVigiaClienteRule;
 import br.com.ovigia.businessrule.frequenciaronda.commom.business.CriarFrequenciaRondasBusiness;
 import br.com.ovigia.businessrule.frequenciaronda.obter.ObterFrequenciaRondaRequest;
 import br.com.ovigia.businessrule.frequenciaronda.obter.ObterFrequenciaRondaResponse;
@@ -32,9 +35,17 @@ public class ClienteRouter extends Router {
 					return request;
 				}).rule(new ObterFrequenciaRondaRule(clienteRepository, criarFrequenciaRondasBusiness));
 
+		var obterIdVigia = Route.<ObterIdVigiaClienteRequest, ObterIdVigiaClienteResponse>get()
+				.path("/ovigia/clientes/{idCliente}/id-vigia").requestClass(ObterIdVigiaClienteRequest.class)
+				.extractFromPath((mapa, request) -> {
+					request.idCliente = mapa.get("idCliente");
+					return request;
+				}).rule(new ObterIdVigiaClienteRule(clienteRepository));
+
 		addRoute(criarCliente);
 		addRoute(alterarLocalizacao);
 		addRoute(obterFrequenciaRonda);
+		addRoute(obterIdVigia);
 	}
 
 }
