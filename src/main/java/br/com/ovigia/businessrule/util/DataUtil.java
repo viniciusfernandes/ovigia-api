@@ -66,6 +66,16 @@ public class DataUtil {
 		return new DiaMes(cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH) + 1);
 	}
 
+	public static MesAno obterMesAno(Date data) {
+		var cal = Calendar.getInstance(TIME_ZONE);
+		cal.setTime(data);
+		return new MesAno(cal.get(Calendar.MONTH) + 1, cal.get(Calendar.YEAR));
+	}
+
+	public static MesAno obterMesAno() {
+		return obterMesAno(new Date());
+	}
+
 	public static DiaMes obterDiaMes() {
 		return obterDiaMes(new Date());
 	}

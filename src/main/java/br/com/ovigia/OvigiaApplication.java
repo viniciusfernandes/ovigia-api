@@ -28,6 +28,7 @@ import br.com.ovigia.businessrule.frequenciaronda.commom.business.CriarFrequenci
 import br.com.ovigia.model.repository.ChamadoRepository;
 import br.com.ovigia.model.repository.ClienteRepository;
 import br.com.ovigia.model.repository.ContratoRepository;
+import br.com.ovigia.model.repository.FaturamentoRepository;
 import br.com.ovigia.model.repository.FrequenciaRondaRepository;
 import br.com.ovigia.model.repository.MensalidadeRepository;
 import br.com.ovigia.model.repository.ResumoRondaRepository;
@@ -78,7 +79,7 @@ public class OvigiaApplication implements CommandLineRunner {
 		context.registerBean(ContratoRepository.class, () -> new ContratoRepository(mongodb));
 		context.registerBean(FrequenciaRondaRepository.class, () -> new FrequenciaRondaRepository(mongodb));
 		context.registerBean(MensalidadeRepository.class, () -> new MensalidadeRepository(mongodb));
-
+		context.registerBean(FaturamentoRepository.class, () -> new FaturamentoRepository(mongodb));
 	}
 
 	private void registerCommomBusiness(GenericApplicationContext context) {
@@ -121,7 +122,8 @@ public class OvigiaApplication implements CommandLineRunner {
 		routesBuilder.addRouter(
 				new AuthRouter(getBean(UsuarioRepository.class), getBean(PBKDF2Encoder.class), getBean(JwtUtil.class)));
 
-		routesBuilder.addRouter(new MensalidadeRouter(getBean(MensalidadeRepository.class)));
+		routesBuilder.addRouter(
+				new MensalidadeRouter(getBean(MensalidadeRepository.class), getBean(FaturamentoRepository.class)));
 
 		context.registerBean(RouterFunction.class, () -> routesBuilder.build());
 	}
