@@ -3,6 +3,8 @@ package br.com.ovigia.businessrule.ronda.criar;
 import static br.com.ovigia.businessrule.util.DataUtil.ajustarData;
 import static br.com.ovigia.model.calculadora.CalculadoraDistancia.calcularTempo;
 
+import java.util.Date;
+
 import br.com.ovigia.businessrule.BusinessRule;
 import br.com.ovigia.businessrule.Response;
 import br.com.ovigia.model.IdRonda;
@@ -37,18 +39,20 @@ public class CriarRondaRule implements BusinessRule<CriarRondaRequest, Void> {
 		ronda.localizacoes = request.localizacoes;
 		ronda.fim = request.fim;
 		ronda.inicio = request.inicio;
+		ronda.dataAtualizacao = new Date();
 		ronda.situacao = TipoSituacaoRonda.ATIVO;
-		return vigiaRepository.atualizarDataUltimaRonda(idRonda.idVigia, idRonda.dataRonda).flatMap(result -> {
-			return resumoRepository.obterResumoRondaById(idRonda).flatMap(resumo -> {
-				Mono<ResumoRonda> mono = null;
-				if (resumo.id != null) {
-					mono = concatenaRondaEResumo(ronda, resumo);
-				} else {
-					mono = criarRondaEResumo(ronda);
-				}
-				return mono.thenReturn(Response.noContent());
-			});
-		});
+		return vigiaRepository.atualizarDataUltimaRonda(idRonda.idVigia, idRonda.dataRonda, ronda.dataAtualizacao)
+				.flatMap(result -> {
+					return resumoRepository.obterResumoRondaById(idRonda).flatMap(resumo -> {
+						Mono<ResumoRonda> mono = null;
+						if (resumo.id != null) {
+							mono = concatenaRondaEResumo(ronda, resumo);
+						} else {
+							mono = criarRondaEResumo(ronda);
+						}
+						return mono.thenReturn(Response.noContent());
+					});
+				});
 
 	}
 

@@ -12,10 +12,11 @@ import br.com.ovigia.businessrule.frequenciaronda.obter.ObterFrequenciaRondaResp
 import br.com.ovigia.businessrule.frequenciaronda.obter.ObterFrequenciaRondaRule;
 import br.com.ovigia.model.Cliente;
 import br.com.ovigia.model.repository.ClienteRepository;
+import br.com.ovigia.model.repository.VigiaRepository;
 
 public class ClienteRouter extends Router {
 
-	public ClienteRouter(ClienteRepository clienteRepository,
+	public ClienteRouter(ClienteRepository clienteRepository, VigiaRepository vigiaRepository,
 			CriarFrequenciaRondasBusiness criarFrequenciaRondasBusiness) {
 
 		var criarCliente = Route.<Cliente, Void>post().path("/ovigia/clientes").contemBody().requestClass(Cliente.class)
@@ -33,7 +34,8 @@ public class ClienteRouter extends Router {
 				.extractFromPath((mapa, request) -> {
 					request.idCliente = mapa.get("idCliente");
 					return request;
-				}).rule(new ObterFrequenciaRondaRule(clienteRepository, criarFrequenciaRondasBusiness));
+				})
+				.rule(new ObterFrequenciaRondaRule(clienteRepository, vigiaRepository, criarFrequenciaRondasBusiness));
 
 		var obterIdVigia = Route.<ObterIdVigiaClienteRequest, ObterIdVigiaClienteResponse>get()
 				.path("/ovigia/clientes/{idCliente}/id-vigia").requestClass(ObterIdVigiaClienteRequest.class)

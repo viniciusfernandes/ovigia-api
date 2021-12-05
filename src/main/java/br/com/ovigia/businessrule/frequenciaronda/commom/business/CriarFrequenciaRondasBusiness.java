@@ -1,14 +1,18 @@
 package br.com.ovigia.businessrule.frequenciaronda.commom.business;
 
+import java.util.Date;
 import java.util.List;
 
 import br.com.ovigia.model.FrequenciaRonda;
 import br.com.ovigia.model.IdFrequenciaRonda;
+import br.com.ovigia.model.IdRonda;
 import br.com.ovigia.model.Localizacao;
+import br.com.ovigia.model.ResumoFrequenciaRonda;
 import br.com.ovigia.model.calculadora.CalculadoraDistancia;
 import br.com.ovigia.model.repository.ClienteRepository;
-import br.com.ovigia.model.repository.FrequenciaRondaRepository;
+import br.com.ovigia.model.repository.ResumoFrequenciaRondaRepository;
 import br.com.ovigia.model.repository.RondaRepository;
+import br.com.ovigia.model.repository.VigiaRepository;
 import reactor.core.publisher.Mono;
 
 public class CriarFrequenciaRondasBusiness {
@@ -22,30 +26,41 @@ public class CriarFrequenciaRondasBusiness {
 
 	private CalculadoraDistancia calculadoraDistancia = CalculadoraDistancia.calculadoraEsferica();
 	private RondaRepository rondaRepository;
-	private FrequenciaRondaRepository frequenciaRepository;
+	private ResumoFrequenciaRondaRepository frequenciaRepository;
+	private VigiaRepository vigiaRepository;
 
 	public CriarFrequenciaRondasBusiness(ClienteRepository clienteRepository, RondaRepository rondaRepository,
-			FrequenciaRondaRepository frequenciaRepository) {
+			ResumoFrequenciaRondaRepository frequenciaRepository, VigiaRepository vigiaRepository) {
 		this.clienteRepository = clienteRepository;
 		this.rondaRepository = rondaRepository;
 		this.frequenciaRepository = frequenciaRepository;
-
+		this.vigiaRepository = vigiaRepository;
 	}
 
-	public Mono<FrequenciaRonda> apply(String idCliente) {
+	public Mono<FrequenciaRonda> apply(String idCliente, Date dataAtualiacaoRonda) {
 		return clienteRepository.obterIdVigiaELocalizacaoByIdCliente(idCliente).flatMap(cliente -> {
 			var idVigia = cliente.idVigia;
-			var localizacao = cliente.localizacao;
-			return rondaRepository.obterUltimaRondaByIdVigia(idVigia).map(ronda -> {
-				var frequecia = new FrequenciaRonda();
-				frequecia.id = new IdFrequenciaRonda(cliente.id, ronda.obterData());
-				frequecia.idVigia = idVigia;
-				frequecia.totalRonda = calcularTotalRondasCliente(localizacao, ronda.localizacoes);
-				return frequecia;
+			var localizacaoCliente = cliente.localizacao;
+			return vigiaRepository.obterDataUltimaRonda(idVigia).flatMap(vigia -> {
+				var dataUltimaRonda = vigia.dataUltimaRonda;
+				var idUltimaRonda = new IdRonda(idVigia, dataUltimaRonda);
+				return calcularFrequenciaRonda(idUltimaRonda, localizacaoCliente).map(totalRonda -> {
+					var frequecia = new FrequenciaRonda();
+					frequecia.dataUltimaRonda = idUltimaRonda.dataRonda;
+					frequecia.idVigia = idUltimaRonda.idVigia;
+					frequecia.totalRonda = totalRonda;
+					frequecia.dataAtualizacaoRonda = dataAtualiacaoRonda;
+					return frequecia;
+				});
 			});
-
-		}).flatMap(frequencia -> clienteRepository.atualizarFrequenciaRonda(frequencia))
-				.flatMap(frequencia -> frequenciaRepository.criarFrequenciaRonda(frequencia).thenReturn(frequencia));
+		}).flatMap(frequencia -> clienteRepository.atualizarFrequenciaRonda(idCliente, frequencia)).map(frequencia -> {
+			var resumo = new ResumoFrequenciaRonda();
+			resumo.id = new IdFrequenciaRonda(idCliente, frequencia.dataUltimaRonda);
+			resumo.totalRonda = frequencia.totalRonda;
+			resumo.idVigia = frequencia.idVigia;
+			// return frequenciaRepository.criarResumo(resumo).thenReturn(frequencia);
+			return frequencia;
+		});
 	}
 
 	private int calcularTotalRondasCliente(Localizacao localizacaoCliente, List<Localizacao> localizacoesVigia) {
@@ -70,6 +85,11 @@ public class CriarFrequenciaRondasBusiness {
 			}
 		}
 		return totalRondas;
+	}
+
+	private Mono<Integer> calcularFrequenciaRonda(IdRonda idUltimaRonda, Localizacao localizacaoCliente) {
+		return rondaRepository.obterRondaPorId(idUltimaRonda)
+				.map(ronda -> calcularTotalRondasCliente(localizacaoCliente, ronda.localizacoes));
 	}
 
 	private boolean isDataForaIntervalo(long dataAntes, long dataDepois) {

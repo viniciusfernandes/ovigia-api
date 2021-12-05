@@ -11,6 +11,7 @@ public class Vigia extends Usuario {
 
 	public Double avaliacao;
 	public Date dataUltimaRonda;
+	public Date dataAtualizacaoRonda;
 
 	@JsonIgnore
 	private List<Cliente> clientes;

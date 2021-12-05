@@ -8,6 +8,7 @@ import br.com.ovigia.businessrule.contrato.criar.CriarContratoRule;
 import br.com.ovigia.businessrule.contrato.obter.ObterContratoAtivoClienteRequest;
 import br.com.ovigia.businessrule.contrato.obter.ObterContratoAtivoClienteResponse;
 import br.com.ovigia.businessrule.contrato.obter.ObterContratoAtivoClienteRule;
+import br.com.ovigia.model.repository.ClienteRepository;
 import br.com.ovigia.model.repository.ContratoRepository;
 import br.com.ovigia.model.repository.SolicitacaoVisitaRepository;
 import br.com.ovigia.model.repository.VigiaRepository;
@@ -15,12 +16,13 @@ import br.com.ovigia.model.repository.VigiaRepository;
 public class ContratoRouter extends Router {
 
 	public ContratoRouter(ContratoRepository contratoRepository,
-			SolicitacaoVisitaRepository solicitacaoVisitaRepository, VigiaRepository vigiaRepository) {
+			SolicitacaoVisitaRepository solicitacaoVisitaRepository, VigiaRepository vigiaRepository,
+			ClienteRepository clienteRepository) {
 		var criarContrato = Route.<CriarContratoRequest, CriarContratoResponse>post().path("/ovigia/contratos")
 				.contemBody().requestClass(CriarContratoRequest.class)
-				.rule(new CriarContratoRule(contratoRepository, solicitacaoVisitaRepository));
+				.rule(new CriarContratoRule(contratoRepository, solicitacaoVisitaRepository, clienteRepository));
 
-				var obterContratoAtivoCliente = Route.<ObterContratoAtivoClienteRequest, ObterContratoAtivoClienteResponse>get()
+		var obterContratoAtivoCliente = Route.<ObterContratoAtivoClienteRequest, ObterContratoAtivoClienteResponse>get()
 				.path("/ovigia/clientes/{idCliente}/contrato-ativo").extractFromPath((mapa, request) -> {
 					request.idCliente = mapa.get("idCliente");
 					return request;

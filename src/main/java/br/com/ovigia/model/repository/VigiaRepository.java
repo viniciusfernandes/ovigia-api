@@ -34,17 +34,19 @@ public class VigiaRepository {
 		return Mono.from(collection.aggregate(list)).map(docUsuario -> VigiaParser.fromDoc(docUsuario));
 	}
 
-	public Mono<Date> obterDataUltimaRonda(String idVigia) {
-		var match = new Document("$match", new Document("_id", idVigia));
-		var fields = new Document("dataUltimaRonda", 1);
+	public Mono<Vigia> obterDataUltimaRonda(String idVigia) {
+		var notEqualNull = new Document("$ne", null);
+		var filter = new Document("_id", idVigia).append("dataUltimaRonda", notEqualNull).append("dataAtualizacaoRonda",
+				notEqualNull);
+		var match = new Document("$match", filter);
+		var fields = new Document("dataUltimaRonda", 1).append("dataAtualizacaoRonda", 1);
 		var project = new Document("$project", fields);
 		var list = Arrays.asList(match, project);
 		return Mono.from(collection.aggregate(list)).flatMap(doc -> {
-			var data = doc.getDate("dataUltimaRonda");
-			if (data == null) {
-				return Mono.empty();
-			}
-			return Mono.just(data);
+			var vigia = new Vigia();
+			vigia.dataUltimaRonda = doc.getDate("dataUltimaRonda");
+			vigia.dataAtualizacaoRonda = doc.getDate("dataAtualizacaoRonda");
+			return Mono.just(vigia);
 		});
 	}
 
@@ -70,9 +72,10 @@ public class VigiaRepository {
 		return Flux.from(collection.aggregate(pipeline)).map(doc -> VigiaParser.fromDoc(doc));
 	}
 
-	public Mono<Long> atualizarDataUltimaRonda(String idVigia, Date dataUltimaRonda) {
+	public Mono<Long> atualizarDataUltimaRonda(String idVigia, Date dataUltimaRonda, Date dataAtualizacaoRonda) {
 		var filter = new Document("_id", idVigia);
-		var update = new Document("$set", new Document("dataUltimaRonda", dataUltimaRonda));
+		var update = new Document("$set",
+				new Document("dataUltimaRonda", dataUltimaRonda).append("dataAtualizacaoRonda", dataAtualizacaoRonda));
 		return Mono.from(collection.updateOne(filter, update)).map(result -> result.getModifiedCount());
 	}
 

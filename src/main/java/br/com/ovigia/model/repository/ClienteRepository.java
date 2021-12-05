@@ -38,14 +38,14 @@ public class ClienteRepository {
 		var pipeline = Arrays.asList(match, project);
 		return Mono.from(collection.aggregate(pipeline)).map(doc -> {
 			var frequencia = doc.get("frequenciaRonda", Document.class);
-			return FrequenciaRondaParser.fromDocFlat(frequencia);
-		});
+			return FrequenciaRondaParser.fromDoc(frequencia);
+		}).switchIfEmpty(Mono.just(new FrequenciaRonda()));
 	}
 
-	public Mono<Void> atualizarVigia(String idVigia, String idCliente) {
+	public Mono<Long> atualizarIdVigia(String idVigia, String idCliente) {
 		var filter = new Document("_id", idCliente);
 		var update = new Document("$set", new Document("idVigia", idVigia));
-		return Mono.from(collection.updateOne(filter, update)).then();
+		return Mono.from(collection.updateOne(filter, update)).map(result -> result.getModifiedCount());
 	}
 
 	public Mono<Localizacao> obterLocalizacaoCliente(String idCliente) {
@@ -78,12 +78,10 @@ public class ClienteRepository {
 		return Mono.from(collection.updateOne(new Document("_id", idCliente), update)).then();
 	}
 
-	public Mono<FrequenciaRonda> atualizarFrequenciaRonda(FrequenciaRonda frequencia) {
-		var doc = FrequenciaRondaParser.toDocFlat(frequencia);
-		doc.remove("idCliente");
+	public Mono<FrequenciaRonda> atualizarFrequenciaRonda(String idCliente, FrequenciaRonda frequencia) {
+		var doc = FrequenciaRondaParser.toDoc(frequencia);
 		var update = new Document("$set", new Document("frequenciaRonda", doc));
-		return Mono.from(collection.updateOne(new Document("_id", frequencia.id.idCliente), update))
-				.thenReturn(frequencia);
+		return Mono.from(collection.updateOne(new Document("_id", idCliente), update)).thenReturn(frequencia);
 	}
 
 }

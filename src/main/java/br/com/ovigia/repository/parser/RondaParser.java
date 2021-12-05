@@ -14,6 +14,7 @@ public class RondaParser {
 		doc.append("inicio", ronda.inicio);
 		doc.append("fim", ronda.fim);
 		doc.append("situacao", ronda.situacao.toString());
+		doc.append("dataAtualizacao", ronda.dataAtualizacao);
 		doc.append("localizacoes", LocalizacaoParser.toDoc(ronda.localizacoes));
 		return doc;
 	}
@@ -28,6 +29,7 @@ public class RondaParser {
 		}
 		ronda.inicio = doc.getDate("inicio");
 		ronda.fim = doc.getDate("fim");
+		ronda.dataAtualizacao = doc.getDate("dataAtualizacao");
 
 		var docsLocal = doc.getList("localizacoes", Document.class);
 		ronda.add(LocalizacaoParser.fromDoc(docsLocal));

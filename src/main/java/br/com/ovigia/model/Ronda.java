@@ -10,6 +10,7 @@ public class Ronda {
 	public IdRonda id;
 	public Date inicio;
 	public Date fim;
+	public Date dataAtualizacao;
 	public TipoSituacaoRonda situacao;
 	public List<Localizacao> localizacoes = new ArrayList<>();
 

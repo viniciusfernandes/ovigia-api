@@ -24,8 +24,8 @@ public class ObterResumoRondaRule implements BusinessRule<ObterResumoRondaReques
 
 	@Override
 	public Mono<Response<ObterResumoRondaResponse>> apply(ObterResumoRondaRequest request) {
-		return vigiaRepository.obterDataUltimaRonda(request.idVigia).flatMap(dataRonda -> {
-			var id = new IdRonda(request.idVigia, dataRonda);
+		return vigiaRepository.obterDataUltimaRonda(request.idVigia).flatMap(vigia -> {
+			var id = new IdRonda(request.idVigia, vigia.dataUltimaRonda);
 			return Mono.zip(resumoRepository.obterResumoRondaById(id),
 					chamadoRepository.obterTotalChamadoAceitoByIdRonda(id)).map(tuple -> {
 						var resumo = tuple.getT1();

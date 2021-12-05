@@ -29,7 +29,7 @@ import br.com.ovigia.model.repository.ChamadoRepository;
 import br.com.ovigia.model.repository.ClienteRepository;
 import br.com.ovigia.model.repository.ContratoRepository;
 import br.com.ovigia.model.repository.FaturamentoRepository;
-import br.com.ovigia.model.repository.FrequenciaRondaRepository;
+import br.com.ovigia.model.repository.ResumoFrequenciaRondaRepository;
 import br.com.ovigia.model.repository.MensalidadeRepository;
 import br.com.ovigia.model.repository.ResumoRondaRepository;
 import br.com.ovigia.model.repository.RondaRepository;
@@ -77,7 +77,7 @@ public class OvigiaApplication implements CommandLineRunner {
 		context.registerBean(UsuarioRepository.class, () -> new UsuarioRepository(mongodb));
 		context.registerBean(ChamadoRepository.class, () -> new ChamadoRepository(mongodb));
 		context.registerBean(ContratoRepository.class, () -> new ContratoRepository(mongodb));
-		context.registerBean(FrequenciaRondaRepository.class, () -> new FrequenciaRondaRepository(mongodb));
+		context.registerBean(ResumoFrequenciaRondaRepository.class, () -> new ResumoFrequenciaRondaRepository(mongodb));
 		context.registerBean(MensalidadeRepository.class, () -> new MensalidadeRepository(mongodb));
 		context.registerBean(FaturamentoRepository.class, () -> new FaturamentoRepository(mongodb));
 	}
@@ -85,7 +85,8 @@ public class OvigiaApplication implements CommandLineRunner {
 	private void registerCommomBusiness(GenericApplicationContext context) {
 		context.registerBean(CriarFrequenciaRondasBusiness.class,
 				() -> new CriarFrequenciaRondasBusiness(getBean(ClienteRepository.class),
-						getBean(RondaRepository.class), getBean(FrequenciaRondaRepository.class)));
+						getBean(RondaRepository.class), getBean(ResumoFrequenciaRondaRepository.class),
+						getBean(VigiaRepository.class)));
 	}
 
 	private void registerSecurityWebFilterChain(GenericApplicationContext context) {
@@ -110,13 +111,14 @@ public class OvigiaApplication implements CommandLineRunner {
 	private void registerRoutes(GenericApplicationContext context) {
 		var routesBuilder = RoutesBuilder.getInstance();
 
-		routesBuilder.addRouter(new ContratoRouter(getBean(ContratoRepository.class),
-				getBean(SolicitacaoVisitaRepository.class), getBean(VigiaRepository.class)));
+		routesBuilder.addRouter(
+				new ContratoRouter(getBean(ContratoRepository.class), getBean(SolicitacaoVisitaRepository.class),
+						getBean(VigiaRepository.class), getBean(ClienteRepository.class)));
 		routesBuilder.addRouter(new SolicitacaoVistiaRouter(getBean(SolicitacaoVisitaRepository.class)));
 		routesBuilder.addRouter(new ChamadoRouter(getBean(ChamadoRepository.class)));
 		routesBuilder.addRouter(new VigiaRouter(getBean(VigiaRepository.class), getBean(ClienteRepository.class)));
-		routesBuilder.addRouter(
-				new ClienteRouter(getBean(ClienteRepository.class), getBean(CriarFrequenciaRondasBusiness.class)));
+		routesBuilder.addRouter(new ClienteRouter(getBean(ClienteRepository.class), getBean(VigiaRepository.class),
+				getBean(CriarFrequenciaRondasBusiness.class)));
 		routesBuilder.addRouter(new RondaRouter(getBean(RondaRepository.class), getBean(ResumoRondaRepository.class),
 				getBean(ChamadoRepository.class), getBean(VigiaRepository.class)));
 		routesBuilder.addRouter(

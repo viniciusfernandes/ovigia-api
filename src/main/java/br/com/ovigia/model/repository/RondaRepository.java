@@ -53,7 +53,7 @@ public class RondaRepository {
 	public Mono<Void> concatenarRonda(Ronda ronda) {
 		var each = new Document("$each", LocalizacaoParser.toDoc(ronda.localizacoes));
 		var docLocalizacoes = new Document("localizacoes", each);
-		var fields = new Document("fim", ronda.fim);
+		var fields = new Document("fim", ronda.fim).append("dataAtualizacao", ronda.dataAtualizacao);
 		var update = new Document("$push", docLocalizacoes).append("$set", fields);
 		return Mono.from(collection.updateOne(toDoc(ronda.id), update)).then();
 	}
