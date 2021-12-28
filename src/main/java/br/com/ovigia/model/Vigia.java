@@ -9,7 +9,7 @@ import br.com.ovigia.model.enumeration.TipoUsuario;
 
 public class Vigia extends Usuario {
 
-	public Double avaliacao;
+	public Avaliacao avaliacao;
 	public Date dataUltimaRonda;
 	public Date dataAtualizacaoRonda;
 

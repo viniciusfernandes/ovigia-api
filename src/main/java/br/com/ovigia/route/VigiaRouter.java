@@ -5,6 +5,9 @@ import java.util.List;
 import br.com.ovigia.businessrule.vigia.atualizar.AtualizarVigiaClienteRule;
 import br.com.ovigia.businessrule.vigia.atualizar.AtualizarVigiaLocalizacaoRequest;
 import br.com.ovigia.businessrule.vigia.atualizar.AtualizarVigiaLocalizacaoRule;
+import br.com.ovigia.businessrule.vigia.avaliacao.AtualizarAvaliacaoVigiaRequest;
+import br.com.ovigia.businessrule.vigia.avaliacao.AtualizarAvaliacaoVigiaResponse;
+import br.com.ovigia.businessrule.vigia.avaliacao.AtualizarAvaliacaoVigiaRule;
 import br.com.ovigia.businessrule.vigia.obter.ObterVigiaRequest;
 import br.com.ovigia.businessrule.vigia.obter.ObterVigiaRule;
 import br.com.ovigia.businessrule.vigia.obter.ObterVigiasProximosRequest;
@@ -48,10 +51,18 @@ public class VigiaRouter extends Router {
 					return request;
 				}).rule(new AtualizarVigiaLocalizacaoRule(vigiaRepository));
 
+		var atualizarAvaliacaoVigia = Route.<AtualizarAvaliacaoVigiaRequest, AtualizarAvaliacaoVigiaResponse>patch()
+				.path("ovigia/vigias/{idVigia}/avaliacao").contemBody()
+				.requestClass(AtualizarAvaliacaoVigiaRequest.class).extractFromPath((mapa, request) -> {
+					request.idVigia = mapa.get("idVigia");
+					return request;
+				}).rule(new AtualizarAvaliacaoVigiaRule(vigiaRepository));
+
 		addRoute(obterVigia);
 		addRoute(atualizarVigiaCliente);
 		addRoute(atualizarVigiaLoc);
 		addRoute(obterVigiasProximos);
+		addRoute(atualizarAvaliacaoVigia);
 	}
 
 }

@@ -9,10 +9,12 @@ import org.bson.Document;
 import com.mongodb.reactivestreams.client.MongoCollection;
 import com.mongodb.reactivestreams.client.MongoDatabase;
 
+import br.com.ovigia.model.Avaliacao;
 import br.com.ovigia.model.Cliente;
 import br.com.ovigia.model.Localizacao;
 import br.com.ovigia.model.Vigia;
 import br.com.ovigia.model.enumeration.TipoUsuario;
+import br.com.ovigia.repository.parser.AvaliacaoParser;
 import br.com.ovigia.repository.parser.ClienteParser;
 import br.com.ovigia.repository.parser.LocalizacaoParser;
 import br.com.ovigia.repository.parser.VigiaParser;
@@ -77,6 +79,26 @@ public class VigiaRepository {
 		var update = new Document("$set",
 				new Document("dataUltimaRonda", dataUltimaRonda).append("dataAtualizacaoRonda", dataAtualizacaoRonda));
 		return Mono.from(collection.updateOne(filter, update)).map(result -> result.getModifiedCount());
+	}
+
+	public Mono<Long> atualizarAvaliacao(String idVigia, Avaliacao avaliacao) {
+		var filter = new Document("_id", idVigia);
+		var update = new Document("$set", new Document("avaliacao", AvaliacaoParser.toDoc(avaliacao)));
+		return Mono.from(collection.updateOne(filter, update)).map(result -> result.getModifiedCount());
+	}
+
+	public Mono<Avaliacao> obterAvaliacao(String idVigia) {
+		var match = new Document("$match", new Document("_id", idVigia));
+		var project = new Document("$project", new Document("avaliacao", 1));
+		var pipeline = Arrays.asList(match, project);
+		return Mono.from(collection.aggregate(pipeline)).flatMap(result -> {
+			var docAvaliacao = result.get("avaliacao", Document.class);
+			var avaliacao = AvaliacaoParser.fromDoc(docAvaliacao);
+			if (avaliacao == null) {
+				avaliacao = new Avaliacao();
+			}
+			return Mono.just(avaliacao);
+		});
 	}
 
 	public Mono<Void> atualizarCliente(String idVigia, Cliente cliente) {

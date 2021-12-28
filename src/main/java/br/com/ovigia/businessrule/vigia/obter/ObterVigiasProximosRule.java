@@ -35,7 +35,7 @@ public class ObterVigiasProximosRule
 					response.id = vigia.id;
 					response.nome = vigia.nome;
 					response.dataInicio = DataUtil.formatarData(vigia.dataInicio);
-					response.avaliacao = vigia.avaliacao == null ? 2.54 : vigia.avaliacao;
+					response.avaliacao = vigia.avaliacao == null ? 2.54 : vigia.avaliacao.valor;
 					response.telefone = vigia.formatarTelefone();
 					if (vigia.localizacao != null) {
 						var loc = new LocalizacaoResponse();

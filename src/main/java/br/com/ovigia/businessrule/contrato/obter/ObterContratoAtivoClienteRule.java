@@ -33,7 +33,7 @@ public class ObterContratoAtivoClienteRule
 		}).flatMap(response -> {
 			return vigiaRepository.obterNomeETelefoneEAvaliacao(response.idVigia).map(vigia -> {
 				response.nomeVigia = vigia.nome;
-				response.avaliacaoVigia = vigia.avaliacao == null ? 0d : vigia.avaliacao;
+				response.avaliacaoVigia = vigia.avaliacao == null ? 0d : vigia.avaliacao.valor;
 				response.telefoneVigia = vigia.formatarTelefone();
 				return response;
 			});
