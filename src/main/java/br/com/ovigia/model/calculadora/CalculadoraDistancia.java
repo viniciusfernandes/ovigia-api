@@ -1,7 +1,6 @@
 package br.com.ovigia.model.calculadora;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
+import static br.com.ovigia.businessrule.util.NumberUtil.round;
 
 import br.com.ovigia.model.Localizacao;
 import br.com.ovigia.model.Ronda;
@@ -73,9 +72,6 @@ public abstract class CalculadoraDistancia {
 		return new CalculadoraDistanciaEsferica();
 	}
 
-	public static double round(double value) {
-		return new BigDecimal(value).setScale(1, RoundingMode.HALF_UP).doubleValue();
-	}
 }
 
 enum EscalaTemporal {

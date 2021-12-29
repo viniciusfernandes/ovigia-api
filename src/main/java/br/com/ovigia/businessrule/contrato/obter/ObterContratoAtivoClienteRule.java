@@ -3,6 +3,7 @@ package br.com.ovigia.businessrule.contrato.obter;
 import br.com.ovigia.businessrule.BusinessRule;
 import br.com.ovigia.businessrule.Response;
 import br.com.ovigia.businessrule.util.DataUtil;
+import br.com.ovigia.businessrule.util.NumberUtil;
 import br.com.ovigia.model.repository.ContratoRepository;
 import br.com.ovigia.model.repository.VigiaRepository;
 import reactor.core.publisher.Mono;
@@ -33,7 +34,7 @@ public class ObterContratoAtivoClienteRule
 		}).flatMap(response -> {
 			return vigiaRepository.obterNomeETelefoneEAvaliacao(response.idVigia).map(vigia -> {
 				response.nomeVigia = vigia.nome;
-				response.avaliacaoVigia = vigia.avaliacao == null ? 0d : vigia.avaliacao.valor;
+				response.avaliacaoVigia = NumberUtil.round2(vigia.avaliacao.valor);
 				response.telefoneVigia = vigia.formatarTelefone();
 				return response;
 			});

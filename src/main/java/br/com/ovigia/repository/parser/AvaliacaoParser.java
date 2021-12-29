@@ -19,10 +19,10 @@ public class AvaliacaoParser {
 	}
 
 	public static Avaliacao fromDoc(Document doc) {
-		if (doc == null) {
-			return null;
-		}
 		var avaliacao = new Avaliacao();
+		if (doc == null) {
+			return avaliacao;
+		}
 		avaliacao.quantidade = doc.getInteger("quantidade");
 		avaliacao.valor = doc.getDouble("valor");
 		return avaliacao;
