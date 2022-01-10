@@ -29,8 +29,8 @@ import br.com.ovigia.model.repository.ChamadoRepository;
 import br.com.ovigia.model.repository.ClienteRepository;
 import br.com.ovigia.model.repository.ContratoRepository;
 import br.com.ovigia.model.repository.FaturamentoRepository;
-import br.com.ovigia.model.repository.ResumoFrequenciaRondaRepository;
 import br.com.ovigia.model.repository.MensalidadeRepository;
+import br.com.ovigia.model.repository.ResumoFrequenciaRondaRepository;
 import br.com.ovigia.model.repository.ResumoRondaRepository;
 import br.com.ovigia.model.repository.RondaRepository;
 import br.com.ovigia.model.repository.SolicitacaoVisitaRepository;
@@ -114,7 +114,8 @@ public class OvigiaApplication implements CommandLineRunner {
 		routesBuilder.addRouter(
 				new ContratoRouter(getBean(ContratoRepository.class), getBean(SolicitacaoVisitaRepository.class),
 						getBean(VigiaRepository.class), getBean(ClienteRepository.class)));
-		routesBuilder.addRouter(new SolicitacaoVistiaRouter(getBean(SolicitacaoVisitaRepository.class)));
+		routesBuilder.addRouter(new SolicitacaoVistiaRouter(getBean(SolicitacaoVisitaRepository.class),
+				getBean(VigiaRepository.class)));
 		routesBuilder.addRouter(new ChamadoRouter(getBean(ChamadoRepository.class)));
 		routesBuilder.addRouter(new VigiaRouter(getBean(VigiaRepository.class), getBean(ClienteRepository.class)));
 		routesBuilder.addRouter(new ClienteRouter(getBean(ClienteRepository.class), getBean(VigiaRepository.class),

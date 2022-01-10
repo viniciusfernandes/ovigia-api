@@ -4,19 +4,21 @@ import java.util.List;
 
 import br.com.ovigia.businessrule.solicitavaovisita.criar.CriarSolicitacaoVisitaRequest;
 import br.com.ovigia.businessrule.solicitavaovisita.criar.CriarSolicitacaoVisitaRule;
-import br.com.ovigia.businessrule.solicitavaovisita.obter.ObterIdVigiaSolicitadoRequest;
-import br.com.ovigia.businessrule.solicitavaovisita.obter.ObterIdVigiaSolicitadoResponse;
-import br.com.ovigia.businessrule.solicitavaovisita.obter.ObterIdVigiaSolicitadoRule;
 import br.com.ovigia.businessrule.solicitavaovisita.obter.ObterSolicitacaoVisitaRequest;
 import br.com.ovigia.businessrule.solicitavaovisita.obter.ObterSolicitacaoVisitaResponse;
 import br.com.ovigia.businessrule.solicitavaovisita.obter.ObterSolicitacaoVisitaRule;
-import br.com.ovigia.businessrule.solicitavaovisita.remover.RemoverSolicitacaoVisitaRule;
+import br.com.ovigia.businessrule.solicitavaovisita.obter.ObterVigiaSolicitadoRequest;
+import br.com.ovigia.businessrule.solicitavaovisita.obter.ObterVigiaSolicitadoResponse;
+import br.com.ovigia.businessrule.solicitavaovisita.obter.ObterVigiaSolicitadoRule;
 import br.com.ovigia.businessrule.solicitavaovisita.remover.RemoverSolicitacaoVisitaRequest;
+import br.com.ovigia.businessrule.solicitavaovisita.remover.RemoverSolicitacaoVisitaRule;
 import br.com.ovigia.model.repository.SolicitacaoVisitaRepository;
+import br.com.ovigia.model.repository.VigiaRepository;
 
 public class SolicitacaoVistiaRouter extends Router {
 
-	public SolicitacaoVistiaRouter(SolicitacaoVisitaRepository solicitacaoVisitaRepository) {
+	public SolicitacaoVistiaRouter(SolicitacaoVisitaRepository solicitacaoVisitaRepository,
+			VigiaRepository vigiaRepository) {
 		var criarSolicitacao = Route.<CriarSolicitacaoVisitaRequest, Void>post()
 				.path("/ovigia/solicitacoes-visitas/vigias/{idVigia}/clientes/{idCliente}").contemBody()
 				.requestClass(CriarSolicitacaoVisitaRequest.class).extractFromPath((mapa, request) -> {
@@ -25,12 +27,12 @@ public class SolicitacaoVistiaRouter extends Router {
 					return request;
 				}).rule(new CriarSolicitacaoVisitaRule(solicitacaoVisitaRepository));
 
-		var obterIdVigiaSolicitado = Route.<ObterIdVigiaSolicitadoRequest, ObterIdVigiaSolicitadoResponse>get()
+		var obterVigiaSolicitado = Route.<ObterVigiaSolicitadoRequest, ObterVigiaSolicitadoResponse>get()
 				.path("/ovigia/solicitacoes-visitas/clientes/{idCliente}/vigia-solicitado")
-				.requestClass(ObterIdVigiaSolicitadoRequest.class).extractFromPath((mapa, request) -> {
+				.requestClass(ObterVigiaSolicitadoRequest.class).extractFromPath((mapa, request) -> {
 					request.idCliente = mapa.get("idCliente");
 					return request;
-				}).rule(new ObterIdVigiaSolicitadoRule(solicitacaoVisitaRepository));
+				}).rule(new ObterVigiaSolicitadoRule(solicitacaoVisitaRepository, vigiaRepository));
 
 		var obterSolicitacaoVisita = Route.<ObterSolicitacaoVisitaRequest, List<ObterSolicitacaoVisitaResponse>>get()
 				.path("/ovigia/solicitacoes-visitas/vigias/{idVigia}").requestClass(ObterSolicitacaoVisitaRequest.class)
@@ -40,14 +42,14 @@ public class SolicitacaoVistiaRouter extends Router {
 				}).rule(new ObterSolicitacaoVisitaRule(solicitacaoVisitaRepository));
 
 		var removerSolicitacaoVisita = Route.<RemoverSolicitacaoVisitaRequest, Void>delete()
-				.path("/ovigia/solicitacoes-visitas/clientes/{idCliente}").requestClass(RemoverSolicitacaoVisitaRequest.class)
-				.extractFromPath((mapa, request) -> {
+				.path("/ovigia/solicitacoes-visitas/clientes/{idCliente}")
+				.requestClass(RemoverSolicitacaoVisitaRequest.class).extractFromPath((mapa, request) -> {
 					request.idCliente = mapa.get("idCliente");
 					return request;
 				}).rule(new RemoverSolicitacaoVisitaRule(solicitacaoVisitaRepository));
 
 		addRoute(criarSolicitacao);
-		addRoute(obterIdVigiaSolicitado);
+		addRoute(obterVigiaSolicitado);
 		addRoute(obterSolicitacaoVisita);
 		addRoute(removerSolicitacaoVisita);
 	}

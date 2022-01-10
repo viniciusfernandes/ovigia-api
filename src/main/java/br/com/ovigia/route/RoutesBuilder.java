@@ -108,8 +108,8 @@ public class RoutesBuilder {
 		return request.bodyToMono(bodyClazz);
 	}
 
-	private static <T> T extractFromPath(ServerRequest serverRequest, BiFunction<Map<String, String>, T, T> fillFromPath,
-			T businessRequest) {
+	private static <T> T extractFromPath(ServerRequest serverRequest,
+			BiFunction<Map<String, String>, T, T> fillFromPath, T businessRequest) {
 		if (fillFromPath == null) {
 			return businessRequest;
 		}
@@ -142,7 +142,6 @@ public class RoutesBuilder {
 		} else if (response.isUnauthorized()) {
 			bodyBuilder = status(HttpStatus.UNAUTHORIZED);
 		}
-
 		return bodyBuilder.bodyValue(response);
 	}
 

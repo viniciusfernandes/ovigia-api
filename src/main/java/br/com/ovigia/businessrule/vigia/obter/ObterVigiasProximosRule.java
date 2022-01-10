@@ -44,9 +44,7 @@ public class ObterVigiasProximosRule
 						response.localizacao = loc;
 					}
 					return response;
-				}).collectList().map(responses -> {
-					return Response.ok(responses);
-				});
+				}).collectList().map(Response::ok);
 	}
 
 	private boolean isDistanciaInferior(Localizacao loc1, Localizacao loc2) {
