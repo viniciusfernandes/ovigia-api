@@ -9,9 +9,12 @@ public abstract class CalculadoraDistancia {
 	public final static double MILISEGUNDOS_TO_HORAS_RATE = 1000.0 * 3600.d;
 
 	public double calcularDistancia(Ronda ronda) {
-		double totDist = 0;
 		var localizacoes = ronda.localizacoes;
 		final int size = localizacoes.size();
+		if (size <= 1) {
+			return 0.0;
+		}
+		double totDist = 0;
 		final int last = size - 2;
 		Localizacao l1 = null;
 		Localizacao l2 = null;

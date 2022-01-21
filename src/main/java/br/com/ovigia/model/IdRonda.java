@@ -11,4 +11,8 @@ public class IdRonda {
 		this.dataRonda = dataRonda;
 	}
 
+	@Override
+	public String toString() {
+		return "IdRonda [idVigia=" + idVigia + ", dataRonda=" + dataRonda + "]";
+	}
 }

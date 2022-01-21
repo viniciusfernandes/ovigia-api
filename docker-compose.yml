@@ -1,0 +1,8 @@
+version: "3.7"
+services:
+  ovigia-api:
+    build: .
+    image: ovigia:1.0.0
+    ports:
+      - 8080:8080
+
