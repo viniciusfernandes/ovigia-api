@@ -35,21 +35,20 @@ public abstract class CalculadoraDistancia {
 	}
 
 	public static TempoEscala calcularTempoEscala(Long timestamp) {
-		var intervalo = timestamp / MILISEGUNDOS_TO_HORAS_RATE;
+		var tempo = timestamp / MILISEGUNDOS_TO_HORAS_RATE;
 
 		var escala = EscalaTemporal.HORAS;
-		if (intervalo < 0.09) {
-			intervalo *= 60.0;
+		if (tempo < 0.09) {
+			tempo *= 60.0;
 			escala = EscalaTemporal.MINUTOS;
 
-			if (intervalo < 0.9) {
-				intervalo *= 60.0;
+			if (tempo < 0.9) {
+				tempo *= 60.0;
 				escala = EscalaTemporal.SEGUNDOS;
 			}
 		}
 
-		intervalo = round(intervalo);
-		return new TempoEscala(intervalo, escala.getPrefixo());
+		return new TempoEscala(tempo, escala.getPrefixo());
 	}
 
 	public double calcularTempo(Localizacao loc1, Localizacao loc2) {

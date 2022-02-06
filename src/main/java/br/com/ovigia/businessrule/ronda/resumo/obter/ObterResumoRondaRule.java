@@ -1,5 +1,8 @@
 package br.com.ovigia.businessrule.ronda.resumo.obter;
 
+import static br.com.ovigia.businessrule.util.NumberUtil.round;
+import static br.com.ovigia.businessrule.util.NumberUtil.round2;
+
 import br.com.ovigia.businessrule.BusinessRule;
 import br.com.ovigia.businessrule.Response;
 import br.com.ovigia.businessrule.util.DataUtil;
@@ -33,9 +36,9 @@ public class ObterResumoRondaRule implements BusinessRule<ObterResumoRondaReques
 						var tempoEscala = CalculadoraDistancia.calcularTempoEscala(resumo.tempo);
 
 						var response = new ObterResumoRondaResponse();
-						response.distancia = resumo.distancia;
+						response.distancia = round2(resumo.distancia);
+						response.tempo = round2(tempoEscala.tempo);
 						response.escalaTempo = tempoEscala.escala;
-						response.tempo = tempoEscala.tempo;
 						response.totalChamados = totalChamados;
 
 						var dataHora = resumo.id == null ? DataUtil.obterDataHora()

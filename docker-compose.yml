@@ -1,8 +1,25 @@
-version: "3.7"
+version: "3"
 services:
-  ovigia-api:
-    build: .
-    image: ovigia:1.0.0
-    ports:
-      - 8080:8080
-
+ ovigia-api:
+  image: viniciussf/ovigia:1.0.0
+  ports:
+   - 8080:8080
+  networks:
+   - mongodb-network
+ mongodb:
+  image : mongo
+  container_name: mongodb
+  environment:
+   - PUID=1000
+   - PGID=1000
+  volumes:
+   - /home/vinicius/Projects/mongodb/database:/data/db
+  ports:
+   - 27017:27017
+  restart: unless-stopped
+  networks:
+   - mongodb-network
+networks:
+ mongodb-network:
+  driver: bridge
+   
