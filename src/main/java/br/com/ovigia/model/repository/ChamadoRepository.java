@@ -36,8 +36,9 @@ public class ChamadoRepository {
 		return Mono.from(collection.updateOne(new Document("_id", idChamado), update)).then();
 	}
 
-	public Mono<List<Chamado>> obterChamadosAtivoByIdVigia(String idVigia) {
-		var filter = new Document("idRonda.idVigia", idVigia).append("situacao", TipoSituacaoChamado.ATIVO.toString());
+	public Mono<List<Chamado>> obterChamadosAbertosByIdVigia(String idVigia) {
+		var inChamadosAbertos = new Document("$in", TipoSituacaoChamado.CHAMADOS_ABERTOS);
+		var filter = new Document("idRonda.idVigia", idVigia).append("situacao",  inChamadosAbertos);
 		return Flux.from(collection.find(filter)).collectList().map(docs -> fromDoc(docs));
 	}
 

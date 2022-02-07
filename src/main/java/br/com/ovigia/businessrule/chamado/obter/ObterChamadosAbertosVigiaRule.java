@@ -12,17 +12,24 @@ import br.com.ovigia.model.Localizacao;
 import br.com.ovigia.model.repository.ChamadoRepository;
 import reactor.core.publisher.Mono;
 
-public class ObterChamadosAtivosVigiaRule
-		implements BusinessRule<ObterChamadosAtivosRequest, List<ObterChamadosVigiaResponse>> {
+public class ObterChamadosAbertosVigiaRule
+		implements BusinessRule<ObterChamadosAbertosRequest, List<ObterChamadosVigiaResponse>> {
 	private ChamadoRepository chamadoRepository;
 
-	public ObterChamadosAtivosVigiaRule(ChamadoRepository chamadoRepository) {
+	public ObterChamadosAbertosVigiaRule(ChamadoRepository chamadoRepository) {
 		this.chamadoRepository = chamadoRepository;
-	}	
+	}
 
 	@Override
-	public Mono<Response<List<ObterChamadosVigiaResponse>>> apply(ObterChamadosAtivosRequest request) {
-		return chamadoRepository.obterChamadosAtivoByIdVigia(request.idVigia).map(chamados -> {
+	public Mono<Response<List<ObterChamadosVigiaResponse>>> apply(ObterChamadosAbertosRequest request) {
+		return chamadoRepository.obterChamadosAbertosByIdVigia(request.idVigia).map(chamados -> {
+			chamados.sort((c1, c2) -> {
+				if (c2.situacao.isAceito() && !c1.situacao.isAceito()) {
+					return 1;
+				}
+				return -1;
+			});
+
 			var response = new ArrayList<ObterChamadosVigiaResponse>();
 
 			ObterChamadosVigiaResponse chamadoVigia = null;
