@@ -32,6 +32,9 @@ public class CriarContratoRule implements BusinessRule<CriarContratoRequest, Cri
 		contrato.idCliente = request.idCliente;
 		contrato.idVigia = request.idVigia;
 		contrato.valor = request.valor;
+		if (contrato.valor == null) {
+			contrato.valor = 0d;
+		}
 		contrato.nomeCliente = request.nomeCliente;
 		contrato.telefoneCliente = request.telefoneCliente;
 		contrato.situacao = TipoSituacaoContrato.ATIVO;

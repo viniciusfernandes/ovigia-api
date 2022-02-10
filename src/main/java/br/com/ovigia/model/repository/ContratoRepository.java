@@ -32,8 +32,7 @@ public class ContratoRepository {
 	}
 
 	public Flux<Contrato> obterIdContratosVencidos() {
-		var dataReferencia = new Date();
-		var filter = new Document("dataVencimento", new Document("$lte", dataReferencia)).append("situacao",
+		var filter = new Document("dataVencimento", new Document("$lte", new Date())).append("situacao",
 				TipoSituacaoContrato.ATIVO.toString());
 		var match = new Document("$match", filter);
 		var fields = new Document("_id", 1).append("dataVencimento", 1).append("nomeCliente", 1)

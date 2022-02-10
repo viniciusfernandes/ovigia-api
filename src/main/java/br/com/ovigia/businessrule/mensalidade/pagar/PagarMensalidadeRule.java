@@ -33,7 +33,7 @@ public class PagarMensalidadeRule implements BusinessRule<PagarMensalidadeReques
 				.thenReturn(Response.noContent());
 	}
 
-	public Mono<Faturamento> atualizarValorFaturamento(String idvigia, MesAno mesAno, Double valor) {
+	private Mono<Faturamento> atualizarValorFaturamento(String idvigia, MesAno mesAno, Double valor) {
 		var id = new IdFaturamento(idvigia, mesAno.mes, mesAno.ano);
 		return faturamentoRepository.obterValoresFaturamento(id).flatMap(faturamento -> {
 			faturamento.id = id;

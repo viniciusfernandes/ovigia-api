@@ -30,7 +30,7 @@ public class ObterResumoRondaRule implements BusinessRule<ObterResumoRondaReques
 		return vigiaRepository.obterDataUltimaRonda(request.idVigia).flatMap(vigia -> {
 			var id = new IdRonda(request.idVigia, vigia.dataUltimaRonda);
 			return Mono.zip(resumoRepository.obterResumoRondaById(id),
-					chamadoRepository.obterTotalChamadoAceitoByIdRonda(id)).map(tuple -> {
+					chamadoRepository.obterTotalChamadoEncerradosByIdRonda(id)).map(tuple -> {
 						var resumo = tuple.getT1();
 						var totalChamados = tuple.getT2();
 						var tempoEscala = CalculadoraDistancia.calcularTempoEscala(resumo.tempo);

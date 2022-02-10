@@ -50,9 +50,9 @@ public class ChamadoRepository {
 		return Mono.from(collection.aggregate(Arrays.asList(match, project))).map(docs -> fromDoc(docs));
 	}
 
-	public Mono<Long> obterTotalChamadoAceitoByIdRonda(IdRonda id) {
+	public Mono<Long> obterTotalChamadoEncerradosByIdRonda(IdRonda id) {
 		var filter = new Document("idRonda.idVigia", id.idVigia).append("idRonda.data", id.dataRonda).append("situacao",
-				TipoSituacaoChamado.ACEITO.toString());
+				TipoSituacaoChamado.ENCERRADO.toString());
 		return Mono.from(collection.countDocuments(filter)).switchIfEmpty(Mono.just(0L));
 	}
 
