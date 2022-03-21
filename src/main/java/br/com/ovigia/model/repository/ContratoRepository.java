@@ -43,8 +43,9 @@ public class ContratoRepository {
 		return Flux.from(collection.aggregate(pipeline)).map(doc -> fromDoc(doc));
 	}
 
-	public Flux<Contrato> obterContratosByIdVigia(String idVigia) {
-		return Flux.from(collection.find(new Document("idVigia", idVigia))).map(doc -> fromDoc(doc));
+	public Flux<Contrato> obterContratosAtivosByIdVigia(String idVigia) {
+		var filter = new Document("idVigia", idVigia).append("situacao", TipoSituacaoContrato.ATIVO.toString());
+		return Flux.from(collection.find(filter)).map(doc -> fromDoc(doc));
 	}
 
 	public Mono<Contrato> obterContratoAtivoByIdCliente(String idCliente) {
@@ -60,6 +61,13 @@ public class ContratoRepository {
 	public Mono<Long> atualizarDataFimContrato(String idContrato, Date dataFim) {
 		var filter = new Document("_id", idContrato);
 		var fields = new Document("dataFim", dataFim).append("situacao", TipoSituacaoContrato.CANCELADO.toString());
+		var update = new Document("$set", fields);
+		return Mono.from(collection.updateOne(filter, update)).map(result -> result.getModifiedCount());
+	}
+
+	public Mono<Long> atualizarValorContrato(String idContrato, Double valor) {
+		var filter = new Document("_id", idContrato);
+		var fields = new Document("valor", valor);
 		var update = new Document("$set", fields);
 		return Mono.from(collection.updateOne(filter, update)).map(result -> result.getModifiedCount());
 	}
