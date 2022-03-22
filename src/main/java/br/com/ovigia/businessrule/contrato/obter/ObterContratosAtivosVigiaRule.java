@@ -29,7 +29,7 @@ public class ObterContratosAtivosVigiaRule
                 .map(SolicitacaoVisita::toContrato);
         var obterContratos = contratoRepository.obterContratosAtivosByIdVigia(request.idVigia)
                 .sort((c1, c2) -> {
-                    if ((c1.id == null && c2.id != null) || (c1.id != null && c2.id != null)
+                    if ((c1.id == null && c2.id != null) || (c1.id != null && c2.id == null)
                             || (c1.id == null && c2.id == null)) {
                         return -1;
                     }
