@@ -33,7 +33,7 @@ public class ObterFrequenciaRondaRule implements BusinessRule<ObterFrequenciaRon
   }
 
   private Mono<FrequenciaRonda> obterFrequenciaRonda(ObterFrequenciaRondaRequest request) {
-// APENAS UM TESTE
+
     return clienteRepository.obterFrequenciaRondaPorIdCliente(request.idCliente).flatMap(frequencia -> {
       if (frequencia.isExistente()) {
         return recalcularFrequenciaRonda(frequencia, request.idCliente);
