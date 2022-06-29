@@ -38,6 +38,7 @@ public class CriarFrequenciaRondasBusiness {
 	}
 
 	public Mono<FrequenciaRonda> apply(String idCliente, Date dataAtualiacaoRonda) {
+		//comentario teste
 		return clienteRepository.obterIdVigiaELocalizacaoByIdCliente(idCliente).flatMap(cliente -> {
 			var idVigia = cliente.idVigia;
 			var localizacaoCliente = cliente.localizacao;
