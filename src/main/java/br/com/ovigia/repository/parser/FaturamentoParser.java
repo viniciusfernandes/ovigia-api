@@ -1,9 +1,8 @@
 package br.com.ovigia.repository.parser;
 
-import org.bson.Document;
-
 import br.com.ovigia.model.Faturamento;
 import br.com.ovigia.model.IdFaturamento;
+import org.bson.Document;
 
 public class FaturamentoParser {
 	private FaturamentoParser() {

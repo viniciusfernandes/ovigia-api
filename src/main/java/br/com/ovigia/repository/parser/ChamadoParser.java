@@ -1,14 +1,13 @@
 package br.com.ovigia.repository.parser;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bson.Document;
-
 import br.com.ovigia.model.Chamado;
 import br.com.ovigia.model.IdRonda;
 import br.com.ovigia.model.Localizacao;
 import br.com.ovigia.model.enumeration.TipoSituacaoChamado;
+import org.bson.Document;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChamadoParser {
 	private ChamadoParser() {

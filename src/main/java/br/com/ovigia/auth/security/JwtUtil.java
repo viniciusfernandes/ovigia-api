@@ -1,14 +1,14 @@
 package br.com.ovigia.auth.security;
 
-import java.security.Key;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.Date;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+
+import java.security.Key;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Date;
 
 public class JwtUtil {
 

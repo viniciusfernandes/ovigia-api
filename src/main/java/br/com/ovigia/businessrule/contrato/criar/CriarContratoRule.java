@@ -1,7 +1,5 @@
 package br.com.ovigia.businessrule.contrato.criar;
 
-import java.util.Date;
-
 import br.com.ovigia.businessrule.BusinessRule;
 import br.com.ovigia.businessrule.Response;
 import br.com.ovigia.businessrule.util.DataUtil;
@@ -11,6 +9,8 @@ import br.com.ovigia.model.repository.ClienteRepository;
 import br.com.ovigia.model.repository.ContratoRepository;
 import br.com.ovigia.model.repository.SolicitacaoVisitaRepository;
 import reactor.core.publisher.Mono;
+
+import java.util.Date;
 
 public class CriarContratoRule implements BusinessRule<CriarContratoRequest, CriarContratoResponse> {
 	private ContratoRepository contratoRepository;

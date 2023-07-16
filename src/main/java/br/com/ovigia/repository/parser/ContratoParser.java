@@ -1,9 +1,8 @@
 package br.com.ovigia.repository.parser;
 
-import org.bson.Document;
-
 import br.com.ovigia.model.Contrato;
 import br.com.ovigia.model.enumeration.TipoSituacaoContrato;
+import org.bson.Document;
 
 public class ContratoParser {
 	private ContratoParser() {

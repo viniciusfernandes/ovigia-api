@@ -1,17 +1,12 @@
 package br.com.ovigia.route;
 
-import java.util.List;
-
-import br.com.ovigia.businessrule.mensalidade.obter.ObterMensalidadesVencidasRequest;
-import br.com.ovigia.businessrule.mensalidade.obter.ObterMensalidadesVencidasResponse;
-import br.com.ovigia.businessrule.mensalidade.obter.ObterMensalidadesVencidasRule;
-import br.com.ovigia.businessrule.mensalidade.obter.ObterValorRecebidoAtualRequest;
-import br.com.ovigia.businessrule.mensalidade.obter.ObterValorRecebidoAtualResponse;
-import br.com.ovigia.businessrule.mensalidade.obter.ObterValorRecebidoAtualRule;
+import br.com.ovigia.businessrule.mensalidade.obter.*;
 import br.com.ovigia.businessrule.mensalidade.pagar.PagarMensalidadeRequest;
 import br.com.ovigia.businessrule.mensalidade.pagar.PagarMensalidadeRule;
 import br.com.ovigia.model.repository.FaturamentoRepository;
 import br.com.ovigia.model.repository.MensalidadeRepository;
+
+import java.util.List;
 
 public class MensalidadeRouter extends Router {
 

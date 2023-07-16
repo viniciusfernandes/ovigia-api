@@ -1,8 +1,7 @@
 package br.com.ovigia.repository.parser;
 
-import org.bson.Document;
-
 import br.com.ovigia.model.ResumoRonda;
+import org.bson.Document;
 
 public class ResumoRondaParser {
 	private ResumoRondaParser() {

@@ -1,16 +1,15 @@
 package br.com.ovigia.businessrule;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import br.com.ovigia.businessrule.util.DataUtil;
 import br.com.ovigia.model.Mensalidade;
 import br.com.ovigia.model.enumeration.TipoSituacaoMensalidade;
 import br.com.ovigia.model.repository.ContratoRepository;
 import br.com.ovigia.model.repository.MensalidadeRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class CriarMensalidadesTask {
 	private MensalidadeRepository mensalidadeRepository;

@@ -1,7 +1,5 @@
 package br.com.ovigia.businessrule.chamado.criar;
 
-import java.util.Date;
-
 import br.com.ovigia.businessrule.BusinessRule;
 import br.com.ovigia.businessrule.Response;
 import br.com.ovigia.businessrule.common.info.IdInfo;
@@ -12,6 +10,8 @@ import br.com.ovigia.model.Localizacao;
 import br.com.ovigia.model.enumeration.TipoSituacaoChamado;
 import br.com.ovigia.model.repository.ChamadoRepository;
 import reactor.core.publisher.Mono;
+
+import java.util.Date;
 
 public class CriarChamadoRule implements BusinessRule<CriarChamadoRequest, IdInfo> {
 	private ChamadoRepository chamadoRepository;

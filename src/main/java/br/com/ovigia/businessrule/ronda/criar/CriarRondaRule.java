@@ -1,10 +1,5 @@
 package br.com.ovigia.businessrule.ronda.criar;
 
-import static br.com.ovigia.businessrule.util.DataUtil.ajustarData;
-import static br.com.ovigia.model.calculadora.CalculadoraDistancia.calcularTempo;
-
-import java.util.Date;
-
 import br.com.ovigia.businessrule.BusinessRule;
 import br.com.ovigia.businessrule.Response;
 import br.com.ovigia.model.IdRonda;
@@ -16,6 +11,11 @@ import br.com.ovigia.model.repository.ResumoRondaRepository;
 import br.com.ovigia.model.repository.RondaRepository;
 import br.com.ovigia.model.repository.VigiaRepository;
 import reactor.core.publisher.Mono;
+
+import java.util.Date;
+
+import static br.com.ovigia.businessrule.util.DataUtil.ajustarData;
+import static br.com.ovigia.model.calculadora.CalculadoraDistancia.calcularTempo;
 
 public class CriarRondaRule implements BusinessRule<CriarRondaRequest, Void> {
 

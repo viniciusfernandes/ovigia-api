@@ -1,14 +1,14 @@
 package br.com.ovigia.businessrule.ronda.criar;
 
-import static br.com.ovigia.businessrule.util.DataUtil.ajustarData;
-
-import java.util.Date;
-
 import br.com.ovigia.businessrule.BusinessRule;
 import br.com.ovigia.businessrule.Response;
 import br.com.ovigia.model.Localizacao;
 import br.com.ovigia.model.repository.RondaRepository;
 import reactor.core.publisher.Mono;
+
+import java.util.Date;
+
+import static br.com.ovigia.businessrule.util.DataUtil.ajustarData;
 
 public class CriarLocalizacaoRule implements BusinessRule<Localizacao, Void> {
 

@@ -1,8 +1,5 @@
 package br.com.ovigia.businessrule.ronda.resumo.obter;
 
-import static br.com.ovigia.businessrule.util.NumberUtil.round;
-import static br.com.ovigia.businessrule.util.NumberUtil.round2;
-
 import br.com.ovigia.businessrule.BusinessRule;
 import br.com.ovigia.businessrule.Response;
 import br.com.ovigia.businessrule.util.DataUtil;
@@ -12,6 +9,8 @@ import br.com.ovigia.model.repository.ChamadoRepository;
 import br.com.ovigia.model.repository.ResumoRondaRepository;
 import br.com.ovigia.model.repository.VigiaRepository;
 import reactor.core.publisher.Mono;
+
+import static br.com.ovigia.businessrule.util.NumberUtil.round2;
 
 public class ObterResumoRondaRule implements BusinessRule<ObterResumoRondaRequest, ObterResumoRondaResponse> {
 	private ResumoRondaRepository resumoRepository;

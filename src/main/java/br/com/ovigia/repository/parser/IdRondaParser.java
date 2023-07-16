@@ -1,10 +1,9 @@
 package br.com.ovigia.repository.parser;
 
-import java.util.Date;
-
+import br.com.ovigia.model.IdRonda;
 import org.bson.Document;
 
-import br.com.ovigia.model.IdRonda;
+import java.util.Date;
 
 public class IdRondaParser {
 	private IdRondaParser() {

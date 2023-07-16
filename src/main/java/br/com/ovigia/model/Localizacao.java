@@ -1,8 +1,8 @@
 package br.com.ovigia.model;
 
-import java.util.Date;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.util.Date;
 
 public class Localizacao {
 

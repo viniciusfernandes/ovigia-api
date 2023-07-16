@@ -1,17 +1,15 @@
 package br.com.ovigia.repository.impl.mongo;
 
-import java.util.Arrays;
-import java.util.UUID;
-
+import br.com.ovigia.model.Usuario;
 import br.com.ovigia.model.repository.UsuarioRepository;
-import org.bson.Document;
-
+import br.com.ovigia.repository.parser.UsuarioParser;
 import com.mongodb.reactivestreams.client.MongoCollection;
 import com.mongodb.reactivestreams.client.MongoDatabase;
-
-import br.com.ovigia.model.Usuario;
-import br.com.ovigia.repository.parser.UsuarioParser;
+import org.bson.Document;
 import reactor.core.publisher.Mono;
+
+import java.util.Arrays;
+import java.util.UUID;
 
 public class UsuarioMongoRepository implements UsuarioRepository {
 

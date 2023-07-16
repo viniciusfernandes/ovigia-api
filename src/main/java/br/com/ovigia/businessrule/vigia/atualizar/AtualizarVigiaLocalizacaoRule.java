@@ -1,12 +1,12 @@
 package br.com.ovigia.businessrule.vigia.atualizar;
 
-import java.util.Date;
-
 import br.com.ovigia.businessrule.BusinessRule;
 import br.com.ovigia.businessrule.Response;
 import br.com.ovigia.model.Localizacao;
 import br.com.ovigia.model.repository.VigiaRepository;
 import reactor.core.publisher.Mono;
+
+import java.util.Date;
 
 public class AtualizarVigiaLocalizacaoRule implements BusinessRule<AtualizarVigiaLocalizacaoRequest, Void> {
 	private VigiaRepository repository;

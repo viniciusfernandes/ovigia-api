@@ -1,7 +1,5 @@
 package br.com.ovigia.businessrule.vigia.obter;
 
-import java.util.List;
-
 import br.com.ovigia.businessrule.BusinessRule;
 import br.com.ovigia.businessrule.Response;
 import br.com.ovigia.businessrule.resquest.common.LocalizacaoResponse;
@@ -11,6 +9,8 @@ import br.com.ovigia.model.Vigia;
 import br.com.ovigia.model.calculadora.CalculadoraDistancia;
 import br.com.ovigia.model.repository.VigiaRepository;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 public class ObterVigiasProximosRule
 		implements BusinessRule<ObterVigiasProximosRequest, List<ObterVigiasProximosResponse>> {

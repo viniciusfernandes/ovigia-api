@@ -1,12 +1,11 @@
 package br.com.ovigia.repository.parser;
 
+import br.com.ovigia.model.Localizacao;
+import org.bson.Document;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import org.bson.Document;
-
-import br.com.ovigia.model.Localizacao;
 
 public class LocalizacaoParser {
 	private LocalizacaoParser() {

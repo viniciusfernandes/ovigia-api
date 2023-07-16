@@ -1,9 +1,8 @@
 package br.com.ovigia.repository.parser;
 
-import org.bson.Document;
-
 import br.com.ovigia.model.Ronda;
 import br.com.ovigia.model.enumeration.TipoSituacaoRonda;
+import org.bson.Document;
 
 public class RondaParser {
 	private RondaParser() {

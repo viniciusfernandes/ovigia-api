@@ -1,17 +1,15 @@
 package br.com.ovigia.auth.businessrule.singon;
 
-import java.util.Date;
-
-import br.com.ovigia.model.repository.UsuarioRepository;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
 import br.com.ovigia.auth.businessrule.SingInResponse;
-import br.com.ovigia.repository.impl.mongo.UsuarioMongoRepository;
 import br.com.ovigia.auth.security.JwtUtil;
 import br.com.ovigia.businessrule.BusinessRule;
 import br.com.ovigia.businessrule.Response;
 import br.com.ovigia.model.Usuario;
+import br.com.ovigia.model.repository.UsuarioRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import reactor.core.publisher.Mono;
+
+import java.util.Date;
 
 public class SingOnRule implements BusinessRule<SignOnRequest, SingInResponse> {
     private UsuarioRepository repository;

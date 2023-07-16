@@ -1,8 +1,5 @@
 package br.com.ovigia.businessrule.chamado.obter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import br.com.ovigia.businessrule.BusinessRule;
 import br.com.ovigia.businessrule.Response;
 import br.com.ovigia.businessrule.util.DataHora;
@@ -11,6 +8,9 @@ import br.com.ovigia.model.Chamado;
 import br.com.ovigia.model.Localizacao;
 import br.com.ovigia.model.repository.ChamadoRepository;
 import reactor.core.publisher.Mono;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ObterChamadosAbertosVigiaRule
 		implements BusinessRule<ObterChamadosAbertosRequest, List<ObterChamadosVigiaResponse>> {

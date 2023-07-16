@@ -1,15 +1,14 @@
 package br.com.ovigia.businessrule.util;
 
+import br.com.ovigia.businessrule.exception.DataMalFormatadaException;
+import org.springframework.dao.DataAccessResourceFailureException;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
-
-import org.springframework.dao.DataAccessResourceFailureException;
-
-import br.com.ovigia.businessrule.exception.DataMalFormatadaException;
 
 public class DataUtil {
 	private static final String DATA_PATTERN = "dd-MM-yyyy";

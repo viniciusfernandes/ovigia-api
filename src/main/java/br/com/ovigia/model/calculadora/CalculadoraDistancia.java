@@ -1,9 +1,9 @@
 package br.com.ovigia.model.calculadora;
 
-import static br.com.ovigia.businessrule.util.NumberUtil.round;
-
 import br.com.ovigia.model.Localizacao;
 import br.com.ovigia.model.Ronda;
+
+import static br.com.ovigia.businessrule.util.NumberUtil.round;
 
 public abstract class CalculadoraDistancia {
 	public final static double MILISEGUNDOS_TO_HORAS_RATE = 1000.0 * 3600.d;

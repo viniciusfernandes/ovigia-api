@@ -1,14 +1,14 @@
 package br.com.ovigia.businessrule.solicitavaovisita.obter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import br.com.ovigia.businessrule.BusinessRule;
 import br.com.ovigia.businessrule.Response;
 import br.com.ovigia.businessrule.util.DataHora;
 import br.com.ovigia.businessrule.util.DataUtil;
 import br.com.ovigia.model.repository.SolicitacaoVisitaRepository;
 import reactor.core.publisher.Mono;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ObterSolicitacaoVisitaRule
 		implements BusinessRule<ObterSolicitacaoVisitaRequest, List<ObterSolicitacaoVisitaResponse>> {

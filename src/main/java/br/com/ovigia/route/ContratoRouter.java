@@ -1,7 +1,5 @@
 package br.com.ovigia.route;
 
-import java.util.List;
-
 import br.com.ovigia.businessrule.contrato.atualizar.AtualizarValorContratoResquest;
 import br.com.ovigia.businessrule.contrato.atualizar.AtualizarValorContratoRule;
 import br.com.ovigia.businessrule.contrato.cancelar.CancelarContratoRequest;
@@ -9,16 +7,13 @@ import br.com.ovigia.businessrule.contrato.cancelar.CancelarContratoRule;
 import br.com.ovigia.businessrule.contrato.criar.CriarContratoRequest;
 import br.com.ovigia.businessrule.contrato.criar.CriarContratoResponse;
 import br.com.ovigia.businessrule.contrato.criar.CriarContratoRule;
-import br.com.ovigia.businessrule.contrato.obter.ObterContratoAtivoClienteRequest;
-import br.com.ovigia.businessrule.contrato.obter.ObterContratoAtivoClienteResponse;
-import br.com.ovigia.businessrule.contrato.obter.ObterContratoAtivoClienteRule;
-import br.com.ovigia.businessrule.contrato.obter.ObterContratosAtivosVigiaRequest;
-import br.com.ovigia.businessrule.contrato.obter.ObterContratosAtivosVigiaResponse;
-import br.com.ovigia.businessrule.contrato.obter.ObterContratosAtivosVigiaRule;
+import br.com.ovigia.businessrule.contrato.obter.*;
 import br.com.ovigia.model.repository.ClienteRepository;
 import br.com.ovigia.model.repository.ContratoRepository;
 import br.com.ovigia.model.repository.SolicitacaoVisitaRepository;
 import br.com.ovigia.model.repository.VigiaRepository;
+
+import java.util.List;
 
 public class ContratoRouter extends Router {
 

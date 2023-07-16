@@ -1,7 +1,5 @@
 package br.com.ovigia.route;
 
-import java.util.List;
-
 import br.com.ovigia.businessrule.chamado.aceitar.AceitarChamadoRequest;
 import br.com.ovigia.businessrule.chamado.aceitar.AceitarChamadoRule;
 import br.com.ovigia.businessrule.chamado.cancelar.CancelarChamadoRequest;
@@ -10,14 +8,11 @@ import br.com.ovigia.businessrule.chamado.criar.CriarChamadoRequest;
 import br.com.ovigia.businessrule.chamado.criar.CriarChamadoRule;
 import br.com.ovigia.businessrule.chamado.encerrar.EncerrarChamadoRequest;
 import br.com.ovigia.businessrule.chamado.encerrar.EncerrarChamadoRule;
-import br.com.ovigia.businessrule.chamado.obter.ObterChamadoAtivoClienteRequest;
-import br.com.ovigia.businessrule.chamado.obter.ObterChamadoAtivoClienteResponse;
-import br.com.ovigia.businessrule.chamado.obter.ObterChamadoAtivoClienteRule;
-import br.com.ovigia.businessrule.chamado.obter.ObterChamadosAbertosRequest;
-import br.com.ovigia.businessrule.chamado.obter.ObterChamadosAbertosVigiaRule;
-import br.com.ovigia.businessrule.chamado.obter.ObterChamadosVigiaResponse;
+import br.com.ovigia.businessrule.chamado.obter.*;
 import br.com.ovigia.businessrule.common.info.IdInfo;
 import br.com.ovigia.model.repository.ChamadoRepository;
+
+import java.util.List;
 
 public class ChamadoRouter extends Router {
 

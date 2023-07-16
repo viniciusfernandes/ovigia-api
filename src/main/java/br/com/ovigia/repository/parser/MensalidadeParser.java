@@ -1,9 +1,8 @@
 package br.com.ovigia.repository.parser;
 
-import org.bson.Document;
-
 import br.com.ovigia.model.Mensalidade;
 import br.com.ovigia.model.enumeration.TipoSituacaoMensalidade;
+import org.bson.Document;
 
 public class MensalidadeParser {
 	private MensalidadeParser() {

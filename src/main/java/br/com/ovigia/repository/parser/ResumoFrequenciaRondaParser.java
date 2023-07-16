@@ -1,9 +1,8 @@
 package br.com.ovigia.repository.parser;
 
-import org.bson.Document;
-
 import br.com.ovigia.model.IdFrequenciaRonda;
 import br.com.ovigia.model.ResumoFrequenciaRonda;
+import org.bson.Document;
 
 public class ResumoFrequenciaRondaParser {
 	private ResumoFrequenciaRondaParser() {

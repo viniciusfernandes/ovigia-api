@@ -1,8 +1,8 @@
 package br.com.ovigia.model;
 
-import java.util.Date;
-
 import br.com.ovigia.model.enumeration.TipoUsuario;
+
+import java.util.Date;
 
 public class Usuario {
 	// ID FIELD

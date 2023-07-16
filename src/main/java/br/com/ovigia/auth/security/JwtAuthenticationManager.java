@@ -1,13 +1,12 @@
 package br.com.ovigia.auth.security;
 
-import java.util.ArrayList;
-
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-
 import reactor.core.publisher.Mono;
+
+import java.util.ArrayList;
 
 public class JwtAuthenticationManager implements ReactiveAuthenticationManager {
 	public JwtAuthenticationManager(JwtUtil jwtUtil) {

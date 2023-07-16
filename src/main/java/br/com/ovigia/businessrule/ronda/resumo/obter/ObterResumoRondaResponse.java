@@ -1,8 +1,8 @@
 package br.com.ovigia.businessrule.ronda.resumo.obter;
 
-import java.util.Date;
-
 import br.com.ovigia.businessrule.util.DataUtil;
+
+import java.util.Date;
 
 public class ObterResumoRondaResponse {
 	public Double distancia = 0d;

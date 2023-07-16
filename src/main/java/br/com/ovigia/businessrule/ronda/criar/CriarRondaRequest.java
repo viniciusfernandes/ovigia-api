@@ -1,9 +1,9 @@
 package br.com.ovigia.businessrule.ronda.criar;
 
+import br.com.ovigia.model.Localizacao;
+
 import java.util.Date;
 import java.util.List;
-
-import br.com.ovigia.model.Localizacao;
 
 public class CriarRondaRequest {
 	public Date inicio;

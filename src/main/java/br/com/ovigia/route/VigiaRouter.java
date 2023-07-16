@@ -1,22 +1,18 @@
 package br.com.ovigia.route;
 
-import java.util.List;
-
 import br.com.ovigia.businessrule.vigia.atualizar.AtualizarVigiaClienteRule;
 import br.com.ovigia.businessrule.vigia.atualizar.AtualizarVigiaLocalizacaoRequest;
 import br.com.ovigia.businessrule.vigia.atualizar.AtualizarVigiaLocalizacaoRule;
 import br.com.ovigia.businessrule.vigia.avaliacao.AtualizarAvaliacaoVigiaRequest;
 import br.com.ovigia.businessrule.vigia.avaliacao.AtualizarAvaliacaoVigiaRule;
-import br.com.ovigia.businessrule.vigia.obter.ObterVigiaRequest;
-import br.com.ovigia.businessrule.vigia.obter.ObterVigiaRule;
-import br.com.ovigia.businessrule.vigia.obter.ObterVigiasProximosRequest;
-import br.com.ovigia.businessrule.vigia.obter.ObterVigiasProximosResponse;
-import br.com.ovigia.businessrule.vigia.obter.ObterVigiasProximosRule;
+import br.com.ovigia.businessrule.vigia.obter.*;
 import br.com.ovigia.model.Cliente;
 import br.com.ovigia.model.Vigia;
 import br.com.ovigia.model.calculadora.CalculadoraDistancia;
 import br.com.ovigia.model.repository.ClienteRepository;
 import br.com.ovigia.model.repository.VigiaRepository;
+
+import java.util.List;
 
 public class VigiaRouter extends Router {
 	private final CalculadoraDistancia calculadora = CalculadoraDistancia.calculadoraEsferica();

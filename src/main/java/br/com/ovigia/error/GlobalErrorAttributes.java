@@ -1,10 +1,6 @@
 package br.com.ovigia.error;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Map;
-
+import br.com.ovigia.businessrule.exception.AutenticacaoException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
@@ -14,7 +10,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.server.ResponseStatusException;
 
-import br.com.ovigia.businessrule.exception.AutenticacaoException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Map;
 
 @Component
 public class GlobalErrorAttributes extends DefaultErrorAttributes {

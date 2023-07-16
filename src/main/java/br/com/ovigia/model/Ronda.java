@@ -1,10 +1,10 @@
 package br.com.ovigia.model;
 
+import br.com.ovigia.model.enumeration.TipoSituacaoRonda;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import br.com.ovigia.model.enumeration.TipoSituacaoRonda;
 
 public class Ronda {
 	public IdRonda id;

@@ -1,19 +1,14 @@
 package br.com.ovigia.route;
 
-import java.util.List;
-
 import br.com.ovigia.businessrule.solicitavaovisita.criar.CriarSolicitacaoVisitaRequest;
 import br.com.ovigia.businessrule.solicitavaovisita.criar.CriarSolicitacaoVisitaRule;
-import br.com.ovigia.businessrule.solicitavaovisita.obter.ObterSolicitacaoVisitaRequest;
-import br.com.ovigia.businessrule.solicitavaovisita.obter.ObterSolicitacaoVisitaResponse;
-import br.com.ovigia.businessrule.solicitavaovisita.obter.ObterSolicitacaoVisitaRule;
-import br.com.ovigia.businessrule.solicitavaovisita.obter.ObterVigiaSolicitadoRequest;
-import br.com.ovigia.businessrule.solicitavaovisita.obter.ObterVigiaSolicitadoResponse;
-import br.com.ovigia.businessrule.solicitavaovisita.obter.ObterVigiaSolicitadoRule;
+import br.com.ovigia.businessrule.solicitavaovisita.obter.*;
 import br.com.ovigia.businessrule.solicitavaovisita.remover.RemoverSolicitacaoVisitaRequest;
 import br.com.ovigia.businessrule.solicitavaovisita.remover.RemoverSolicitacaoVisitaRule;
 import br.com.ovigia.model.repository.SolicitacaoVisitaRepository;
 import br.com.ovigia.model.repository.VigiaRepository;
+
+import java.util.List;
 
 public class SolicitacaoVistiaRouter extends Router {
 

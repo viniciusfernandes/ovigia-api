@@ -1,10 +1,10 @@
 package br.com.ovigia.route;
 
+import br.com.ovigia.businessrule.BusinessRule;
+
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
-
-import br.com.ovigia.businessrule.BusinessRule;
 
 public class Route<T, V> {
 	private String path;

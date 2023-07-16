@@ -1,11 +1,11 @@
 package br.com.ovigia.businessrule.contrato.cancelar;
 
-import java.util.Date;
-
 import br.com.ovigia.businessrule.BusinessRule;
 import br.com.ovigia.businessrule.Response;
 import br.com.ovigia.model.repository.ContratoRepository;
 import reactor.core.publisher.Mono;
+
+import java.util.Date;
 
 public class CancelarContratoRule implements BusinessRule<CancelarContratoRequest, Void> {
 	private ContratoRepository contratoRepository;
