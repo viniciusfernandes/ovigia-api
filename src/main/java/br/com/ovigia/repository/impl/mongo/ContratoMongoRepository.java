@@ -1,7 +1,6 @@
 package br.com.ovigia.repository.impl.mongo;
 
 import br.com.ovigia.model.Contrato;
-import br.com.ovigia.model.IdsContrato;
 import br.com.ovigia.model.enumeration.TipoSituacaoContrato;
 import br.com.ovigia.model.repository.ContratoRepository;
 import com.mongodb.reactivestreams.client.MongoCollection;
@@ -75,15 +74,6 @@ public class ContratoMongoRepository implements ContratoRepository {
 		var filter = new Document("_id", idContrato);
 		var update = new Document("$set", new Document("dataVencimento", dataVencimento));
 		return Mono.from(collection.updateOne(filter, update)).map(result -> result.getModifiedCount());
-	}
-
-	public Mono<IdsContrato> obterIdVigiaByIdContrato(String idContrato) {
-		var match = new Document("$match", new Document("_id", idContrato));
-		var project = new Document("$project", new Document("idVigia", 1).append("idCliente", 1));
-		var pipeline = Arrays.asList(match, project);
-		return Mono.from(collection.aggregate(pipeline))
-				.map(doc -> new IdsContrato(doc.getString("idVigia"), doc.getString("idCliente")));
-
 	}
 
 }

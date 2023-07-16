@@ -15,8 +15,6 @@ public interface MensalidadeRepository {
     Mono<Long> atualizaDataPagamentoMensalidade(String idMensalidade, Date dataPagamento,
                                                 TipoSituacaoMensalidade situacao);
 
-    Flux<Mensalidade> obterMensalidadesVencidasByIdContrato(String idContrato);
-
     Flux<Mensalidade> obterMensalidadesDataVencimentoInferiorByIdVigia(String idVigia, Date dataLimite,
                                                                        TipoSituacaoMensalidade situacao);
 

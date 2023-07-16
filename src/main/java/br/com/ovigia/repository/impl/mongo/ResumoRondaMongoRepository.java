@@ -29,11 +29,6 @@ public class ResumoRondaMongoRepository implements ResumoRondaRepository {
         return Mono.from(collection.updateOne(filter, update)).then();
     }
 
-    public Mono<Void> removerResumoRonda(IdRonda id) {
-        var filter = new Document("_id", new Document("idVigia", id.idVigia).append("dataRonda", id.dataRonda));
-        return Mono.from(collection.deleteOne(filter)).then();
-    }
-
     public Mono<ResumoRonda> obterResumoRondaById(IdRonda idRonda) {
         var id = IdRondaParser.toDoc(idRonda);
         return Mono.from(collection.find(id)).map(doc -> ResumoRondaParser.fromDoc(doc))

@@ -2,6 +2,7 @@ package br.com.ovigia;
 
 import br.com.ovigia.auth.route.AuthRouter;
 import br.com.ovigia.auth.security.*;
+import br.com.ovigia.businessrule.CriarMensalidadesTask;
 import br.com.ovigia.businessrule.frequenciaronda.commom.business.CriarFrequenciaRondasBusiness;
 import br.com.ovigia.model.repository.*;
 import br.com.ovigia.repository.impl.hash.*;
@@ -48,17 +49,16 @@ public class OvigiaApplication implements CommandLineRunner {
         if ("HASH".equals(databaseImpl)) {
             var mongodb = MongoClients.create().getDatabase("ovigia");
             context.registerBean(MongoDatabase.class, () -> mongodb);
-            context.registerBean(SolicitacaoVisitaRepository.class, () -> new SolicitacaoVisitaHashRepository(mongodb));
+            context.registerBean(SolicitacaoVisitaRepository.class, () -> new SolicitacaoVisitaHashRepository());
             context.registerBean(VigiaRepository.class, () -> new VigiaHashRepository());
-            context.registerBean(ClienteRepository.class, () -> new ClienteHashRepository(mongodb));
-            context.registerBean(RondaRepository.class, () -> new RondaHashRepository(mongodb));
-            context.registerBean(ResumoRondaRepository.class, () -> new ResumoRondaHashRepository(mongodb));
+            context.registerBean(ClienteRepository.class, () -> new ClienteHashRepository());
+            context.registerBean(RondaRepository.class, () -> new RondaHashRepository());
+            context.registerBean(ResumoRondaRepository.class, () -> new ResumoRondaHashRepository());
             context.registerBean(UsuarioRepository.class, () -> new UsuarioHashRepository());
-            context.registerBean(ChamadoRepository.class, () -> new ChamadoHashRepository(mongodb));
-            context.registerBean(ContratoRepository.class, () -> new ContratoHashRepository(mongodb));
-            context.registerBean(ResumoFrequenciaRondaRepository.class, () -> new ResumoFrequenciaRondaHashRepository(mongodb));
-            context.registerBean(MensalidadeRepository.class, () -> new MensalidadeHashRepository(mongodb));
-            context.registerBean(FaturamentoRepository.class, () -> new FaturamentoHashRepository(mongodb));
+            context.registerBean(ChamadoRepository.class, () -> new ChamadoHashRepository());
+            context.registerBean(ContratoRepository.class, () -> new ContratoHashRepository());
+            context.registerBean(MensalidadeRepository.class, () -> new MensalidadeHashRepository());
+            context.registerBean(FaturamentoRepository.class, () -> new FaturamentoHashRepository());
         } else if ("MONGO ".equals(databaseImpl)) {
             var mongodb = MongoClients.create().getDatabase("ovigia");
             context.registerBean(MongoDatabase.class, () -> mongodb);
@@ -70,7 +70,6 @@ public class OvigiaApplication implements CommandLineRunner {
             context.registerBean(UsuarioRepository.class, () -> new UsuarioMongoRepository(mongodb));
             context.registerBean(ChamadoRepository.class, () -> new ChamadoMongoRepository(mongodb));
             context.registerBean(ContratoRepository.class, () -> new ContratoMongoRepository(mongodb));
-            context.registerBean(ResumoFrequenciaRondaRepository.class, () -> new ResumoFrequenciaRondaMongoRepository(mongodb));
             context.registerBean(MensalidadeRepository.class, () -> new MensalidadeMongoRepository(mongodb));
             context.registerBean(FaturamentoRepository.class, () -> new FaturamentoMongoRepository(mongodb));
         } else {
@@ -84,7 +83,7 @@ public class OvigiaApplication implements CommandLineRunner {
     private void registerCommomBusiness(GenericApplicationContext context) {
         context.registerBean(CriarFrequenciaRondasBusiness.class,
                 () -> new CriarFrequenciaRondasBusiness(getBean(ClienteRepository.class),
-                        getBean(RondaRepository.class), getBean(ResumoFrequenciaRondaRepository.class),
+                        getBean(RondaRepository.class),
                         getBean(VigiaRepository.class)));
     }
 
@@ -136,9 +135,9 @@ public class OvigiaApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        //var criarMensalidadesTask = new CriarMensalidadesTask(getBean(ContratoRepository.class),
-        //      getBean(MensalidadeRepository.class));
-        //  criarMensalidadesTask.runTask();
+        var criarMensalidadesTask = new CriarMensalidadesTask(getBean(ContratoRepository.class),
+                getBean(MensalidadeRepository.class));
+        criarMensalidadesTask.runTask();
     }
 
 }

@@ -11,7 +11,5 @@ public interface ResumoRondaRepository {
 
     Mono<Void> atualizarResumoRonda(ResumoRonda resumoRonda);
 
-    Mono<Void> removerResumoRonda(IdRonda id);
-
     Mono<ResumoRonda> obterResumoRondaById(IdRonda idRonda);
 }

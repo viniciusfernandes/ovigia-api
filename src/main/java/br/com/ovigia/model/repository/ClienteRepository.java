@@ -9,15 +9,9 @@ public interface ClienteRepository {
 
     Mono<Void> criarCliente(Cliente cliente);
 
-    Mono<Cliente> obterClientePorId(String idCliente);
-
     Mono<FrequenciaRonda> obterFrequenciaRondaPorIdCliente(String idCliente);
 
     Mono<Long> atualizarIdVigia(String idVigia, String idCliente);
-
-    Mono<Localizacao> obterLocalizacaoCliente(String idCliente);
-
-    Mono<Cliente> obterNomeETelefoneCliente(String idCliente);
 
     Mono<Cliente> obterIdVigiaELocalizacaoByIdCliente(String idCliente);
 

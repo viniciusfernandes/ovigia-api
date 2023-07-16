@@ -47,23 +47,6 @@ public class ClienteMongoRepository implements ClienteRepository {
         return Mono.from(collection.updateOne(filter, update)).map(result -> result.getModifiedCount());
     }
 
-    public Mono<Localizacao> obterLocalizacaoCliente(String idCliente) {
-        var match = new Document("$match", new Document("_id", idCliente));
-        var project = new Document("$project", new Document("localizacao", 1));
-        var pipeline = Arrays.asList(match, project);
-        return Mono.from(collection.aggregate(pipeline)).map(doc -> {
-            var localz = doc.get("localizacao", Document.class);
-            return LocalizacaoParser.fromDoc(localz);
-        });
-    }
-
-    public Mono<Cliente> obterNomeETelefoneCliente(String idCliente) {
-        var match = new Document("$match", new Document("_id", idCliente));
-        var project = new Document("$project", new Document("nome", 1).append("telefone", 1));
-        var pipeline = Arrays.asList(match, project);
-        return Mono.from(collection.aggregate(pipeline)).map(ClienteParser::fromDoc);
-    }
-
     public Mono<Cliente> obterIdVigiaELocalizacaoByIdCliente(String idCliente) {
         var match = new Document("$match", new Document("_id", idCliente));
         var project = new Document("$project", new Document("idVigia", 1).append("localizacao", 1));

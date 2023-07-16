@@ -9,7 +9,10 @@ import br.com.ovigia.model.repository.VigiaRepository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class VigiaHashRepository implements VigiaRepository {
     private final Map<String, Vigia> table = new HashMap<>();
@@ -48,10 +51,6 @@ public class VigiaHashRepository implements VigiaRepository {
 
         }
         return Flux.fromIterable(vigias);
-    }
-
-    public Flux<Vigia> obterVigias(List<String> idVigias) {
-        return Flux.fromIterable(idVigias).flatMap(id -> obterVigiaPorId(id));
     }
 
     public Mono<Long> atualizarDataUltimaRonda(String idVigia, Date dataUltimaRonda, Date dataAtualizacaoRonda) {

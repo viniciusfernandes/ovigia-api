@@ -12,7 +12,6 @@ public class UsuarioHashRepository implements UsuarioRepository {
 
     private final Map<String, Usuario> table = new HashMap<>();
 
-
     public Mono<Usuario> obterUsuario(String email, String password) {
         for (var e : table.values()) {
             if (email.equals(e.email) && password.equals(e.password)) {

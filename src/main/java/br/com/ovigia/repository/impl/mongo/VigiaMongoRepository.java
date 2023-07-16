@@ -18,7 +18,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 public class VigiaMongoRepository implements VigiaRepository {
     private final MongoCollection<Document> collection;
@@ -58,16 +57,6 @@ public class VigiaMongoRepository implements VigiaRepository {
     public Flux<Vigia> obterLocalizacaoVigias() {
         var match = new Document("$match", new Document("tipoUsuario", TipoUsuario.VIGIA.toString()));
         var fields = new Document("_id", 1).append("localizacao", 1);
-        var project = new Document("$project", fields);
-        var pipeline = Arrays.asList(match, project);
-        return Flux.from(collection.aggregate(pipeline)).map(doc -> VigiaParser.fromDoc(doc));
-    }
-
-    public Flux<Vigia> obterVigias(List<String> idVigias) {
-        var in = new Document("_id", new Document("$in", idVigias));
-        var match = new Document("$match", in);
-        var fields = new Document("_id", 1).append("localizacao", 1).append("nome", 1).append("dataInicio", 1)
-                .append("telefone", 1);
         var project = new Document("$project", fields);
         var pipeline = Arrays.asList(match, project);
         return Flux.from(collection.aggregate(pipeline)).map(doc -> VigiaParser.fromDoc(doc));

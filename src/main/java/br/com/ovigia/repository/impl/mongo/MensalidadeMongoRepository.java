@@ -36,12 +36,6 @@ public class MensalidadeMongoRepository implements MensalidadeRepository {
         return Mono.from(collection.updateOne(filter, update)).map(result -> result.getModifiedCount());
     }
 
-    public Flux<Mensalidade> obterMensalidadesVencidasByIdContrato(String idContrato) {
-        var filter = new Document("idContrato", idContrato).append("dataVencimento", new Document("$lte", new Date()))
-                .append("dataPagamento", null);
-        return Flux.from(collection.find(filter)).map(MensalidadeParser::fromDoc);
-    }
-
     public Flux<Mensalidade> obterMensalidadesDataVencimentoInferiorByIdVigia(String idVigia, Date dataLimite,
                                                                               TipoSituacaoMensalidade situacao) {
         var filter = new Document("idVigia", idVigia).append("dataVencimento", new Document("$lte", dataLimite))

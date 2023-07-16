@@ -8,7 +8,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Date;
-import java.util.List;
 
 public interface VigiaRepository {
 
@@ -19,8 +18,6 @@ public interface VigiaRepository {
     Mono<Vigia> obterVigiaPorId(String idVigia);
 
     Flux<Vigia> obterLocalizacaoVigias();
-
-    Flux<Vigia> obterVigias(List<String> idVigias);
 
     Mono<Long> atualizarDataUltimaRonda(String idVigia, Date dataUltimaRonda, Date dataAtualizacaoRonda);
 
