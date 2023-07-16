@@ -20,50 +20,18 @@ import br.com.ovigia.repository.parser.ResumoRondaParser;
 import br.com.ovigia.repository.parser.RondaParser;
 import reactor.core.publisher.Mono;
 
-public class RondaRepository {
-	private final MongoCollection<Document> collection;
+public interface RondaRepository {
 
-	public RondaRepository(MongoDatabase database) {
-		collection = database.getCollection("ronda");
-	}
+    Mono<Void> criarLocalizacao(String idVigia, Date data, Localizacao localizacao);
 
-	public Mono<Void> criarLocalizacao(String idVigia, Date data, Localizacao localizacao) {
+    Mono<Void> criarRonda(Ronda ronda);
 
-		var idRota = toDoc(idVigia, data);
-		var doclocalizacao = LocalizacaoParser.toDoc(localizacao);
-		var adicionarLocalizacao = new Document("$push", new Document("localizacoes", doclocalizacao));
+    Mono<Void> criarResumoRonda(ResumoRonda resumoRonda);
 
-		return Mono.from(collection.updateMany(idRota, adicionarLocalizacao)).then();
-	}
+    Mono<Ronda> obterRondaPorId(IdRonda id);
 
-	public Mono<Void> criarRonda(Ronda ronda) {
-		var docRota = RondaParser.toDoc(ronda);
-		return Mono.from(collection.insertOne(docRota)).then();
-	}
+    Mono<Void> concatenarRonda(Ronda ronda);
 
-	public Mono<Void> criarResumoRonda(ResumoRonda resumoRonda) {
-		var doc = ResumoRondaParser.toDoc(resumoRonda);
-		return Mono.from(collection.insertOne(doc)).then();
-	}
-
-	public Mono<Ronda> obterRondaPorId(IdRonda id) {
-		return Mono.from(collection.find(toDoc(id))).map(RondaParser::fromDoc);
-	}
-
-	public Mono<Void> concatenarRonda(Ronda ronda) {
-		var each = new Document("$each", LocalizacaoParser.toDoc(ronda.localizacoes));
-		var docLocalizacoes = new Document("localizacoes", each);
-		var fields = new Document("fim", ronda.fim).append("dataAtualizacao", ronda.dataAtualizacao);
-		var update = new Document("$push", docLocalizacoes).append("$set", fields);
-		return Mono.from(collection.updateOne(toDoc(ronda.id), update)).then();
-	}
-
-	public Mono<Ronda> obterUltimaRondaByIdVigia(String idvigia) {
-		var match = new Document("$match", new Document("_id.idVigia", idvigia));
-		var fields = new Document("_id.data", 1).append("inicio", 1).append("fim", 1).append("localizacoes", 1);
-		var project = new Document("$project", fields);
-		var pipeline = Arrays.asList(match, project);
-		return Mono.from(collection.aggregate(pipeline)).map(RondaParser::fromDoc);
-	}
+    Mono<Ronda> obterUltimaRondaByIdVigia(String idvigia);
 
 }

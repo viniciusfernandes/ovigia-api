@@ -1,6 +1,4 @@
 logging.level.web: INFO
-spring.data.mongodb.uri: mongodb://localhost:27017/ovigia
-#spring.data.mongodb.uri: mongodb://167.114.185.231:27017/ovigia
 
 logging:
   level:
@@ -10,3 +8,11 @@ logging:
 spring:
   codec:
     max-in-memory-size: 15MB
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/ovigia
+
+# database imple values: HASH, MONGO
+database:
+  impl: 'HASH'
+

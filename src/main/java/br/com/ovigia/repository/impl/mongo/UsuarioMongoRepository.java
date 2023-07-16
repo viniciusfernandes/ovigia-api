@@ -1,8 +1,9 @@
-package br.com.ovigia.auth.repository;
+package br.com.ovigia.repository.impl.mongo;
 
 import java.util.Arrays;
 import java.util.UUID;
 
+import br.com.ovigia.model.repository.UsuarioRepository;
 import org.bson.Document;
 
 import com.mongodb.reactivestreams.client.MongoCollection;
@@ -12,11 +13,11 @@ import br.com.ovigia.model.Usuario;
 import br.com.ovigia.repository.parser.UsuarioParser;
 import reactor.core.publisher.Mono;
 
-public class UsuarioRepository {
+public class UsuarioMongoRepository implements UsuarioRepository {
 
 	private final MongoCollection<Document> collection;
 
-	public UsuarioRepository(MongoDatabase database) {
+	public UsuarioMongoRepository(MongoDatabase database) {
 		collection = database.getCollection("usuario");
 	}
 

@@ -1,16 +1,15 @@
 package br.com.ovigia.auth.route;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
-
 import br.com.ovigia.auth.businessrule.SingInResponse;
 import br.com.ovigia.auth.businessrule.singnin.SingInRequest;
 import br.com.ovigia.auth.businessrule.singnin.SingInRule;
 import br.com.ovigia.auth.businessrule.singon.SignOnRequest;
 import br.com.ovigia.auth.businessrule.singon.SingOnRule;
-import br.com.ovigia.auth.repository.UsuarioRepository;
 import br.com.ovigia.auth.security.JwtUtil;
+import br.com.ovigia.model.repository.UsuarioRepository;
 import br.com.ovigia.route.Route;
 import br.com.ovigia.route.Router;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class AuthRouter extends Router {
 

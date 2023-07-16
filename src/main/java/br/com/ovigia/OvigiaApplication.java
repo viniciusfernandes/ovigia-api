@@ -1,8 +1,16 @@
 package br.com.ovigia;
 
-import javax.annotation.PostConstruct;
-
+import br.com.ovigia.auth.route.AuthRouter;
+import br.com.ovigia.auth.security.*;
+import br.com.ovigia.businessrule.frequenciaronda.commom.business.CriarFrequenciaRondasBusiness;
+import br.com.ovigia.model.repository.*;
+import br.com.ovigia.repository.impl.hash.*;
+import br.com.ovigia.repository.impl.mongo.*;
+import br.com.ovigia.route.*;
+import com.mongodb.reactivestreams.client.MongoClients;
+import com.mongodb.reactivestreams.client.MongoDatabase;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,37 +20,7 @@ import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.web.reactive.function.server.RouterFunction;
 
-import com.mongodb.reactivestreams.client.MongoClients;
-import com.mongodb.reactivestreams.client.MongoDatabase;
-
-import br.com.ovigia.auth.repository.UsuarioRepository;
-import br.com.ovigia.auth.route.AuthRouter;
-import br.com.ovigia.auth.security.CORSFilter;
-import br.com.ovigia.auth.security.JwtAuthenticationConverter;
-import br.com.ovigia.auth.security.JwtAuthenticationManager;
-import br.com.ovigia.auth.security.JwtUtil;
-import br.com.ovigia.auth.security.PBKDF2Encoder;
-import br.com.ovigia.auth.security.WebSecurityConfig;
-import br.com.ovigia.businessrule.CriarMensalidadesTask;
-import br.com.ovigia.businessrule.frequenciaronda.commom.business.CriarFrequenciaRondasBusiness;
-import br.com.ovigia.model.repository.ChamadoRepository;
-import br.com.ovigia.model.repository.ClienteRepository;
-import br.com.ovigia.model.repository.ContratoRepository;
-import br.com.ovigia.model.repository.FaturamentoRepository;
-import br.com.ovigia.model.repository.MensalidadeRepository;
-import br.com.ovigia.model.repository.ResumoFrequenciaRondaRepository;
-import br.com.ovigia.model.repository.ResumoRondaRepository;
-import br.com.ovigia.model.repository.RondaRepository;
-import br.com.ovigia.model.repository.SolicitacaoVisitaRepository;
-import br.com.ovigia.model.repository.VigiaRepository;
-import br.com.ovigia.route.ChamadoRouter;
-import br.com.ovigia.route.ClienteRouter;
-import br.com.ovigia.route.ContratoRouter;
-import br.com.ovigia.route.MensalidadeRouter;
-import br.com.ovigia.route.RondaRouter;
-import br.com.ovigia.route.RoutesBuilder;
-import br.com.ovigia.route.SolicitacaoVistiaRouter;
-import br.com.ovigia.route.VigiaRouter;
+import javax.annotation.PostConstruct;
 
 @SpringBootApplication
 @ComponentScan(basePackages = "br.com.ovigia.error")
@@ -50,6 +28,8 @@ public class OvigiaApplication implements CommandLineRunner {
     @Autowired
     private GenericApplicationContext context;
     private String secretKey = "ThisIsSecretForJWTHS512SignatureAlgorithmThatMUSTHave64ByteLength";
+    @Value("${database.impl}")
+    private String databaseImpl;
 
     public static void main(String[] args) {
         SpringApplication.run(OvigiaApplication.class, args);
@@ -65,20 +45,40 @@ public class OvigiaApplication implements CommandLineRunner {
     }
 
     private void registerRepository(GenericApplicationContext context) {
-        var mongodb = MongoClients.create().getDatabase("ovigia");
-        context.registerBean(MongoDatabase.class, () -> mongodb);
+        if ("HASH".equals(databaseImpl)) {
+            var mongodb = MongoClients.create().getDatabase("ovigia");
+            context.registerBean(MongoDatabase.class, () -> mongodb);
+            context.registerBean(SolicitacaoVisitaRepository.class, () -> new SolicitacaoVisitaHashRepository(mongodb));
+            context.registerBean(VigiaRepository.class, () -> new VigiaHashRepository());
+            context.registerBean(ClienteRepository.class, () -> new ClienteHashRepository(mongodb));
+            context.registerBean(RondaRepository.class, () -> new RondaHashRepository(mongodb));
+            context.registerBean(ResumoRondaRepository.class, () -> new ResumoRondaHashRepository(mongodb));
+            context.registerBean(UsuarioRepository.class, () -> new UsuarioHashRepository());
+            context.registerBean(ChamadoRepository.class, () -> new ChamadoHashRepository(mongodb));
+            context.registerBean(ContratoRepository.class, () -> new ContratoHashRepository(mongodb));
+            context.registerBean(ResumoFrequenciaRondaRepository.class, () -> new ResumoFrequenciaRondaHashRepository(mongodb));
+            context.registerBean(MensalidadeRepository.class, () -> new MensalidadeHashRepository(mongodb));
+            context.registerBean(FaturamentoRepository.class, () -> new FaturamentoHashRepository(mongodb));
+        } else if ("MONGO ".equals(databaseImpl)) {
+            var mongodb = MongoClients.create().getDatabase("ovigia");
+            context.registerBean(MongoDatabase.class, () -> mongodb);
+            context.registerBean(SolicitacaoVisitaRepository.class, () -> new SolicitacaoVisitaMongoRepository(mongodb));
+            context.registerBean(VigiaRepository.class, () -> new VigiaMongoRepository(mongodb));
+            context.registerBean(ClienteRepository.class, () -> new ClienteMongoRepository(mongodb));
+            context.registerBean(RondaRepository.class, () -> new RondaMongoRepository(mongodb));
+            context.registerBean(ResumoRondaRepository.class, () -> new ResumoRondaMongoRepository(mongodb));
+            context.registerBean(UsuarioRepository.class, () -> new UsuarioMongoRepository(mongodb));
+            context.registerBean(ChamadoRepository.class, () -> new ChamadoMongoRepository(mongodb));
+            context.registerBean(ContratoRepository.class, () -> new ContratoMongoRepository(mongodb));
+            context.registerBean(ResumoFrequenciaRondaRepository.class, () -> new ResumoFrequenciaRondaMongoRepository(mongodb));
+            context.registerBean(MensalidadeRepository.class, () -> new MensalidadeMongoRepository(mongodb));
+            context.registerBean(FaturamentoRepository.class, () -> new FaturamentoMongoRepository(mongodb));
+        } else {
+            throw new IllegalStateException(
+                    "Failure on registering the repositories. There is no database implementation with the value: "
+                            + databaseImpl);
+        }
 
-        context.registerBean(SolicitacaoVisitaRepository.class, () -> new SolicitacaoVisitaRepository(mongodb));
-        context.registerBean(VigiaRepository.class, () -> new VigiaRepository(mongodb));
-        context.registerBean(ClienteRepository.class, () -> new ClienteRepository(mongodb));
-        context.registerBean(RondaRepository.class, () -> new RondaRepository(mongodb));
-        context.registerBean(ResumoRondaRepository.class, () -> new ResumoRondaRepository(mongodb));
-        context.registerBean(UsuarioRepository.class, () -> new UsuarioRepository(mongodb));
-        context.registerBean(ChamadoRepository.class, () -> new ChamadoRepository(mongodb));
-        context.registerBean(ContratoRepository.class, () -> new ContratoRepository(mongodb));
-        context.registerBean(ResumoFrequenciaRondaRepository.class, () -> new ResumoFrequenciaRondaRepository(mongodb));
-        context.registerBean(MensalidadeRepository.class, () -> new MensalidadeRepository(mongodb));
-        context.registerBean(FaturamentoRepository.class, () -> new FaturamentoRepository(mongodb));
     }
 
     private void registerCommomBusiness(GenericApplicationContext context) {
@@ -136,9 +136,9 @@ public class OvigiaApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        var criarMensalidadesTask = new CriarMensalidadesTask(getBean(ContratoRepository.class),
-                getBean(MensalidadeRepository.class));
-        criarMensalidadesTask.runTask();
+        //var criarMensalidadesTask = new CriarMensalidadesTask(getBean(ContratoRepository.class),
+        //      getBean(MensalidadeRepository.class));
+        //  criarMensalidadesTask.runTask();
     }
 
 }

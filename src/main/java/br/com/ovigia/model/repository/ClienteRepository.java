@@ -1,87 +1,28 @@
 package br.com.ovigia.model.repository;
 
-import java.util.Arrays;
-
-import org.bson.Document;
-
-import com.mongodb.reactivestreams.client.MongoCollection;
-import com.mongodb.reactivestreams.client.MongoDatabase;
-
 import br.com.ovigia.model.Cliente;
 import br.com.ovigia.model.FrequenciaRonda;
 import br.com.ovigia.model.Localizacao;
-import br.com.ovigia.repository.parser.ClienteParser;
-import br.com.ovigia.repository.parser.FrequenciaRondaParser;
-import br.com.ovigia.repository.parser.LocalizacaoParser;
 import reactor.core.publisher.Mono;
 
-public class ClienteRepository {
-	private final MongoCollection<Document> collection;
+public interface ClienteRepository {
 
-	public ClienteRepository(MongoDatabase database) {
-		collection = database.getCollection("usuario");
-	}
+    Mono<Void> criarCliente(Cliente cliente);
 
-	public Mono<Void> criarCliente(Cliente cliente) {
-		var doc = ClienteParser.toDoc(cliente);
-		return Mono.from(collection.insertOne(doc)).then();
-	}
+    Mono<Cliente> obterClientePorId(String idCliente);
 
-	public Mono<Cliente> obterClientePorId(String idCliente) {
-		return Mono.from(collection.find(new Document("_id", idCliente))).map(doc -> ClienteParser.fromDoc(doc));
-	}
+    Mono<FrequenciaRonda> obterFrequenciaRondaPorIdCliente(String idCliente);
 
-	public Mono<FrequenciaRonda> obterFrequenciaRondaPorIdCliente(String idCliente) {
-		var match = new Document("$match",
-				new Document("_id", idCliente).append("frequenciaRonda", new Document("$ne", null)));
-		var project = new Document("$project", new Document("frequenciaRonda", 1));
-		var pipeline = Arrays.asList(match, project);
-		return Mono.from(collection.aggregate(pipeline)).map(doc -> {
-			var frequencia = doc.get("frequenciaRonda", Document.class);
-			return FrequenciaRondaParser.fromDoc(frequencia);
-		}).switchIfEmpty(Mono.just(new FrequenciaRonda()));
-	}
+    Mono<Long> atualizarIdVigia(String idVigia, String idCliente);
 
-	public Mono<Long> atualizarIdVigia(String idVigia, String idCliente) {
-		var filter = new Document("_id", idCliente);
-		var update = new Document("$set", new Document("idVigia", idVigia));
-		return Mono.from(collection.updateOne(filter, update)).map(result -> result.getModifiedCount());
-	}
+    Mono<Localizacao> obterLocalizacaoCliente(String idCliente);
 
-	public Mono<Localizacao> obterLocalizacaoCliente(String idCliente) {
-		var match = new Document("$match", new Document("_id", idCliente));
-		var project = new Document("$project", new Document("localizacao", 1));
-		var pipeline = Arrays.asList(match, project);
-		return Mono.from(collection.aggregate(pipeline)).map(doc -> {
-			var localz = doc.get("localizacao", Document.class);
-			return LocalizacaoParser.fromDoc(localz);
-		});
-	}
+    Mono<Cliente> obterNomeETelefoneCliente(String idCliente);
 
-	public Mono<Cliente> obterNomeETelefoneCliente(String idCliente) {
-		var match = new Document("$match", new Document("_id", idCliente));
-		var project = new Document("$project", new Document("nome", 1).append("telefone", 1));
-		var pipeline = Arrays.asList(match, project);
-		return Mono.from(collection.aggregate(pipeline)).map(ClienteParser::fromDoc);
-	}
+    Mono<Cliente> obterIdVigiaELocalizacaoByIdCliente(String idCliente);
 
-	public Mono<Cliente> obterIdVigiaELocalizacaoByIdCliente(String idCliente) {
-		var match = new Document("$match", new Document("_id", idCliente));
-		var project = new Document("$project", new Document("idVigia", 1).append("localizacao", 1));
-		var pipeline = Arrays.asList(match, project);
-		return Mono.from(collection.aggregate(pipeline)).map(ClienteParser::fromDoc);
-	}
+    Mono<Void> atualizarLocalizacaoPorId(String idCliente, Localizacao localizacao);
 
-	public Mono<Void> atualizarLocalizacaoPorId(String idCliente, Localizacao localizacao) {
-		var docLocalizacao = new Document("localizacao", LocalizacaoParser.toDoc(localizacao));
-		var update = new Document("$set", docLocalizacao);
-		return Mono.from(collection.updateOne(new Document("_id", idCliente), update)).then();
-	}
-
-	public Mono<FrequenciaRonda> atualizarFrequenciaRonda(String idCliente, FrequenciaRonda frequencia) {
-		var doc = FrequenciaRondaParser.toDoc(frequencia);
-		var update = new Document("$set", new Document("frequenciaRonda", doc));
-		return Mono.from(collection.updateOne(new Document("_id", idCliente), update)).thenReturn(frequencia);
-	}
+    Mono<FrequenciaRonda> atualizarFrequenciaRonda(String idCliente, FrequenciaRonda frequencia);
 
 }
