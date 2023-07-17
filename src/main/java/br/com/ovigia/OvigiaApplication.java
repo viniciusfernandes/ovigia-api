@@ -47,37 +47,43 @@ public class OvigiaApplication implements CommandLineRunner {
 
     private void registerRepository(GenericApplicationContext context) {
         if ("HASH".equals(databaseImpl)) {
-            var mongodb = MongoClients.create().getDatabase("ovigia");
-            context.registerBean(MongoDatabase.class, () -> mongodb);
-            context.registerBean(SolicitacaoVisitaRepository.class, () -> new SolicitacaoVisitaHashRepository());
-            context.registerBean(VigiaRepository.class, () -> new VigiaHashRepository());
-            context.registerBean(ClienteRepository.class, () -> new ClienteHashRepository());
-            context.registerBean(RondaRepository.class, () -> new RondaHashRepository());
-            context.registerBean(ResumoRondaRepository.class, () -> new ResumoRondaHashRepository());
-            context.registerBean(UsuarioRepository.class, () -> new UsuarioHashRepository());
-            context.registerBean(ChamadoRepository.class, () -> new ChamadoHashRepository());
-            context.registerBean(ContratoRepository.class, () -> new ContratoHashRepository());
-            context.registerBean(MensalidadeRepository.class, () -> new MensalidadeHashRepository());
-            context.registerBean(FaturamentoRepository.class, () -> new FaturamentoHashRepository());
+            registerHashRepository(context);
         } else if ("MONGO ".equals(databaseImpl)) {
-            var mongodb = MongoClients.create().getDatabase("ovigia");
-            context.registerBean(MongoDatabase.class, () -> mongodb);
-            context.registerBean(SolicitacaoVisitaRepository.class, () -> new SolicitacaoVisitaMongoRepository(mongodb));
-            context.registerBean(VigiaRepository.class, () -> new VigiaMongoRepository(mongodb));
-            context.registerBean(ClienteRepository.class, () -> new ClienteMongoRepository(mongodb));
-            context.registerBean(RondaRepository.class, () -> new RondaMongoRepository(mongodb));
-            context.registerBean(ResumoRondaRepository.class, () -> new ResumoRondaMongoRepository(mongodb));
-            context.registerBean(UsuarioRepository.class, () -> new UsuarioMongoRepository(mongodb));
-            context.registerBean(ChamadoRepository.class, () -> new ChamadoMongoRepository(mongodb));
-            context.registerBean(ContratoRepository.class, () -> new ContratoMongoRepository(mongodb));
-            context.registerBean(MensalidadeRepository.class, () -> new MensalidadeMongoRepository(mongodb));
-            context.registerBean(FaturamentoRepository.class, () -> new FaturamentoMongoRepository(mongodb));
+            registerMongoRepository(context);
         } else {
             throw new IllegalStateException(
                     "Failure on registering the repositories. There is no database implementation with the value: "
                             + databaseImpl);
         }
 
+    }
+
+    private void registerHashRepository(GenericApplicationContext context) {
+        context.registerBean(SolicitacaoVisitaRepository.class, () -> new SolicitacaoVisitaHashRepository());
+        context.registerBean(VigiaRepository.class, () -> new VigiaHashRepository());
+        context.registerBean(ClienteRepository.class, () -> new ClienteHashRepository());
+        context.registerBean(RondaRepository.class, () -> new RondaHashRepository());
+        context.registerBean(ResumoRondaRepository.class, () -> new ResumoRondaHashRepository());
+        context.registerBean(UsuarioRepository.class, () -> new UsuarioHashRepository());
+        context.registerBean(ChamadoRepository.class, () -> new ChamadoHashRepository());
+        context.registerBean(ContratoRepository.class, () -> new ContratoHashRepository());
+        context.registerBean(MensalidadeRepository.class, () -> new MensalidadeHashRepository());
+        context.registerBean(FaturamentoRepository.class, () -> new FaturamentoHashRepository());
+    }
+
+    private void registerMongoRepository(GenericApplicationContext context) {
+        var mongodb = MongoClients.create().getDatabase("ovigia");
+        context.registerBean(MongoDatabase.class, () -> mongodb);
+        context.registerBean(SolicitacaoVisitaRepository.class, () -> new SolicitacaoVisitaMongoRepository(mongodb));
+        context.registerBean(VigiaRepository.class, () -> new VigiaMongoRepository(mongodb));
+        context.registerBean(ClienteRepository.class, () -> new ClienteMongoRepository(mongodb));
+        context.registerBean(RondaRepository.class, () -> new RondaMongoRepository(mongodb));
+        context.registerBean(ResumoRondaRepository.class, () -> new ResumoRondaMongoRepository(mongodb));
+        context.registerBean(UsuarioRepository.class, () -> new UsuarioMongoRepository(mongodb));
+        context.registerBean(ChamadoRepository.class, () -> new ChamadoMongoRepository(mongodb));
+        context.registerBean(ContratoRepository.class, () -> new ContratoMongoRepository(mongodb));
+        context.registerBean(MensalidadeRepository.class, () -> new MensalidadeMongoRepository(mongodb));
+        context.registerBean(FaturamentoRepository.class, () -> new FaturamentoMongoRepository(mongodb));
     }
 
     private void registerCommomBusiness(GenericApplicationContext context) {
@@ -138,6 +144,8 @@ public class OvigiaApplication implements CommandLineRunner {
         var criarMensalidadesTask = new CriarMensalidadesTask(getBean(ContratoRepository.class),
                 getBean(MensalidadeRepository.class));
         criarMensalidadesTask.runTask();
+
+
     }
 
 }
