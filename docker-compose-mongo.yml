@@ -1,10 +1,17 @@
-# Use root/example as user/password credentials
 version: '3.1'
 services:
-  mongodb:
+  mongo:
     image: mongo
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: administrator
-      MONGO_INITDB_ROOT_PASSWORD: '@teste15'
+    hostname: ovigia-db
+    container_name: ovigia-db
+    restart: always
     ports:
       - 27017:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=1234
+      - MONGO_INITDB_DATABASE=ovigia
+      - MONGO_DB_USERNAME=admin
+      - MONGO_DB_PASSWORD=1234
+    #command: bash -c "mongod && sleep 10 && mongo --eval 'db.createCollection(\"mensalidade\")'"
+

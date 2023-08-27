@@ -1,13 +1,52 @@
 package br.com.ovigia;
 
 import br.com.ovigia.auth.route.AuthRouter;
-import br.com.ovigia.auth.security.*;
+import br.com.ovigia.auth.security.CORSFilter;
+import br.com.ovigia.auth.security.JwtAuthenticationConverter;
+import br.com.ovigia.auth.security.JwtAuthenticationManager;
+import br.com.ovigia.auth.security.JwtUtil;
+import br.com.ovigia.auth.security.PBKDF2Encoder;
+import br.com.ovigia.auth.security.WebSecurityConfig;
 import br.com.ovigia.businessrule.CriarMensalidadesTask;
 import br.com.ovigia.businessrule.frequenciaronda.commom.business.CriarFrequenciaRondasBusiness;
-import br.com.ovigia.model.repository.*;
-import br.com.ovigia.repository.impl.hash.*;
-import br.com.ovigia.repository.impl.mongo.*;
-import br.com.ovigia.route.*;
+import br.com.ovigia.model.repository.ChamadoRepository;
+import br.com.ovigia.model.repository.ClienteRepository;
+import br.com.ovigia.model.repository.ContratoRepository;
+import br.com.ovigia.model.repository.FaturamentoRepository;
+import br.com.ovigia.model.repository.MensalidadeRepository;
+import br.com.ovigia.model.repository.ResumoRondaRepository;
+import br.com.ovigia.model.repository.RondaRepository;
+import br.com.ovigia.model.repository.SolicitacaoVisitaRepository;
+import br.com.ovigia.model.repository.UsuarioRepository;
+import br.com.ovigia.model.repository.VigiaRepository;
+import br.com.ovigia.repository.impl.hash.ChamadoHashRepository;
+import br.com.ovigia.repository.impl.hash.ClienteHashRepository;
+import br.com.ovigia.repository.impl.hash.ContratoHashRepository;
+import br.com.ovigia.repository.impl.hash.FaturamentoHashRepository;
+import br.com.ovigia.repository.impl.hash.MensalidadeHashRepository;
+import br.com.ovigia.repository.impl.hash.ResumoRondaHashRepository;
+import br.com.ovigia.repository.impl.hash.RondaHashRepository;
+import br.com.ovigia.repository.impl.hash.SolicitacaoVisitaHashRepository;
+import br.com.ovigia.repository.impl.hash.UsuarioHashRepository;
+import br.com.ovigia.repository.impl.hash.VigiaHashRepository;
+import br.com.ovigia.repository.impl.mongo.ChamadoMongoRepository;
+import br.com.ovigia.repository.impl.mongo.ClienteMongoRepository;
+import br.com.ovigia.repository.impl.mongo.ContratoMongoRepository;
+import br.com.ovigia.repository.impl.mongo.FaturamentoMongoRepository;
+import br.com.ovigia.repository.impl.mongo.MensalidadeMongoRepository;
+import br.com.ovigia.repository.impl.mongo.ResumoRondaMongoRepository;
+import br.com.ovigia.repository.impl.mongo.RondaMongoRepository;
+import br.com.ovigia.repository.impl.mongo.SolicitacaoVisitaMongoRepository;
+import br.com.ovigia.repository.impl.mongo.UsuarioMongoRepository;
+import br.com.ovigia.repository.impl.mongo.VigiaMongoRepository;
+import br.com.ovigia.route.ChamadoRouter;
+import br.com.ovigia.route.ClienteRouter;
+import br.com.ovigia.route.ContratoRouter;
+import br.com.ovigia.route.MensalidadeRouter;
+import br.com.ovigia.route.RondaRouter;
+import br.com.ovigia.route.RoutesBuilder;
+import br.com.ovigia.route.SolicitacaoVistiaRouter;
+import br.com.ovigia.route.VigiaRouter;
 import com.mongodb.reactivestreams.client.MongoClients;
 import com.mongodb.reactivestreams.client.MongoDatabase;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +87,7 @@ public class OvigiaApplication implements CommandLineRunner {
     private void registerRepository(GenericApplicationContext context) {
         if ("HASH".equals(databaseImpl)) {
             registerHashRepository(context);
-        } else if ("MONGO ".equals(databaseImpl)) {
+        } else if ("MONGO".equals(databaseImpl)) {
             registerMongoRepository(context);
         } else {
             throw new IllegalStateException(

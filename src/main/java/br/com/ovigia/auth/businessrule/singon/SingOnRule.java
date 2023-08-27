@@ -4,8 +4,8 @@ import br.com.ovigia.auth.businessrule.SingInResponse;
 import br.com.ovigia.auth.security.JwtUtil;
 import br.com.ovigia.businessrule.BusinessRule;
 import br.com.ovigia.businessrule.Response;
-import br.com.ovigia.model.Usuario;
 import br.com.ovigia.model.repository.UsuarioRepository;
+import org.mapstruct.factory.Mappers;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import reactor.core.publisher.Mono;
 
@@ -24,13 +24,8 @@ public class SingOnRule implements BusinessRule<SignOnRequest, SingInResponse> {
 
     @Override
     public Mono<Response<SingInResponse>> apply(SignOnRequest request) {
-
-        var usuario = new Usuario();
-        usuario.email = request.email;
-        usuario.localizacao = request.localizacao;
-        usuario.nome = request.nome;
-        usuario.telefone = request.telefone;
-        usuario.tipoUsuario = request.tipoUsuario;
+        var mapper = Mappers.getMapper(SignOnRequestMapper.class);
+        var usuario = mapper.parse(request);
         usuario.password = passwordEncoder.encode(request.password);
         usuario.dataInicio = new Date();
         return repository.criarUsuario(usuario)

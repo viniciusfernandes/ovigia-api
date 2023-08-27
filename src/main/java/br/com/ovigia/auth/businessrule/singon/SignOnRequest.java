@@ -3,16 +3,19 @@ package br.com.ovigia.auth.businessrule.singon;
 import br.com.ovigia.model.Localizacao;
 import br.com.ovigia.model.enumeration.TipoUsuario;
 
-/**
- *
- * @author ard333
- */
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 public class SignOnRequest {
-	public String email;
-	public String nome;
-	public String telefone;
-	public TipoUsuario tipoUsuario;
-	public Localizacao localizacao;
-	public String password;
+    @NotBlank
+    public String email;
+    @NotBlank
+    public String nome;
+    public String telefone;
+    @NotNull
+    public TipoUsuario tipoUsuario;
+    public Localizacao localizacao;
+    @NotBlank
+    public String password;
 
 }

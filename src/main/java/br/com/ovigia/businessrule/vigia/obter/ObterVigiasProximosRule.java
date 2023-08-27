@@ -40,7 +40,7 @@ public class ObterVigiasProximosRule
 					if (vigia.localizacao != null) {
 						var loc = new LocalizacaoResponse();
 						loc.latitude = vigia.localizacao.latitude;
-						loc.latitude = vigia.localizacao.latitude;
+						loc.longitude = vigia.localizacao.longitude;
 						response.localizacao = loc;
 					}
 					return response;
