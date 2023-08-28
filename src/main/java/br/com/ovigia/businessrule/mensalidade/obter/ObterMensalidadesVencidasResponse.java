@@ -6,4 +6,5 @@ public class ObterMensalidadesVencidasResponse {
 	public Double valor;
 	public String nomeCliente;
 	public String telefoneCliente;
+	public boolean isMensalidadeVencida;
 }

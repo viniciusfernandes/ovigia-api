@@ -34,6 +34,8 @@ public class LocalizacaoParser {
 		localizacao.longitude = doc.getDouble("longitude");
 		localizacao.data = doc.getDate("data");
 		localizacao.timestamp = doc.getLong("timestamp");
+		//TODO: aqui estava lancando uma exception quando a velocidade eh zero pois o
+		// doc entende que estamos fazendo um casting de Integer para Double. Acho que devemos tratar esse caso
 		localizacao.velocidade = doc.getDouble("velocidade");
 		return localizacao;
 	}

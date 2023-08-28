@@ -7,7 +7,6 @@ import br.com.ovigia.model.enumeration.TipoSituacaoMensalidade;
 import br.com.ovigia.model.repository.MensalidadeRepository;
 import reactor.core.publisher.Mono;
 
-import java.util.Date;
 import java.util.List;
 
 public class ObterMensalidadesVencidasRule
@@ -20,7 +19,8 @@ public class ObterMensalidadesVencidasRule
 
 	@Override
 	public Mono<Response<List<ObterMensalidadesVencidasResponse>>> apply(ObterMensalidadesVencidasRequest request) {
-		return mensalidadeRepository.obterMensalidadesDataVencimentoInferiorByIdVigia(request.idVigia, new Date(),
+		var dataAtual = DataUtil.ajustarData();
+		return mensalidadeRepository.obterMensalidadesDataVencimentoInferiorByIdVigia(request.idVigia, dataAtual,
 				TipoSituacaoMensalidade.ABERTO).map(mensalidade -> {
 					var response = new ObterMensalidadesVencidasResponse();
 					response.dataVencimento = DataUtil.formatarData(mensalidade.dataVencimento);
@@ -28,6 +28,7 @@ public class ObterMensalidadesVencidasRule
 					response.nomeCliente = mensalidade.nomeCliente;
 					response.telefoneCliente = mensalidade.telefoneCliente;
 					response.valor = mensalidade.valor;
+					response.isMensalidadeVencida = mensalidade.dataVencimento.compareTo(dataAtual) < 0;
 					return response;
 				}).collectList().map(Response::ok);
 	}
