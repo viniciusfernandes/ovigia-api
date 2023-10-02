@@ -136,7 +136,7 @@ public class RoutesBuilder {
 		return bodyBuilder.bodyValue(response);
 	}
 
-	public void printRoutes() {
+	public void logRoutes() {
 		routerFunctions.forEach(route -> logger.info(String.valueOf(route)));
 	}
 }

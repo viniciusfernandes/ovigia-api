@@ -1,18 +1,18 @@
-package br.com.ovigia.auth.businessrule.singnin;
+package br.com.ovigia.auth.businessrule.signin;
 
 /**
  *
  * @author ard333
  */
-public class SingInRequest {
+public class SignInRequest {
 	private String email;
 	private String password;
 
-	public SingInRequest() {
+	public SignInRequest() {
 
 	}
 
-	public SingInRequest(String email, String password) {
+	public SignInRequest(String email, String password) {
 		this.email = email;
 		this.password = password;
 	}

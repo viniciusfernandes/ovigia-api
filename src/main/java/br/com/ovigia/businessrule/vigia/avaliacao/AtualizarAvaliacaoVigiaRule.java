@@ -17,7 +17,7 @@ public class AtualizarAvaliacaoVigiaRule implements BusinessRule<AtualizarAvalia
 	@Override
 	public Mono<Response<Double>> apply(AtualizarAvaliacaoVigiaRequest request) {
 		return repository.obterAvaliacao(request.idVigia).flatMap(avaliacao -> {
-			var novoAvaliacao = CalcularoraValorAvaliacao.calcular(avaliacao, request.valorAvaliacao);
+			var novoAvaliacao = CalcularoraValorAvaliacao.calcular(avaliacao, request.valor);
 			var novoValor = NumberUtil.round2(novoAvaliacao.valor);
 			return repository.atualizarAvaliacao(request.idVigia, novoAvaliacao).thenReturn(Response.ok(novoValor));
 		});

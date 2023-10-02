@@ -1,10 +1,10 @@
 package br.com.ovigia.businessrule.mensalidade.obter;
 
 public class ObterValorRecebidoAtualResponse {
-	public double valorRecebido;
+	public double valor;
 
-	public ObterValorRecebidoAtualResponse(double valorRecebido) {
-		this.valorRecebido = valorRecebido;
+	public ObterValorRecebidoAtualResponse(double valor) {
+		this.valor = valor;
 	}
 
 }
