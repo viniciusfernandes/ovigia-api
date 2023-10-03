@@ -2,7 +2,7 @@ logging.level.web: INFO
 
 logging:
   level:
-    org.springframework.data.mongodb.core.MongoTemplate: DEBUG
+    org.springframework.data.mongodb.core.MongoTemplate: ERROR
 
 
 spring:

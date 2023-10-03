@@ -26,7 +26,7 @@ public class SignOnRule implements BusinessRule<SignOnRequest, AuthResponse> {
 
     @Override
     public Mono<Response<AuthResponse>> apply(SignOnRequest request) {
-        Mono.just(mapper.parse(request))
+        return Mono.just(mapper.parse(request))
                 .onErrorContinue((ex, o) -> Response.badRequest(ex.getMessage()))
                 .flatMap(usuario -> {
                     usuario.password = passwordEncoder.encode(request.password);
@@ -34,7 +34,6 @@ public class SignOnRule implements BusinessRule<SignOnRequest, AuthResponse> {
                     return repository.criarUsuario(usuario)
                             .thenReturn(Response.ok(new AuthResponse(usuario, jwtUtil.generateToken(request.email))));
                 });
-        return null;
     }
 
 }

@@ -82,7 +82,7 @@ public class OvigiaApplication implements CommandLineRunner {
         registerSecurityWebFilterChain(context);
         registerCorsFilter(context);
         registerRoutes(context);
-          RoutesBuilder.getInstance().logRoutes();
+        RoutesBuilder.getInstance().logRoutes();
     }
 
     private void registerRepository(GenericApplicationContext context) {
