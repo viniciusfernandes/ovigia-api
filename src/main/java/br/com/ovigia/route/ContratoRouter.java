@@ -24,7 +24,7 @@ public class ContratoRouter extends Router {
                 .contemBody().requestClass(CriarContratoRequest.class)
                 .rule(new CriarContratoRule(contratoRepository, solicitacaoVisitaRepository, clienteRepository));
 
-        var atualizarValorContrato = Route.<AtualizarValorContratoResquest, Void>put().path("/ovigia/contratos/{idContrato}/valor-contrato")
+        var atualizarValorContrato = Route.<AtualizarValorContratoResquest, Void>patch().path("/ovigia/contratos/{idContrato}/valor-contrato")
                 .contemBody().requestClass(AtualizarValorContratoResquest.class)
                 .extractFromPath((mapa, request) -> {
                     request.idContrato = mapa.get("idContrato");
@@ -33,18 +33,22 @@ public class ContratoRouter extends Router {
                 .rule(new AtualizarValorContratoRule(contratoRepository));
 
         var obterContratoAtivoCliente = Route.<ObterContratoAtivoClienteRequest, ObterContratoAtivoClienteResponse>get()
-                .path("/ovigia/clientes/{idCliente}/contrato-ativo").extractFromPath((mapa, request) -> {
+                .path("/ovigia/contratos/clientes/{idCliente}/contrato-ativo")
+                .extractFromPath((mapa, request) -> {
                     request.idCliente = mapa.get("idCliente");
                     return request;
-                }).requestClass(ObterContratoAtivoClienteRequest.class)
+                })
+                .requestClass(ObterContratoAtivoClienteRequest.class)
                 .rule(new ObterContratoAtivoClienteRule(contratoRepository, vigiaRepository));
 
         var obterContratosAtivosVigia = Route
                 .<ObterContratosAtivosVigiaRequest, List<ObterContratosAtivosVigiaResponse>>get()
-                .path("/ovigia/vigias/{idVigia}/contratos-ativos").extractFromPath((mapa, request) -> {
+                .path("/ovigia/contratos/vigias/{idVigia}/contratos-ativos")
+                .extractFromPath((mapa, request) -> {
                     request.idVigia = mapa.get("idVigia");
                     return request;
-                }).requestClass(ObterContratosAtivosVigiaRequest.class)
+                })
+                .requestClass(ObterContratosAtivosVigiaRequest.class)
                 .rule(new ObterContratosAtivosVigiaRule(contratoRepository, solicitacaoVisitaRepository));
 
         var cancelarContrato = Route.<CancelarContratoRequest, Void>delete().path("/ovigia/contratos/{idContrato}")
