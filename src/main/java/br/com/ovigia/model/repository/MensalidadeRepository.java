@@ -18,4 +18,6 @@ public interface MensalidadeRepository {
     Flux<Mensalidade> obterMensalidadesDataVencimentoInferiorByIdVigia(String idVigia, Date dataLimite,
                                                                        TipoSituacaoMensalidade situacao);
 
+    Mono<Mensalidade> obterMensalidadesbyIdContratoESituacaoInferiorADataMax(String idContrato, TipoSituacaoMensalidade situacao,
+                                                                             Date dataMaxima);
 }

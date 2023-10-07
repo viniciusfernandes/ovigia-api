@@ -41,4 +41,9 @@ public class MensalidadeHashRepository implements MensalidadeRepository {
                         mens.situacao == situacao);
     }
 
+    @Override
+    public Mono<Mensalidade> obterMensalidadesbyIdContratoESituacaoInferiorADataMax(String idContrato, TipoSituacaoMensalidade situacao, Date dataMaxima) {
+        return Mono.empty();
+    }
+
 }

@@ -156,8 +156,11 @@ public class OvigiaApplication implements CommandLineRunner {
         var routesBuilder = RoutesBuilder.getInstance();
 
         routesBuilder.addRouter(
-                new ContratoRouter(getBean(ContratoRepository.class), getBean(SolicitacaoVisitaRepository.class),
-                        getBean(VigiaRepository.class), getBean(ClienteRepository.class)));
+                new ContratoRouter(getBean(ContratoRepository.class),
+                        getBean(SolicitacaoVisitaRepository.class),
+                        getBean(VigiaRepository.class),
+                        getBean(ClienteRepository.class),
+                        getBean(MensalidadeRepository.class)));
         routesBuilder.addRouter(new SolicitacaoVistiaRouter(getBean(SolicitacaoVisitaRepository.class),
                 getBean(VigiaRepository.class)));
         routesBuilder.addRouter(new ChamadoRouter(getBean(ChamadoRepository.class)));

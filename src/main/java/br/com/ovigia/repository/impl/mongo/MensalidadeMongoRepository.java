@@ -49,4 +49,16 @@ public class MensalidadeMongoRepository implements MensalidadeRepository {
         return Flux.from(collection.aggregate(pipeline)).map(MensalidadeParser::fromDoc);
     }
 
+    @Override
+    public Mono<Mensalidade> obterMensalidadesbyIdContratoESituacaoInferiorADataMax(String idContrato, TipoSituacaoMensalidade situacao,
+                                                                             Date dataMaxima) {
+        var filter = new Document("idContrato", idContrato).append("situacao", situacao.toString())
+                .append("dataVencimento", new Document("$lte", dataMaxima));
+
+        var match = new Document("$match", filter);
+        var sort  = new Document("$sort",  new Document("dataVencimento", 1));
+        var limit   = new Document("$limit",  1);
+        var pipeline = Arrays.asList(match, sort, limit);
+        return Mono.from(collection.aggregate(pipeline)).map(MensalidadeParser::fromDoc);
+    }
 }

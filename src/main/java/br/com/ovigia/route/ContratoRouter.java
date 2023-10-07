@@ -10,6 +10,7 @@ import br.com.ovigia.businessrule.contrato.criar.CriarContratoRule;
 import br.com.ovigia.businessrule.contrato.obter.*;
 import br.com.ovigia.model.repository.ClienteRepository;
 import br.com.ovigia.model.repository.ContratoRepository;
+import br.com.ovigia.model.repository.MensalidadeRepository;
 import br.com.ovigia.model.repository.SolicitacaoVisitaRepository;
 import br.com.ovigia.model.repository.VigiaRepository;
 
@@ -18,8 +19,10 @@ import java.util.List;
 public class ContratoRouter extends Router {
 
     public ContratoRouter(ContratoRepository contratoRepository,
-                          SolicitacaoVisitaRepository solicitacaoVisitaRepository, VigiaRepository vigiaRepository,
-                          ClienteRepository clienteRepository) {
+                          SolicitacaoVisitaRepository solicitacaoVisitaRepository,
+                          VigiaRepository vigiaRepository,
+                          ClienteRepository clienteRepository,
+                          MensalidadeRepository mensalidadeRepository) {
         var criarContrato = Route.<CriarContratoRequest, CriarContratoResponse>post().path("/ovigia/contratos")
                 .contemBody().requestClass(CriarContratoRequest.class)
                 .rule(new CriarContratoRule(contratoRepository, solicitacaoVisitaRepository, clienteRepository));
@@ -39,7 +42,7 @@ public class ContratoRouter extends Router {
                     return request;
                 })
                 .requestClass(ObterContratoAtivoClienteRequest.class)
-                .rule(new ObterContratoAtivoClienteRule(contratoRepository, vigiaRepository));
+                .rule(new ObterContratoAtivoClienteRule(contratoRepository, vigiaRepository, mensalidadeRepository));
 
         var obterContratosAtivosVigia = Route
                 .<ObterContratosAtivosVigiaRequest, List<ObterContratosAtivosVigiaResponse>>get()
