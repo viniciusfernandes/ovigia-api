@@ -53,7 +53,7 @@ public class MensalidadeMongoRepository implements MensalidadeRepository {
     public Mono<Mensalidade> obterMensalidadesbyIdContratoESituacaoInferiorADataMax(String idContrato, TipoSituacaoMensalidade situacao,
                                                                              Date dataMaxima) {
         var filter = new Document("idContrato", idContrato).append("situacao", situacao.toString())
-                .append("dataVencimento", new Document("$lte", dataMaxima));
+                .append("dataVencimento", new Document("$lt", dataMaxima));
 
         var match = new Document("$match", filter);
         var sort  = new Document("$sort",  new Document("dataVencimento", 1));
