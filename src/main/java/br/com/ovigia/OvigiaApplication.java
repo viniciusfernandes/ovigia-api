@@ -67,7 +67,7 @@ import javax.annotation.PostConstruct;
 public class OvigiaApplication implements CommandLineRunner {
     @Autowired
     private GenericApplicationContext context;
-    private String secretKey = "ThisIsSecretForJWTHS512SignatureAlgorithmThatMUSTHave64ByteLength";
+
     @Value("${database.impl}")
     private String databaseImpl;
 
@@ -78,7 +78,7 @@ public class OvigiaApplication implements CommandLineRunner {
     @PostConstruct
     public void registerBeans() {
         registerRepository(context);
-        registerCommomBusiness(context);
+        registerCommonBusiness(context);
         registerSecurityWebFilterChain(context);
         registerCorsFilter(context);
         registerRoutes(context);
@@ -99,16 +99,16 @@ public class OvigiaApplication implements CommandLineRunner {
     }
 
     private void registerHashRepository(GenericApplicationContext context) {
-        context.registerBean(SolicitacaoVisitaRepository.class, () -> new SolicitacaoVisitaHashRepository());
-        context.registerBean(VigiaRepository.class, () -> new VigiaHashRepository());
-        context.registerBean(ClienteRepository.class, () -> new ClienteHashRepository());
-        context.registerBean(RondaRepository.class, () -> new RondaHashRepository());
-        context.registerBean(ResumoRondaRepository.class, () -> new ResumoRondaHashRepository());
-        context.registerBean(UsuarioRepository.class, () -> new UsuarioHashRepository());
-        context.registerBean(ChamadoRepository.class, () -> new ChamadoHashRepository());
-        context.registerBean(ContratoRepository.class, () -> new ContratoHashRepository());
-        context.registerBean(MensalidadeRepository.class, () -> new MensalidadeHashRepository());
-        context.registerBean(FaturamentoRepository.class, () -> new FaturamentoHashRepository());
+        context.registerBean(SolicitacaoVisitaRepository.class, SolicitacaoVisitaHashRepository::new);
+        context.registerBean(VigiaRepository.class, VigiaHashRepository::new);
+        context.registerBean(ClienteRepository.class, ClienteHashRepository::new);
+        context.registerBean(RondaRepository.class, RondaHashRepository::new);
+        context.registerBean(ResumoRondaRepository.class, ResumoRondaHashRepository::new);
+        context.registerBean(UsuarioRepository.class, UsuarioHashRepository::new);
+        context.registerBean(ChamadoRepository.class, ChamadoHashRepository::new);
+        context.registerBean(ContratoRepository.class, ContratoHashRepository::new);
+        context.registerBean(MensalidadeRepository.class, MensalidadeHashRepository::new);
+        context.registerBean(FaturamentoRepository.class, FaturamentoHashRepository::new);
     }
 
     private void registerMongoRepository(GenericApplicationContext context) {
@@ -126,7 +126,7 @@ public class OvigiaApplication implements CommandLineRunner {
         context.registerBean(FaturamentoRepository.class, () -> new FaturamentoMongoRepository(mongodb));
     }
 
-    private void registerCommomBusiness(GenericApplicationContext context) {
+    private void registerCommonBusiness(GenericApplicationContext context) {
         context.registerBean(CriarFrequenciaRondasBusiness.class,
                 () -> new CriarFrequenciaRondasBusiness(getBean(ClienteRepository.class),
                         getBean(RondaRepository.class),
@@ -134,6 +134,7 @@ public class OvigiaApplication implements CommandLineRunner {
     }
 
     private void registerSecurityWebFilterChain(GenericApplicationContext context) {
+        var secretKey = "ThisIsSecretForJWTHS512SignatureAlgorithmThatMUSTHave64ByteLength";
         var jwtUtil = new JwtUtil(secretKey);
         var authManager = new JwtAuthenticationManager(jwtUtil);
         var authConverter = new JwtAuthenticationConverter();
@@ -141,7 +142,7 @@ public class OvigiaApplication implements CommandLineRunner {
         context.registerBean(JwtUtil.class, () -> jwtUtil);
         context.registerBean(JwtAuthenticationManager.class, () -> authManager);
         context.registerBean(JwtAuthenticationConverter.class, () -> authConverter);
-        context.registerBean(PBKDF2Encoder.class, () -> new PBKDF2Encoder());
+        context.registerBean(PBKDF2Encoder.class, PBKDF2Encoder::new);
 
         ServerHttpSecurity http = context.getBean(ServerHttpSecurity.class);
         context.registerBean(SecurityWebFilterChain.class,
@@ -149,7 +150,7 @@ public class OvigiaApplication implements CommandLineRunner {
     }
 
     private void registerCorsFilter(GenericApplicationContext context) {
-        context.registerBean(CORSFilter.class, () -> new CORSFilter());
+        context.registerBean(CORSFilter.class, CORSFilter::new);
     }
 
     private void registerRoutes(GenericApplicationContext context) {
@@ -175,7 +176,7 @@ public class OvigiaApplication implements CommandLineRunner {
         routesBuilder.addRouter(
                 new MensalidadeRouter(getBean(MensalidadeRepository.class), getBean(FaturamentoRepository.class)));
 
-        context.registerBean(RouterFunction.class, () -> routesBuilder.build());
+        context.registerBean(RouterFunction.class, routesBuilder::build);
     }
 
     private <T> T getBean(Class<T> clazz) {
@@ -187,8 +188,5 @@ public class OvigiaApplication implements CommandLineRunner {
         var criarMensalidadesTask = new CriarMensalidadesTask(getBean(ContratoRepository.class),
                 getBean(MensalidadeRepository.class));
         criarMensalidadesTask.runTask();
-
-
     }
-
 }

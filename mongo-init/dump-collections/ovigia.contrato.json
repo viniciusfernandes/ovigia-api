@@ -1,0 +1,32 @@
+[{
+  "_id": "0531e09e-bf43-49e5-9e2b-e3a84ffc32b3",
+  "idCliente": "0483fc3c-0828-42e4-9080-42e009523513",
+  "idVigia": "e3cbb42d-53a5-45aa-9b91-6b2a768900ee",
+  "dataInicio": {
+    "$date": "2024-02-08T21:34:02.139Z"
+  },
+  "dataFim": null,
+  "valor": 100,
+  "dataVencimento": {
+    "$date": "2024-08-08T03:00:00.000Z"
+  },
+  "nomeCliente": "cliente 1 Fernandes",
+  "telefoneCliente": "11-99445577",
+  "situacao": "ATIVO"
+},
+{
+  "_id": "9ae0cc86-66d3-4ff7-b387-f25a037e46e7",
+  "idCliente": "5968ffe5-f043-4604-898e-338ef890cde0",
+  "idVigia": "e3cbb42d-53a5-45aa-9b91-6b2a768900ee",
+  "dataInicio": {
+    "$date": "2024-06-06T00:22:15.704Z"
+  },
+  "dataFim": null,
+  "valor": 111.11,
+  "dataVencimento": {
+    "$date": "2024-08-06T03:00:00.000Z"
+  },
+  "nomeCliente": "Evaldo Fernandes",
+  "telefoneCliente": "11-99445577",
+  "situacao": "ATIVO"
+}]

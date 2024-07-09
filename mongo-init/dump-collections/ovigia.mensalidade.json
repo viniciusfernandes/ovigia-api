@@ -1,0 +1,123 @@
+[{
+  "_id": "17444416-f072-4f74-8923-e55f43c2b8de",
+  "idContrato": "0531e09e-bf43-49e5-9e2b-e3a84ffc32b3",
+  "idVigia": "e3cbb42d-53a5-45aa-9b91-6b2a768900ee",
+  "dataVencimento": {
+    "$date": "2024-06-08T03:00:00.000Z"
+  },
+  "nomeCliente": "cliente 1 Fernandes",
+  "telefoneCliente": "11-99445577",
+  "valor": 100,
+  "situacao": "PAGO",
+  "dataPagamento": {
+    "$date": "2024-07-09T00:26:06.079Z"
+  }
+},
+{
+  "_id": "c6469e9a-6ab6-4a73-990f-86459092a6d2",
+  "idContrato": "0531e09e-bf43-49e5-9e2b-e3a84ffc32b3",
+  "idVigia": "e3cbb42d-53a5-45aa-9b91-6b2a768900ee",
+  "dataVencimento": {
+    "$date": "2024-07-08T03:00:00.000Z"
+  },
+  "nomeCliente": "cliente 1 Fernandes",
+  "telefoneCliente": "11-99445577",
+  "valor": 100,
+  "situacao": "ABERTO"
+},
+{
+  "_id": "9248ae3e-615a-43cd-a30c-48126ab0c963",
+  "idContrato": "0531e09e-bf43-49e5-9e2b-e3a84ffc32b3",
+  "idVigia": "e3cbb42d-53a5-45aa-9b91-6b2a768900ee",
+  "dataVencimento": {
+    "$date": "2024-03-08T03:00:00.000Z"
+  },
+  "nomeCliente": "cliente 1 Fernandes",
+  "telefoneCliente": "11-99445577",
+  "valor": 100,
+  "situacao": "PAGO",
+  "dataPagamento": {
+    "$date": "2024-07-09T00:26:02.707Z"
+  }
+},
+{
+  "_id": "dcd89463-2f55-4adf-9e81-23838c2be5ab",
+  "idContrato": "0531e09e-bf43-49e5-9e2b-e3a84ffc32b3",
+  "idVigia": "e3cbb42d-53a5-45aa-9b91-6b2a768900ee",
+  "dataVencimento": {
+    "$date": "2024-04-08T03:00:00.000Z"
+  },
+  "nomeCliente": "cliente 1 Fernandes",
+  "telefoneCliente": "11-99445577",
+  "valor": 100,
+  "situacao": "PAGO",
+  "dataPagamento": {
+    "$date": "2024-07-09T00:26:05.047Z"
+  }
+},
+{
+  "_id": "73067d96-0c48-4e25-9fd2-213ff92a5cb9",
+  "idContrato": "0531e09e-bf43-49e5-9e2b-e3a84ffc32b3",
+  "idVigia": "e3cbb42d-53a5-45aa-9b91-6b2a768900ee",
+  "dataVencimento": {
+    "$date": "2024-05-08T03:00:00.000Z"
+  },
+  "nomeCliente": "cliente 1 Fernandes",
+  "telefoneCliente": "11-99445577",
+  "valor": 100,
+  "situacao": "PAGO",
+  "dataPagamento": {
+    "$date": "2024-07-09T00:26:04.101Z"
+  }
+},
+{
+  "_id": "3301349a-4eb6-46a0-894f-3148148fc469",
+  "idContrato": "0531e09e-bf43-49e5-9e2b-e3a84ffc32b3",
+  "idVigia": "e3cbb42d-53a5-45aa-9b91-6b2a768900ee",
+  "dataVencimento": {
+    "$date": "2024-06-08T03:00:00.000Z"
+  },
+  "nomeCliente": "cliente 1 Fernandes",
+  "telefoneCliente": "11-99445577",
+  "valor": 100,
+  "situacao": "PAGO",
+  "dataPagamento": {
+    "$date": "2024-07-09T00:26:07.260Z"
+  }
+},
+{
+  "_id": "c166d669-03d3-40d6-8ada-dae7f3d90771",
+  "idContrato": "0531e09e-bf43-49e5-9e2b-e3a84ffc32b3",
+  "idVigia": "e3cbb42d-53a5-45aa-9b91-6b2a768900ee",
+  "dataVencimento": {
+    "$date": "2024-07-08T03:00:00.000Z"
+  },
+  "nomeCliente": "cliente 1 Fernandes",
+  "telefoneCliente": "11-99445577",
+  "valor": 100,
+  "situacao": "ABERTO"
+},
+{
+  "_id": "5c0c8804-57a1-4a27-9709-2156bfee140f",
+  "idContrato": "9ae0cc86-66d3-4ff7-b387-f25a037e46e7",
+  "idVigia": "e3cbb42d-53a5-45aa-9b91-6b2a768900ee",
+  "dataVencimento": {
+    "$date": "2024-07-06T03:00:00.000Z"
+  },
+  "nomeCliente": "Evaldo Fernandes",
+  "telefoneCliente": "11-99445577",
+  "valor": 111.11,
+  "situacao": "ABERTO"
+},
+{
+  "_id": "580adaaf-9feb-45e9-bdf5-5a6488b2081c",
+  "idContrato": "9ae0cc86-66d3-4ff7-b387-f25a037e46e7",
+  "idVigia": "e3cbb42d-53a5-45aa-9b91-6b2a768900ee",
+  "dataVencimento": {
+    "$date": "2024-07-06T03:00:00.000Z"
+  },
+  "nomeCliente": "Evaldo Fernandes",
+  "telefoneCliente": "11-99445577",
+  "valor": 111.11,
+  "situacao": "ABERTO"
+}]

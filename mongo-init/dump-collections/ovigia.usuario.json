@@ -1,0 +1,101 @@
+[{
+  "_id": "582acaac-b360-413c-adfc-d50f1383211b",
+  "nome": "Vinicius Fernandes",
+  "email": "v2@gmail.com",
+  "telefone": "11-99445577",
+  "tipoUsuario": "VIGIA",
+  "password": "sT54ChdZ7IObsozagGBMyKW+9nBtaHUafa5b33sYP/M=",
+  "localizacao": {
+    "latitude": 37.421998333333335,
+    "longitude": -122.084,
+    "timestamp": {
+      "$numberLong": "1720457846157"
+    },
+    "velocidade": null
+  },
+  "dataInicio": {
+    "$date": "2024-07-08T16:57:27.031Z"
+  }
+},
+{
+  "_id": "adfd1e32-beba-4aa2-9ad5-34707c47d949",
+  "nome": "Marcos Fernandes",
+  "email": "c2@gmail.com",
+  "telefone": "11-99445577",
+  "tipoUsuario": "CLIENTE",
+  "password": "sT54ChdZ7IObsozagGBMyKW+9nBtaHUafa5b33sYP/M=",
+  "localizacao": {
+    "latitude": 37.421998333333335,
+    "longitude": -122.084,
+    "timestamp": {
+      "$numberLong": "1720457912197"
+    },
+    "velocidade": null
+  },
+  "dataInicio": {
+    "$date": "2024-07-08T16:58:33.078Z"
+  }
+},
+{
+  "_id": "0483fc3c-0828-42e4-9080-42e009523513",
+  "nome": "cliente 1 Fernandes",
+  "email": "c1@gmail.com",
+  "telefone": "11-99445577",
+  "tipoUsuario": "CLIENTE",
+  "password": "sT54ChdZ7IObsozagGBMyKW+9nBtaHUafa5b33sYP/M=",
+  "localizacao": {
+    "latitude": 37.421998333333335,
+    "longitude": -122.084,
+    "timestamp": {
+      "$numberLong": "1720474172379"
+    },
+    "velocidade": null
+  },
+  "dataInicio": {
+    "$date": "2024-07-08T21:29:33.270Z"
+  },
+  "idVigia": "e3cbb42d-53a5-45aa-9b91-6b2a768900ee"
+},
+{
+  "_id": "e3cbb42d-53a5-45aa-9b91-6b2a768900ee",
+  "nome": "Maria Fernandes",
+  "email": "v1@gmail.com",
+  "telefone": "11-99445577",
+  "tipoUsuario": "VIGIA",
+  "password": "sT54ChdZ7IObsozagGBMyKW+9nBtaHUafa5b33sYP/M=",
+  "localizacao": {
+    "latitude": 37.421998333333335,
+    "longitude": -122.084,
+    "timestamp": {
+      "$numberLong": "1720474326466"
+    },
+    "velocidade": null
+  },
+  "dataInicio": {
+    "$date": "2024-07-08T21:32:07.341Z"
+  },
+  "avaliacao": {
+    "valor": 3.666666666666667,
+    "quantidade": 3
+  }
+},
+{
+  "_id": "5968ffe5-f043-4604-898e-338ef890cde0",
+  "nome": "Evaldo Fernandes",
+  "email": "c3@gmail.com",
+  "telefone": "11-99445577",
+  "tipoUsuario": "CLIENTE",
+  "password": "sT54ChdZ7IObsozagGBMyKW+9nBtaHUafa5b33sYP/M=",
+  "localizacao": {
+    "latitude": 37.421998333333335,
+    "longitude": -122.084,
+    "timestamp": {
+      "$numberLong": "1720484295649"
+    },
+    "velocidade": null
+  },
+  "dataInicio": {
+    "$date": "2024-07-09T00:18:16.528Z"
+  },
+  "idVigia": "e3cbb42d-53a5-45aa-9b91-6b2a768900ee"
+}]

@@ -1,0 +1,34 @@
+[{
+  "_id": "adfd1e32-beba-4aa2-9ad5-34707c47d949",
+  "idVigia": "e3cbb42d-53a5-45aa-9b91-6b2a768900ee",
+  "data": {
+    "$date": "2024-07-08T21:35:58.509Z"
+  },
+  "nomeCliente": "Marcos Fernandes",
+  "telefoneCliente": "11-99445577",
+  "localizacaoCliente": {
+    "latitude": 37.421998333333335,
+    "longitude": -122.084,
+    "timestamp": {
+      "$numberLong": "1720457912197"
+    },
+    "velocidade": null
+  }
+},
+{
+  "_id": "0483fc3c-0828-42e4-9080-42e009523513",
+  "idVigia": "582acaac-b360-413c-adfc-d50f1383211b",
+  "data": {
+    "$date": "2024-07-08T21:47:16.808Z"
+  },
+  "nomeCliente": "cliente 1 Fernandes",
+  "telefoneCliente": "11-99445577",
+  "localizacaoCliente": {
+    "latitude": 37.421998333333335,
+    "longitude": -122.084,
+    "timestamp": {
+      "$numberLong": "1720474172379"
+    },
+    "velocidade": null
+  }
+}]

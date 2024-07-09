@@ -1,25 +1,29 @@
-version: "3"
+version: '3'
 services:
  ovigia-api:
-  image: viniciussf/ovigia:1.0.0
+  build: .
+  container_name: ovigia-api
   ports:
-   - 8080:8080
-  networks:
-   - mongodb-network
- mongodb:
-  image : mongo
-  container_name: mongodb
-  environment:
-   - PUID=1000
-   - PGID=1000
+   - "8080:8080"
+  depends_on:
+   - ovigia-db
+
+ ovigia-db:
+  image: mongo
+  container_name: ovigia-db
+  restart: unless-stopped
+  ports:
+   - "27017:27017"
   volumes:
    - /home/vinicius/Projects/mongodb/database:/data/db
-  ports:
-   - 27017:27017
-  restart: unless-stopped
-  networks:
-   - mongodb-network
+   - ./mongo-init/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
+  healthcheck:
+   test: ["CMD", "mongosh", "--host", "localhost", "--port", "27017", "--username", "admin", "--password", "1234", "--authenticationDatabase", "admin", "--eval", "db.adminCommand('ping')"]
+   interval: 30s
+   timeout: 10s
+   retries: 5
+
 networks:
  mongodb-network:
   driver: bridge
-   
+  name: mongodb-network

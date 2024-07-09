@@ -1,0 +1,40 @@
+[{
+  "_id": "b7dfcec0-0525-40a1-b839-d1c9f336e42b",
+  "idCliente": "0483fc3c-0828-42e4-9080-42e009523513",
+  "data": {
+    "$date": "2024-07-08T21:47:39.993Z"
+  },
+  "idRonda": {
+    "idVigia": "e3cbb42d-53a5-45aa-9b91-6b2a768900ee",
+    "data": {
+      "$date": "2024-07-08T03:00:00.000Z"
+    }
+  },
+  "nomeCliente": "cliente 1 Fernandes",
+  "logradouro": null,
+  "situacao": "ATIVO",
+  "localizacao": {
+    "latitude": 37.421998333333335,
+    "longitude": -122.084
+  }
+},
+{
+  "_id": "7fd03c7d-caeb-4ab9-8c51-966cb5f08285",
+  "idCliente": "5968ffe5-f043-4604-898e-338ef890cde0",
+  "data": {
+    "$date": "2024-07-09T00:27:27.339Z"
+  },
+  "idRonda": {
+    "idVigia": "e3cbb42d-53a5-45aa-9b91-6b2a768900ee",
+    "data": {
+      "$date": "2024-07-08T03:00:00.000Z"
+    }
+  },
+  "nomeCliente": "Evaldo Fernandes",
+  "logradouro": null,
+  "situacao": "ACEITO",
+  "localizacao": {
+    "latitude": 37.421998333333335,
+    "longitude": -122.084
+  }
+}]
